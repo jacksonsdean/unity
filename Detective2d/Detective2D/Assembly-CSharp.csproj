@@ -55,6 +55,8 @@
   <ItemGroup>
      <Compile Include="Assets\Characters\Player\CreateNodesFromTilemaps.cs" />
      <Compile Include="Assets\Characters\Player\GameManager.cs" />
+     <Compile Include="Assets\Characters\Player\Player.cs" />
+     <Compile Include="Assets\Characters\Player\PlayerInteract.cs" />
      <Compile Include="Assets\Characters\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Characters\Player\WorldTile.cs" />
      <None Include="Assets\Documentation\Credits.txt" />

@@ -5,11 +5,12 @@ using UnityEngine.Tilemaps;
 public class CreateNodesFromTilemaps : MonoBehaviour
 {
     //did some stuff to the actions in npc so they can get closer to the Nodes without the glitchyness
-
+    
     //changed execution order for this and world builder
     public Grid gridBase;
     public Tilemap floor;//floor of world
     public List<Tilemap> obstacleLayers; //all layers that contain objects to navigate around
+	public List<Tilemap> resourceLayers; //all layers that contain objects to navigate around
     public GameObject nodePrefab;
 
     //these are the bounds of where we are searching in the world for tiles, have to use world coords to check for tiles in the tile map
@@ -123,10 +124,25 @@ public class CreateNodesFromTilemaps : MonoBehaviour
                         unsortedNodes.Add(node);
                         node.name = "UNWALKABLE NODE " + gridX.ToString() + " : " + gridY.ToString();
 
+                         // check if its a resource:
+                        foreach (Tilemap t in resourceLayers)
+                        {
+
+                            if (t == null)
+                            {
+
+                            }
+                            else
+                            {
+                                wt.resource = t.name;
+                            }
+
+                        }
 
                     }
                     gridY++; //increment the y counter
 
+                   
 
                     if (gridX > gridBoundX)
                     { //if the current gridX/gridY is higher than the existing then replace it with the new value
