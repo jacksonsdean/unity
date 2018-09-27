@@ -6,7 +6,8 @@ public class PlayerInteract : MonoBehaviour {
 	private Player player;
 	private Animator anim;
 
-
+	private bool interacting = false;
+	
 	// Use this for initialization
 	void Awake () {
 		player = GetComponent<Player>();
@@ -24,7 +25,8 @@ public class PlayerInteract : MonoBehaviour {
 	}
 
 	public void Interact(string dir) {
-		if(player.target == null){
+		// return if there is no target or we are already interacting
+		if(player.target == null || interacting){
 			return;
 		}
 
@@ -45,13 +47,22 @@ public class PlayerInteract : MonoBehaviour {
 		}
 
 		if (player.target.resource == "Trees_Interactable"){
-			ChopTree(dir);
+			StartCoroutine(ChopTree(dir));
 		}
 	}
 
-	private void ChopTree(string dir){
-		print("Chopping " + dir);
+
+	private IEnumerator ChopTree(string dir){
+		interacting = true;
 		anim.Play("axe_"+dir);
+		player.addWood(5);
+		yield return new WaitForSeconds(player.chopTime);
 		player.target = null;
+		interacting = false;
+		if (Input.GetMouseButton(0)){
+			StartCoroutine(ChopTree(dir));
+		}
 	}
+
+
 }

@@ -127,8 +127,8 @@ public class CreateNodesFromTilemaps : MonoBehaviour
                          // check if its a resource:
                         foreach (Tilemap t in resourceLayers)
                         {
-
-                            if (t == null)
+                            TileBase tb2 = t.GetTile(new Vector3Int(x, y, 0));
+                            if (tb2 == null)
                             {
 
                             }

@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 	public GameObject[,] nodes;
 	public Grid grid;
 
+	public Player player;
+
     // Use this for initialization
     void Start()
     {
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
 
 	private void Awake()
     {
+		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 		CreateNodesFromTilemaps cnftm = GetComponent<CreateNodesFromTilemaps>();
         cnftm.generateNodes();
         nodes = cnftm.nodes;

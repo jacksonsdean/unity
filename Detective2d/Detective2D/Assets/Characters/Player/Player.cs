@@ -1,9 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour {
+	[System.Serializable]
+	public struct BuildableItem {
+     	public string name;
+     	public Texture2D image;
+ 	}
+ 	public BuildableItem[] buildableItems;
 
+	private Dictionary <string, Texture2D> itemDictionary;
 	public Grid grid;
 
 	public WorldTile target;
@@ -12,8 +21,13 @@ public class Player : MonoBehaviour {
 	private PlayerMovement playerMovement;
 	private Animator anim;
 
-	
+	public GameObject resourcePanel;
 
+	public GameObject buildMenu;
+
+	public int woodVal;
+
+	public float chopTime = 1.2f;
 
 	void Awake(){
 		playerMovement = gameObject.GetComponent<PlayerMovement>();
@@ -22,6 +36,14 @@ public class Player : MonoBehaviour {
         {
             anim = GetComponentInChildren<Animator>();
         }
+
+		buildMenu.SetActive(false);
+		itemDictionary = new Dictionary<string, Texture2D>();
+
+		foreach(BuildableItem bi in buildableItems){
+			itemDictionary[bi.name] = bi.image;
+		}
+
 	}
 
 	// Use this for initialization
@@ -32,7 +54,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetMouseButtonUp(0))
+		if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
 		{
 			Vector3 moveTar = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			playerMovement.SetTar(moveTar); // set the target to mouse location
@@ -52,8 +74,56 @@ public class Player : MonoBehaviour {
 
 				}
 			}
-
-
 		}
+
+		if(Input.GetButtonDown("BuildMenu")){
+			buildMenu.SetActive(!buildMenu.activeSelf);
+		}
+	}
+
+	public void addWood(int amt){
+		woodVal += amt;
+		UpdateResourceVals();
+
+	}
+	public void subtractWood(int amt){
+		woodVal -= amt;
+		UpdateResourceVals();
+	}
+
+
+	private void UpdateResourceVals(){
+		foreach (ResourceText t in resourcePanel.GetComponentsInChildren<ResourceText>()){
+			t.UpdateVal();
+		}
+	}
+
+	public void Build(string item){
+		if(item == "fence"){
+			if(woodVal >= 35){
+				buildMenu.SetActive(false);
+				Cursor.SetCursor(itemDictionary[item],new Vector2(0,0),CursorMode.Auto);
+				StartCoroutine(PlaceItem(item));
+			}
+			else{
+				print("Not enough wood to build a fence");
+			}
+		}
+	}
+
+	private IEnumerator PlaceItem(string item){
+		yield return new WaitForSeconds(.3f);
+		if(Input.GetMouseButtonUp(0)){
+			// check if this is a valid target, etc..
+			Cursor.SetCursor(null,new Vector2(0,0),CursorMode.Auto);
+			subtractWood(35);
+			print("Placing " + item);
+		}
+		else {
+
+			yield return null;
+			}
+			
+		
 	}
 }

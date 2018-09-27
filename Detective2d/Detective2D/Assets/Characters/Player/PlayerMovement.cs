@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
 	Vector3Int moveCell;
 
 	Vector3 destination;
-	private Vector2 posBeforeMove;
 	private float preColX, preColY;
 	private bool collided;
 	private Vector2 origMoveTar;
@@ -55,14 +54,11 @@ public class PlayerMovement : MonoBehaviour
 
 	}
 
-
-
 	private void Update()
 	{
 		if (destination != transform.position)
 		{
 			anim.SetBool("Walking", true);
-			posBeforeMove = gameObject.transform.position;
 
 			nextMoveTar = grid.GetCellCenterWorld(new Vector3Int(path[0].gridX, path[0].gridY, 0));
 			transform.position = Vector2.MoveTowards(transform.position, nextMoveTar, moveSpeed * Time.deltaTime);
@@ -189,7 +185,6 @@ public class PlayerMovement : MonoBehaviour
 			total_path.Add(currentNextTile);
 			if (total_path.Contains(goalTile)) break;
 		}
-		print(index);
 		return total_path;
 
 
