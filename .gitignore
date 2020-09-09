@@ -1,5 +1,11 @@
 *
+
+!*/
 !.gitignore
-!README.md
-!**/Assets/
-!**/ProjectSettings/
+!./README.md
+
+!/in_progress/*/Assets/**
+!/in_progress/*/ProjectSettings/**
+
+!/old_projects/*/Assets/**
+!/in_progress/*/ProjectSettings/**
