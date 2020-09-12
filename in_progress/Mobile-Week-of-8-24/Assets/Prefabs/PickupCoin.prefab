@@ -42,7 +42,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61886390919551605}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -66,6 +66,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7852c7e0883683e42a665f59b57f53af, type: 3}
   - {fileID: 8300000, guid: ddad0dfd6ad7a54458ef5908f5df2fc6, type: 3}
   - {fileID: 8300000, guid: 9b738113de324e849a50120a25f0814e, type: 3}
+  currency: coins
+  gemChance: 0.02
+  gemSwap: {fileID: 7985688826030529273, guid: 0f1274a5ffb001e478871601026c9d67, type: 3}
 --- !u!95 &8535553356175014560
 Animator:
   serializedVersion: 3
@@ -110,13 +113,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7028662734255436153}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.36998832, y: -0.602585, z: -0.602585, w: 0.36998832}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 833181275396276431}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: -116.9, z: 0}
 --- !u!33 &411000686396939195
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -124,7 +127,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7028662734255436153}
-  m_Mesh: {fileID: 4299464537570926800, guid: 508b26ef13c96944891371431d49b615, type: 3}
+  m_Mesh: {fileID: -7473714684930035613, guid: 0901f16a388ad614ca43d52e37d97e4b, type: 3}
 --- !u!23 &2386999781615485977
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -143,7 +146,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: caeaed6ef7d3aba44bed6cd8653685a3, type: 2}
+  - {fileID: 2100000, guid: e0b7bc7ca4f68e24fa199e55149ef7ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

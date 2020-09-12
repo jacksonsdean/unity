@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 //using Jackson;
 
 public struct ScreenEdges{
@@ -43,10 +44,16 @@ public class GameManager : MonoBehaviour
     private int scoreAnimThreshold;
 
     [SerializeField]
+    GameObject backToMenuButton;
+    [SerializeField]
     GameObject losePanel;
 
     private PhaseManager phaseManager;
     private CinemachineImpulseSource impulseSource;
+
+
+
+    ScreenFadeController screenFadeController;
 
     // Start is called before the first frame update
     void Awake()
@@ -67,17 +74,24 @@ public class GameManager : MonoBehaviour
         phaseManager = GetComponent<PhaseManager>();
         scoreAnim.gameObject.SetActive(false);
         //SpawnPlayer();
+        screenFadeController = GetComponentInChildren<ScreenFadeController>();
 
     }
+
+
 
     private void Start(){
-        AudioManager.PlayRandomTheme(true);
+      
     }
+
+
     public int GetScore() {
         return score;
     }
     void ShowMainMenu() {
         _mainMenu.SetActive(true);
+        backToMenuButton.SetActive(false);
+
     }
 
     Vector2 ViewportToPlanePoint(Vector3 point) {
@@ -123,6 +137,7 @@ public class GameManager : MonoBehaviour
         losePanel.SetActive(true);
         losePanel.GetComponent<Animator>().SetTrigger("Show");
 
+        //backToMenuButton.SetActive(false);
 
     }
 
@@ -136,19 +151,28 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
-    public void OnClickStart() {
-        mainMenu.GetComponent<Animator>().SetTrigger("SlideOut");
+
+    public void ReturnToMenu() {
+        LoadLevel(SceneManager.GetActiveScene().buildIndex);
+        //playing = false;
+        //mainMenu.SetActive(true);
+        ////mainMenu.GetComponent<Animator>().SetTrigger("show");
 
     }
 
+
     public void StartGame() {
         if (!MainMenu.Ready) return;
+        //MainMenu.Ready = false;
+
+        backToMenuButton.SetActive(true);
+
         SpawnPlayer();
 
         _mainMenu.SetActive(false);
         ResetScore();
         playing = true;
-        scoreAnim.gameObject.SetActive(true);
+        //scoreAnim.gameObject.SetActive(true);
         phaseManager.Restart();
     }
 
@@ -195,6 +219,37 @@ public class GameManager : MonoBehaviour
         Gizmos.DrawLine(new Vector3(screenEdges.minX, screenEdges.maxY,0), new Vector3(screenEdges.minX, screenEdges.minY,  0));
         Gizmos.DrawLine(new Vector3(screenEdges.minX, screenEdges.minY,0), new Vector3(screenEdges.maxX, screenEdges.minY,  0));
         Gizmos.DrawLine(new Vector3(screenEdges.maxX, screenEdges.minY,0), new Vector3(screenEdges.maxX, screenEdges.maxY,  0));
+    }
+
+
+    void OnEnable()
+    {
+        //Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
+
+    void OnDisable()
+    {
+        //Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+    }
+
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        screenFadeController.FadeIn();
+    }
+
+
+    public void LoadLevel(int level)
+    {
+        StartCoroutine(LoadLevelEnum(level));
+    }
+
+    IEnumerator LoadLevelEnum(int level)
+    {
+        yield return screenFadeController.FadeOut();
+        SceneManager.LoadScene(level);
+        yield return screenFadeController.FadeIn();
     }
 
 }

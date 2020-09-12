@@ -42,7 +42,13 @@ public class Player : MonoBehaviour
     bool lastFireWasRight = false;
     public bool dead = false;
 
-    TextMeshProUGUI debugText;
+
+    float smoothInputHorizontal = 0;
+    Quaternion rPreTurn;
+    Quaternion originalRot;
+    Vector3 posPreTouch;
+
+    float maxRot = 65.0f;
 
     // Start is called before the first frame update
     void Awake(){
@@ -56,28 +62,14 @@ public class Player : MonoBehaviour
         }
         animator = GetComponent<Animator>();
 
-        if (Debug.isDebugBuild)
-        {
-            GameObject c =
-        Instantiate(new GameObject(), transform.position + Vector3.up * 1.0f, Quaternion.identity, this.transform);
-            c.AddComponent<Canvas>();
-            c.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-
-            GameObject g =
-            Instantiate(new GameObject(), transform.position + Vector3.up * 1.0f, Quaternion.identity, c.transform);
-            debugText = g.AddComponent<TextMeshProUGUI>();
-            debugText.fontSize = 100;
-            debugText.text = "Test";
-            g.AddComponent<RectTransform>();
-            g.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
-            g.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        }
+       
     }
     void Start(){
         invFireRate = 1 / fireRate;
         lastFire = -invFireRate;
-        //Instantiate(spawnEffect, transform.position, Quaternion.identity, null);
-        rPreTurn = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
+        //rPreTurn = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
+        rPreTurn = transform.rotation;
+        originalRot = transform.rotation;
         posPreTouch = transform.position;
     }
 
@@ -104,45 +96,54 @@ public class Player : MonoBehaviour
         }
         else
         {
-            float moveX = Input.GetAxis("Horizontal");
-            this.transform.Translate(speed * moveX * Time.deltaTime, 0, 0, Space.World);
-            
-            if (transform.position.x > GameManager.screenEdges.maxX)
-                transform.position = new Vector3(GameManager.screenEdges.maxX, transform.position.y, transform.position.z);
-            if (transform.position.x < GameManager.screenEdges.minX)
-                transform.position = new Vector3(GameManager.screenEdges.minX, transform.position.y, transform.position.z);
-
-            animator.SetFloat("VelX", moveX);
-
-            Quaternion rPreTurn = transform.localRotation;
-            //transform.Rotate(0, 0, moveX * speed * Time.deltaTime *2.0f, Space.World);
-            Quaternion desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * 80.0f,0);
-
-
-            if (Mathf.Abs(moveX) < 0.01f) {
-                transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime);
-            }
-            else 
-                transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime*speed);
-
-            //if (transform.rotation.eulerAngles.y > 75.0f) {
-            //transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, 75.0f, transform.rotation.eulerAngles.z));
-
-            //}
+            HandleKeyboardInput();
         }
     }
 
-    float smoothInputHorizontal = 0;
-    Quaternion rPreTurn;
-    Vector3 posPreTouch;
+
+
+   void HandleKeyboardInput() {
+
+        float moveX = Input.GetAxis("Horizontal");
+        this.transform.Translate(speed * moveX * Time.deltaTime, 0, 0, Space.World);
+
+        if (transform.position.x > GameManager.screenEdges.maxX)
+            transform.position = new Vector3(GameManager.screenEdges.maxX, transform.position.y, transform.position.z);
+        if (transform.position.x < GameManager.screenEdges.minX)
+            transform.position = new Vector3(GameManager.screenEdges.minX, transform.position.y, transform.position.z);
+
+        animator.SetFloat("VelX", moveX);
+
+        Quaternion rPreTurn = transform.localRotation;
+        //transform.Rotate(0, 0, moveX * speed * Time.deltaTime *2.0f, Space.World);
+        Quaternion desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * 80.0f, 0);
+
+
+        if (Mathf.Abs(moveX) < 0.01f)
+        {
+            transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime);
+        }
+        else
+            transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime * speed);
+
+        //if (transform.rotation.eulerAngles.y > 75.0f) {
+        //transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, 75.0f, transform.rotation.eulerAngles.z));
+
+        //}
+    }
+
+
     private void HandleTouchInput()
     {
+        rPreTurn = transform.localRotation;
+        Quaternion desiredRot  = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
+        float rotSpeedScalar = 2.0f;
 
         float moveX = 0.0f;
         if (Input.touchCount >= 1)
         {
-
             Touch touch = Input.GetTouch(0);
+            Vector3 target = GetTargetPos(touch);
             if (touch.phase == TouchPhase.Began)
             {
                 rPreTurn = transform.localRotation;
@@ -154,33 +155,34 @@ public class Player : MonoBehaviour
                 posPreTouch = transform.position;
 
             }
-            else if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+            else if (touch.phase == TouchPhase.Moved)
             {
+                
+                moveX = Mathf.Clamp(10.0f * (target.x - transform.position.x), -1, 1);
+                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed * touchSensitivity);
+                rotSpeedScalar *= (1.0f+Mathf.Abs(target.x - transform.position.x));
 
-                Transform cameraTransform = Camera.main.transform;
-                Vector3 heading = transform.position - cameraTransform.position;
-
-
-                Vector3 touchPosition = touch.position;
-                touchPosition.z = Vector3.Dot(heading, cameraTransform.forward);
-
-                Vector3 target = transform.position;
-                target.x = Camera.main.ScreenToWorldPoint(touchPosition).x;
-                moveX = Mathf.Clamp(target.x - posPreTouch.x, -1, 1);
-                //moveX = Vector3.Normalize(target).x - Vector3.Normalize(transform.position).x;
-                transform.position = Vector3.Lerp(posPreTouch, target, Time.deltaTime * speed * touchSensitivity);
-                //if (Debug.isDebugBuild)
-                //{
-                //    debugText.text = target.x.ToString();
-                //}
+                desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * maxRot, 0);
 
             }
+            else if (touch.phase == TouchPhase.Stationary) {
+                moveX = Mathf.Clamp(10.0f * (target.x - transform.position.x), -1, 1);
+                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed * touchSensitivity);
+                //rotSpeedScalar = 10.0f * Mathf.Abs(target.x - transform.position.x);
+            }
 
+            if (Mathf.Abs(target.x - transform.position.x)<0.01f) {
+                desiredRot  = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
 
+            }
         }
-       
-        
-        //transform.Rotate(0, 0, moveX * speed * Time.deltaTime *2.0f, Space.World);
+            
+
+            transform.localRotation = Quaternion.RotateTowards(rPreTurn, desiredRot, rotSpeedScalar*Time.deltaTime * speed * touchSensitivity);
+   
+
+
+        /*
         Quaternion desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * 80.0f, 0);
 
 
@@ -190,11 +192,24 @@ public class Player : MonoBehaviour
         }
         else
             transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime * speed * .1f);
+            */
 
     }
 
+    private Vector3 GetTargetPos(Touch touch) {
+        Transform cameraTransform = Camera.main.transform;
+        Vector3 heading = transform.position - cameraTransform.position;
+
+        Vector3 touchPosition = touch.position;
+        touchPosition.z = Vector3.Dot(heading, cameraTransform.forward);
+
+        Vector3 target = transform.position;
+        target.x = Camera.main.ScreenToWorldPoint(touchPosition).x;
+        return target;
+    }
+
     private void OnTriggerEnter(Collider other){
-        if (dead) return;
+        if (dead || !GameManager.Instance.playing) return;
         if (other.CompareTag("PlayerSpawnDeath")) Destroy(this.gameObject);
 
         if (((1 << other.gameObject.layer) & killLayers) != 0){

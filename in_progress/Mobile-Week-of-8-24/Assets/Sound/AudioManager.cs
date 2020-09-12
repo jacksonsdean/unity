@@ -22,16 +22,27 @@ public class AudioManager : MonoBehaviour
 
     static float FADESTEPS = 100.0f;
 
+    bool firstLoad = true;
+
     private void Awake(){
         if (!AudioManager.Instance)
             AudioManager.Instance = this;
         else
-            Destroy(this);
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        DontDestroyOnLoad(this.gameObject);
 
         AudioManager.audioSource = GetComponent<AudioSource>();
         _fadeTime = fadeTime;
         _themes = themes;
         _maxVolume = maxVolume;
+        
+        if(firstLoad)
+            PlayRandomTheme(true);
+
+        firstLoad = false;
     }
 
      void PlayRandomThemeInternal(bool loop = false) {
