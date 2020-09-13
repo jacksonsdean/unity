@@ -26,7 +26,7 @@ public class PickupCoin : Pickup
         var definition = GameFoundation.catalogs.currencyCatalog.FindItem(currency);
         WalletManager.AddBalance(definition, 1);
         GameFoundationManager.UpdateBoatDatabase();
-        //GameManager.Instance.addScore(1);
+        GameManager.Instance.addScore(1); 
         base.Collect(); 
     }
 

@@ -8,6 +8,7 @@ TagManager:
   - PlayerSpawnDeath
   - Enemy
   - Ripples
+  - CoinPickup
   layers:
   - Default
   - TransparentFX

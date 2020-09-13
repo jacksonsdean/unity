@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8946134920099663461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_beachBall_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -6051173240922938366}
+  m_Names:
+  - prefab
+  - icon
+  m_Values:
+  - Boats/ball-beach
+  - Store/ball-beach
 --- !u!114 &-8422075436320234464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36,6 +55,23 @@ MonoBehaviour:
   m_Values:
   - Boats/woodBoat1
   - Store/woodBoat1
+--- !u!114 &-7775367222819822416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_bananaT_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 2828824991446984067}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/banana
 --- !u!114 &-7447531611632076936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +187,49 @@ MonoBehaviour:
   m_Values:
   - Boats/cargoShip
   - Store/cargoShip
+--- !u!114 &-6093377489783091529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_banana_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 6952012119626854468}
+  m_Names:
+  - prefab
+  - icon
+  m_Values:
+  - Boats/banana
+  - Store/banana
+--- !u!114 &-6051173240922938366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_beachBall
+  m_EditorClassIdentifier: 
+  m_DisplayName: Beach ball
+  m_Key: beachBall
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -8946134920099663461}
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &-6008735605285602642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +262,23 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/woodBoat1
+--- !u!114 &-5535152190631936375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_babyCarriageT_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -4611552036564201706}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/baby-carriage
 --- !u!114 &-5200670177100106814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +312,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Key: boat
   m_Catalog: {fileID: 4221544002983397555}
+--- !u!114 &-4611552036564201706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_babyCarriageT
+  m_EditorClassIdentifier: 
+  m_DisplayName: Baby Carriage
+  m_Key: babyCarriageT
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -5535152190631936375}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 95852538948311373}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 4912814492817695589}
+      m_Amount: 30
 --- !u!114 &-4345612297795074090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +387,61 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/gem
+--- !u!114 &-3732147361928583565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_babyCarriage_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 95852538948311373}
+  m_Names:
+  - prefab
+  - icon
+  m_Values:
+  - Boats/baby-carriage
+  - Store/baby-carriage
+--- !u!114 &-3679671445708581541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_beachBallT_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -2764304539831153007}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/ball-beach
+--- !u!114 &-3362652483512952268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_anchor_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 5734858893994221828}
+  m_Names:
+  - prefab
+  - icon
+  m_Values:
+  - Boats/anchor
+  - Store/anchor
 --- !u!114 &-3099946627271148432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,6 +473,37 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
       m_Amount: 50
+--- !u!114 &-2764304539831153007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_beachBallT
+  m_EditorClassIdentifier: 
+  m_DisplayName: Beach Ball
+  m_Key: beachBallT
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -3679671445708581541}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -6051173240922938366}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 200
 --- !u!114 &-2633415306270866935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +523,37 @@ MonoBehaviour:
   m_Values:
   - Boats/blueSofa
   - Store/blueSofa
+--- !u!114 &-2201808415489515905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_anchorT
+  m_EditorClassIdentifier: 
+  m_DisplayName: Anchor
+  m_Key: anchorT
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: 7970669393985288452}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 5734858893994221828}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 240
 --- !u!114 &-2129195931461648530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,6 +680,30 @@ MonoBehaviour:
   m_CurrencyCatalog: {fileID: 4731074396628625200}
   m_TransactionCatalog: {fileID: 3965805815559898476}
   m_GameParameterCatalog: {fileID: 2338302034949156487}
+--- !u!114 &95852538948311373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_babyCarriage
+  m_EditorClassIdentifier: 
+  m_DisplayName: Baby Carriage
+  m_Key: babyCarriage
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -3732147361928583565}
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &1048637995318359425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,6 +770,10 @@ MonoBehaviour:
   - {fileID: -7401698498595016674}
   - {fileID: 3446237844310685991}
   - {fileID: -6700808341450764988}
+  - {fileID: 5734858893994221828}
+  - {fileID: 95852538948311373}
+  - {fileID: -6051173240922938366}
+  - {fileID: 6952012119626854468}
 --- !u!114 &1575648999959828289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,7 +869,38 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
-      m_Amount: 5
+      m_Amount: 15
+--- !u!114 &2828824991446984067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_bananaT
+  m_EditorClassIdentifier: 
+  m_DisplayName: banana
+  m_Key: bananaT
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -7775367222819822416}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 6952012119626854468}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 4912814492817695589}
+      m_Amount: 20
 --- !u!114 &3284650391213556574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,6 +1025,10 @@ MonoBehaviour:
   - {fileID: -129941392151470059}
   - {fileID: -3099946627271148432}
   - {fileID: 2429014147115638578}
+  - {fileID: -2201808415489515905}
+  - {fileID: -4611552036564201706}
+  - {fileID: -2764304539831153007}
+  - {fileID: 2828824991446984067}
 --- !u!114 &4221544002983397555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,6 +1113,14 @@ MonoBehaviour:
     m_Enabled: 1
   - m_Transaction: {fileID: -7447531611632076936}
     m_Enabled: 1
+  - m_Transaction: {fileID: -2201808415489515905}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -4611552036564201706}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2764304539831153007}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2828824991446984067}
+    m_Enabled: 1
 --- !u!114 &4912814492817695589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,6 +1165,30 @@ MonoBehaviour:
   m_StaticPropertyValues: []
   m_DetailValues:
   - {fileID: -6301935338796270073}
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
+--- !u!114 &5734858893994221828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_anchor
+  m_EditorClassIdentifier: 
+  m_DisplayName: Anchor
+  m_Key: anchor
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -3362652483512952268}
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
@@ -908,6 +1247,30 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
       m_Amount: 150
+--- !u!114 &6952012119626854468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_banana
+  m_EditorClassIdentifier: 
+  m_DisplayName: Banana
+  m_Key: banana
+  m_Tags:
+  - {fileID: -5017238617055823403}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -6093377489783091529}
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &7883623384585598054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,6 +1295,23 @@ MonoBehaviour:
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
+--- !u!114 &7970669393985288452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_anchorT_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -2201808415489515905}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/anchor
 --- !u!114 &8121577455813940726
 MonoBehaviour:
   m_ObjectHideFlags: 0

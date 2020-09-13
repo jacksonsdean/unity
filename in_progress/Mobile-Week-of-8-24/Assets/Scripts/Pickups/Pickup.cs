@@ -18,7 +18,7 @@ public abstract class Pickup : MonoBehaviour
     }
 
     protected virtual void OnTriggerEnter(Collider other){
-        if (other.CompareTag("Player")) {
+        if (other.CompareTag("CoinPickup")) {
             Collect();
         }
     }

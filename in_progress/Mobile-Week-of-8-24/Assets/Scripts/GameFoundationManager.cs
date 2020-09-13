@@ -11,6 +11,7 @@ using UnityEngine.GameFoundation.DefaultLayers;
 using UnityEngine.GameFoundation.DefaultLayers.Persistence;
 using TMPro;
 using System.Runtime.CompilerServices;
+using System;
 
 public class GameFoundationManager : MonoBehaviour
 {
@@ -39,8 +40,7 @@ public class GameFoundationManager : MonoBehaviour
     {
         if (!GameFoundation.IsInitialized)
             Initialize();
-
-        OnUpdateBoatDatabase();
+        OnUpdateBoatDatabase?.Invoke();
     }
 
     public static bool IsItemOwned(InventoryItemDefinition item) {
@@ -55,10 +55,21 @@ public class GameFoundationManager : MonoBehaviour
         dataLayer = new PersistenceDataLayer(localPersistence);
         if (dataLayer != null)
         {
-            GameFoundation.Initialize(dataLayer);
-            isInit = true;
+            try
+            {
+                GameFoundation.Initialize(dataLayer);
+                isInit = true;
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.LogError("Error Initializing Game Foundation: " + e.ToString());
+            }
+            finally {
+               
+                if(GameFoundation.IsInitialized)
+                    UpdateBoatDatabase();
 
-            UpdateOwnedItems();
+            }
         }
         else {
             Debug.LogError("Data layer was null");
@@ -69,9 +80,7 @@ public class GameFoundationManager : MonoBehaviour
 
     static void Save()
     {
-        UpdateOwnedItems();
         dataLayer.Save();
-        //BoatInventoryManager.DoUpdate();
     }
 
     private static void UpdateOwnedItems()
@@ -105,11 +114,13 @@ public class GameFoundationManager : MonoBehaviour
     private void OnEnable()
     {
         OnUpdateBoatDatabase += Save;
+        OnUpdateBoatDatabase += UpdateOwnedItems;
     }
 
     private void OnDisable()
     {
         OnUpdateBoatDatabase -= Save;
+        OnUpdateBoatDatabase -= UpdateOwnedItems;
 
     }
 
