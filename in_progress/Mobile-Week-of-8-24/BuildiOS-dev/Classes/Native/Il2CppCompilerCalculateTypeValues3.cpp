@@ -11639,6 +11639,34 @@ public:
 };
 
 
+// EasyMobile.iOS.GameKit.GKTurnBasedParticipant_GKTurnBasedMatchOutcome
+struct  GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58 
+{
+public:
+	// EasyMobile.iOS.GameKit.GKTurnBasedParticipant_GKTurnBasedMatchOutcome_Outcome EasyMobile.iOS.GameKit.GKTurnBasedParticipant_GKTurnBasedMatchOutcome::outcome
+	int32_t ___outcome_1;
+	// System.UInt32 EasyMobile.iOS.GameKit.GKTurnBasedParticipant_GKTurnBasedMatchOutcome::customOutcome
+	uint32_t ___customOutcome_2;
+
+public:
+	inline static int32_t get_offset_of_outcome_1() { return static_cast<int32_t>(offsetof(GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58, ___outcome_1)); }
+	inline int32_t get_outcome_1() const { return ___outcome_1; }
+	inline int32_t* get_address_of_outcome_1() { return &___outcome_1; }
+	inline void set_outcome_1(int32_t value)
+	{
+		___outcome_1 = value;
+	}
+
+	inline static int32_t get_offset_of_customOutcome_2() { return static_cast<int32_t>(offsetof(GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58, ___customOutcome_2)); }
+	inline uint32_t get_customOutcome_2() const { return ___customOutcome_2; }
+	inline uint32_t* get_address_of_customOutcome_2() { return &___customOutcome_2; }
+	inline void set_customOutcome_2(uint32_t value)
+	{
+		___customOutcome_2 = value;
+	}
+};
+
+
 // System.MulticastDelegate
 struct  MulticastDelegate_t  : public Delegate_t
 {
@@ -14827,6 +14855,14 @@ public:
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
+extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize5447;
+const Il2CppTypeDefinitionSizes g_typeDefinitionSize5447 = { sizeof (GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58)+ sizeof (RuntimeObject), sizeof(GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58 ), 0, 0 };
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5447[3] = 
+{
+	0,
+	GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58::get_offset_of_outcome_1() + static_cast<int32_t>(sizeof(RuntimeObject)),
+	GKTurnBasedMatchOutcome_t01DBD6ACC4ED05404E7C3015D117D4E14B4F1E58::get_offset_of_customOutcome_2() + static_cast<int32_t>(sizeof(RuntimeObject)),
+};
 extern const Il2CppTypeDefinitionSizes g_typeDefinitionSize5448;
 const Il2CppTypeDefinitionSizes g_typeDefinitionSize5448 = { sizeof (Outcome_tECE3D96AE3D20068DC1AFBA02F5B71D21F606C70)+ sizeof (RuntimeObject), sizeof(int32_t), 0, 0 };
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable5448[12] = 
