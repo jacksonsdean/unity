@@ -73,7 +73,9 @@ public class Enemy : MonoBehaviour
         maxHealth = health;
 
 
-        speed = PhaseManager.info.enemySpeed;
+        speed = GameManager.gameSpeed;
+
+
         if (UnityEngine.Random.Range(0, 1.0f) < PhaseManager.info.moveChance) {
             moves = true;
         }
@@ -174,4 +176,34 @@ public class Enemy : MonoBehaviour
     }
 
 
+    private void UpdateSpeed() {
+        speed = GameManager.gameSpeed;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        const float width = 80;
+        const float height = 30;
+        const float depth = 60;
+
+        Gizmos.DrawWireCube(transform.position, new Vector3(width, height, depth));
+
+        Gizmos.color =new Color(0,0,0,.5f);
+
+        Gizmos.DrawCube(transform.position + Vector3.forward*2f, new Vector3(width, height, 1));
+
+
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnUpdateGameSpeed += UpdateSpeed;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnUpdateGameSpeed -= UpdateSpeed;
+
+    }
 }
+

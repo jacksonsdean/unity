@@ -3,20 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
-
-
-
 public class EnemySpawner : MonoBehaviour
 {
+    const string PREFAB_FOLDER = "Enemies";
+    const string DIFFICULTY_0 = "Easy";
+    const string DIFFICULTY_1 = "Medium";
+    const string DIFFICULTY_2 = "Hard";
+
+    int nDifficultyLevels = 3;
 
     [Serializable]
-    struct TierArray
+    public struct TierArray
     {
         [SerializeField]
-        public GameObject[] arr;
+        public GameObject[] prefabs;
 
-        public int Count() { return arr.Length; }
+        public int Count() { return prefabs.Length; }
     };
 
 
@@ -25,19 +27,36 @@ public class EnemySpawner : MonoBehaviour
 
 
     [SerializeField]
-    TierArray[] enemyPrefabs;
+    TierArray[] enemyPrefabsOverride;
+
+    public TierArray[] enemyPrefabs;
 
     [SerializeField]
-    int minHardDifficulty = 2;
+    bool overrideEnemies = false;
 
     float invRate;
 
     float lastTime;
 
     [SerializeField]
-    private float aboveScreenOffset;
+    public float aboveScreenOffset;
 
+    private void Awake()
+    {
+        if (overrideEnemies)
+        {
+            enemyPrefabs = enemyPrefabsOverride;
+            nDifficultyLevels = enemyPrefabs.Length;
+        }
+        else {
 
+            enemyPrefabs = new TierArray[nDifficultyLevels];
+            enemyPrefabs[0].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_0);
+            enemyPrefabs[1].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_1);
+            enemyPrefabs[2].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_2);
+
+        }
+    }
 
     // Start is called before the first frame update
     void Start(){
@@ -68,15 +87,19 @@ public class EnemySpawner : MonoBehaviour
         while (prefab == null) {
             int difficulty = 0;
             int index = 0;
-            if (Random.Range(0, 1.0f) < PhaseManager.info.enemyDifficulty){
-                difficulty = Random.Range(minHardDifficulty, enemyPrefabs.Length);
-            }
-            else {
-                difficulty = Random.Range(0,minHardDifficulty);
-            } 
 
+            //if (Random.Range(0, 1.0f) < PhaseManager.info.enemyDifficulty){
+            //    difficulty = Random.Range(minHardDifficulty, enemyPrefabs.Length);
+            //}
+            //else {
+            //    difficulty = Random.Range(0,minHardDifficulty);
+            //}
+
+            difficulty = Mathf.RoundToInt(Random.Range(0, PhaseManager.info.enemyDifficulty-1));
+            difficulty = Mathf.Clamp(difficulty, 0, nDifficultyLevels-1);
             index = Random.Range(0, enemyPrefabs[difficulty].Count());
-            prefab = enemyPrefabs[difficulty].arr[index];
+            
+            prefab = enemyPrefabs[difficulty].prefabs[index];
 
         }
         GameObject go = Instantiate(prefab, position, Quaternion.identity, transform);
@@ -85,8 +108,13 @@ public class EnemySpawner : MonoBehaviour
         go.SetActive(true);
     }
 
-    internal void SetRate(float amt){
-        rate = amt;
+    //internal void SetRate(float amt){
+    //    rate = amt;
+    //    invRate = 1 / rate;
+    //}
+
+    private void UpdateRate() {
+        rate = GameManager.spawnRate;
         invRate = 1 / rate;
     }
 
@@ -95,5 +123,15 @@ public class EnemySpawner : MonoBehaviour
         Gizmos.color = Color.cyan;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(.5f, 1, 0));
         Gizmos.DrawRay(ray);
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnUpdateGameSpeed += UpdateRate;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnUpdateGameSpeed -= UpdateRate;
+        
     }
 }

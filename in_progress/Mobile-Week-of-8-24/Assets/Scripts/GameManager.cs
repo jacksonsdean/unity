@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
+using UnityEngine.GameFoundation.Data;
+using UnityEngine.GameFoundation;
 //using Jackson;
 
 public struct ScreenEdges{
@@ -18,11 +20,52 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public bool playing = false;
+    private static readonly float METER_MODIFIER = .15f;
+    private static readonly float WATER_BASE_SPEED = .5f;
+
+ 
+
+    public static float gameSpeed = 1;
+    public static float spawnRate = 1;
 
     public static ScreenEdges screenEdges;
-    
+
+
+
+    public delegate void UpdateGameSpeedAction();
+    public static event UpdateGameSpeedAction OnUpdateGameSpeed;
+
+   
+
+    public bool playing = false;
+
+
     public int score;
+
+    // Game speed
+    [SerializeField]
+    float maxGameSpeed;
+    private static float _maxGameSpeed;
+
+    [SerializeField]
+    float gameSpeedIncreasePerSecond;
+    private static float _gameSpeedIncreasePerSecond;
+
+    internal static float baseGameSpeed;
+    internal static float gameSpeedBoost = 3.75f;
+
+    [SerializeField]
+    float maxSpawnRate;
+    private static float _maxSpawnRate;
+
+    [SerializeField]
+    float spawnRateIncreasePerSecond;
+    private static float _spawnRateIncreasePerSecond;
+    internal static float baseSpawnRate;
+
+    internal static float lastTouchTime = 0.0f;
+
+
 
     [SerializeField]
     private GameObject mainMenu;
@@ -33,12 +76,6 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private Transform playerSpawn;
-
-    [SerializeField]
-    TextMeshProUGUI scoreText;
-
-    [SerializeField]
-    Animator scoreAnim;
 
     [SerializeField]
     private int scoreAnimThreshold;
@@ -52,8 +89,13 @@ public class GameManager : MonoBehaviour
     private CinemachineImpulseSource impulseSource;
 
 
+    public ScreenFadeController screenFadeController;
+    internal static float meters;
 
-    ScreenFadeController screenFadeController;
+    private float currentWaterSpeed = 1.0f;
+    private float maxWaterSpeed = 2.0f;
+
+    private float waterOffset = 0;
 
     // Start is called before the first frame update
     void Awake()
@@ -72,18 +114,53 @@ public class GameManager : MonoBehaviour
         ShowMainMenu();
         impulseSource = GetComponent<CinemachineImpulseSource>();
         phaseManager = GetComponent<PhaseManager>();
-        scoreAnim.gameObject.SetActive(false);
         //SpawnPlayer();
         screenFadeController = GetComponentInChildren<ScreenFadeController>();
-
     }
 
-
+   
 
     private void Start(){
+        currentWaterSpeed = WATER_BASE_SPEED;
+        //Shader.SetGlobalFloat("_WaterScrollSpeed", currentWaterSpeed);
+        Shader.SetGlobalFloat("_WaterOffsetY", waterOffset);
+        CheckForPreRegGift();
       
     }
 
+    void Confirm()
+    {
+        Debug.Log("Popup confirmed");
+    }
+    void Decline()
+    {
+        Debug.Log("Popup declined");
+    }
+    private void CheckForPreRegGift() {
+
+        
+        //TODO REMOVE!
+        //TransactionManager.BeginTransaction(GameFoundation.catalogs.transactionCatalog.FindItem("preregistrationGiftT"));
+
+        var preRegDef = GameFoundation.catalogs.inventoryCatalog.FindItem("preregistrationGift");
+
+        if (TransactionManager.IsIapProductOwned("preregistration_gift"))
+            //if (GameFoundationManager.IsItemOwned(preRegDef))
+        {
+            if (PlayerPrefs.GetInt("pre-reg-notified", 0) == 0) // Hasn't been notified
+            {
+                PopupBuilder builder = new PopupBuilder();
+                builder.title = "Test Title";
+                builder.text = "Lorem ipsum";
+                builder.showConfirmButton = true;
+                builder.showDeclineButton = true;
+                builder.confirmCallback = Confirm;
+                builder.declineCallback = Decline;
+                builder.graphic = Resources.Load<Sprite>("Store/promotion/banana_badge");
+                PopupManager.Instance.Show(builder);
+            }
+        }
+    }
 
     public int GetScore() {
         return score;
@@ -129,7 +206,47 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
+        float waterNormalizedSpeed = GetNormalizedSpeed()/1.5f;
+        float waterScrollSpeed = WATER_BASE_SPEED + waterNormalizedSpeed;
         
+        waterNormalizedSpeed = Mathf.Clamp(waterNormalizedSpeed, 0,1.0f);
+
+        float waterDelta = waterScrollSpeed - currentWaterSpeed;
+        waterDelta *= Time.deltaTime*8.0f;
+        currentWaterSpeed += waterDelta;
+        currentWaterSpeed = Mathf.Clamp(currentWaterSpeed, 0, maxWaterSpeed);
+        //Shader.SetGlobalFloat("_WaterScrollSpeed", currentWaterSpeed);
+
+        waterOffset += currentWaterSpeed * Time.deltaTime;
+
+        Shader.SetGlobalFloat("_WaterOffsetY",waterOffset);
+
+
+
+
+        if (!playing)
+            return;
+        meters += (Time.deltaTime * gameSpeed) * METER_MODIFIER;
+
+        if (_gameSpeedIncreasePerSecond != gameSpeedIncreasePerSecond) {
+            _gameSpeedIncreasePerSecond = gameSpeedIncreasePerSecond;
+        }
+
+        if (_maxGameSpeed != maxGameSpeed)
+        {
+            _maxGameSpeed = maxGameSpeed;
+        }
+
+        if (_spawnRateIncreasePerSecond != spawnRateIncreasePerSecond)
+        {
+            _spawnRateIncreasePerSecond = spawnRateIncreasePerSecond;
+        }
+
+        if (_maxSpawnRate != maxSpawnRate)
+        {
+            _maxSpawnRate = maxSpawnRate;
+        }
+
     }
 
     public void Lose() {
@@ -153,13 +270,59 @@ public class GameManager : MonoBehaviour
 
 
     public void ReturnToMenu() {
+        playing = false;
         LoadLevel(SceneManager.GetActiveScene().buildIndex);
-        //playing = false;
         //mainMenu.SetActive(true);
         ////mainMenu.GetComponent<Animator>().SetTrigger("show");
 
     }
+    internal static float GetMaxSpeed()
+    {
+        return _maxGameSpeed;
+    }
+    internal static void UpdateBaseGameSpeed(float enemySpeed, float spawnRate){
+        baseGameSpeed = enemySpeed;
+        baseSpawnRate = spawnRate;
+        OnUpdateGameSpeed?.Invoke();
+    }
 
+    internal static float GetNormalizedSpeed()
+    {
+        if (!Instance.playing) return 0;
+        return
+            (GameManager.gameSpeed - GameManager.baseGameSpeed) /
+            (GameManager.GetMaxSpeed() - GameManager.baseGameSpeed);
+    }
+    internal static void UpdateGameSpeed(bool touchingScreen)
+    {
+        if (touchingScreen)
+        {
+            lastTouchTime = Time.time;
+
+            float deltaSpeed = baseGameSpeed - gameSpeed;
+            deltaSpeed *= Time.deltaTime * 2.0f;
+
+            float deltaRate = baseSpawnRate - spawnRate;
+            deltaRate *= Time.deltaTime * 2.0f;
+
+            gameSpeed += deltaSpeed;
+            spawnRate += deltaRate;
+        }
+        else {
+            gameSpeed = gameSpeedBoost + baseGameSpeed + (Time.time - lastTouchTime) * _gameSpeedIncreasePerSecond;
+            if (gameSpeed > _maxGameSpeed) {
+                gameSpeed = _maxGameSpeed;
+            }
+
+            spawnRate = baseSpawnRate + (Time.time - lastTouchTime) * _spawnRateIncreasePerSecond;
+            if (spawnRate > _maxSpawnRate)
+            {
+                spawnRate = _maxSpawnRate;
+            }
+        }
+
+        GameManager.OnUpdateGameSpeed?.Invoke();
+    }
 
     public void StartGame() {
         if (!MainMenu.Ready) return;
@@ -174,6 +337,9 @@ public class GameManager : MonoBehaviour
         playing = true;
         //scoreAnim.gameObject.SetActive(true);
         phaseManager.Restart();
+        lastTouchTime = Time.time;
+        meters = 0;
+        MeterCounter.Instance.FadeIn();
     }
 
     private void RemoveAllEnemies() {
@@ -196,8 +362,6 @@ public class GameManager : MonoBehaviour
 
         NotifyEnemyDefeated();
         
-        if(amt>=scoreAnimThreshold)
-            scoreAnim.SetTrigger("AddScore");
     }
 
   
@@ -207,8 +371,6 @@ public class GameManager : MonoBehaviour
 
     private void ResetScore() {
         score = 0;
-        scoreText.text = score.ToString();
-
     }
 
     private void OnDrawGizmos()

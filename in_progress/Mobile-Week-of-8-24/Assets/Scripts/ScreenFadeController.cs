@@ -19,16 +19,17 @@ public class ScreenFadeController : MonoBehaviour
 
 
 
-    public Coroutine FadeIn() {
-        return StartCoroutine(FadeInEnum());
+    public Coroutine FadeIn(float overrideTime = -1) {
+        return StartCoroutine(FadeInEnum(overrideTime));
     }
 
 
-    private IEnumerator FadeInEnum()
+    private IEnumerator FadeInEnum(float overrideTime = -1)
     {
+        float thisFadeTime = overrideTime > 0 ? overrideTime : fadeTime;
 
-        for (float i = 0; i < fadeTime; i+=timeBetweenSteps){
-            group.alpha = Mathf.Lerp(1, 0, i/fadeTime);
+        for (float i = 0; i < thisFadeTime; i+=timeBetweenSteps){
+            group.alpha = Mathf.Lerp(1, 0, i/ thisFadeTime);
             yield return new WaitForSeconds(timeBetweenSteps);
         }
         group.alpha = 0.0f;
@@ -37,17 +38,17 @@ public class ScreenFadeController : MonoBehaviour
     }
 
 
-    public Coroutine FadeOut()
-    {
-        return StartCoroutine(FadeOutEnum());
+    public Coroutine FadeOut(float overrideTime = -1){
+        return StartCoroutine(FadeOutEnum(overrideTime));
     }
 
 
-    private IEnumerator FadeOutEnum()
+    private IEnumerator FadeOutEnum(float overrideTime = -1)
     {
-        for (float i = 0; i < fadeTime; i += timeBetweenSteps)
+        float thisFadeTime = overrideTime> 0 ? overrideTime : fadeTime;
+        for (float i = 0; i < thisFadeTime; i += timeBetweenSteps)
         {
-            group.alpha = Mathf.Lerp(0, 1, i / fadeTime);
+            group.alpha = Mathf.Lerp(0, 1, i / thisFadeTime);
             yield return new WaitForSeconds(timeBetweenSteps);
 
         }

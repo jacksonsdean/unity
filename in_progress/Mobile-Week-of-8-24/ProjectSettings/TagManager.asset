@@ -9,6 +9,12 @@ TagManager:
   - Enemy
   - Ripples
   - CoinPickup
+  - Water
+  - Popup Title
+  - Popup Text
+  - Popup Image
+  - Popup Confirm
+  - Popup Decline
   layers:
   - Default
   - TransparentFX
@@ -23,10 +29,10 @@ TagManager:
   - Player
   - Post
   - Ripples
-  - 
-  - 
-  - 
-  - 
+  - CoinPickup
+  - CinematicCamera
+  - GameCamera
+  - PostCinematic
   - 
   - 
   - 

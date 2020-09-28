@@ -10,8 +10,9 @@ public class PlayerPrefabManager : MonoBehaviour
     const string PLAYER_PREF_STRING = "current-boat-key";
     const string PREFAB_ASSET_STRING = "prefab";
 
-    private const string DEFAULT_KEY = "woodBoat";
+    private const string DEFAULT_KEY = "raft";
 
+    public static PlayerPrefabManager Instance;
     public static GameObject current;
     public static string currentKey;
 
@@ -20,6 +21,8 @@ public class PlayerPrefabManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null) { Destroy(this.gameObject); } else { Instance = this; }
+
         SetCurrent(PlayerPrefs.GetString(PLAYER_PREF_STRING));
 
         if(current==null)
@@ -44,8 +47,22 @@ public class PlayerPrefabManager : MonoBehaviour
     private static void SwitchPrefab() {
         var definition = GameFoundation.catalogs.inventoryCatalog.FindItem(currentKey);
         if (definition != null)
+        {
             current = definition.GetDetail<AssetsDetail>()?.GetAsset<GameObject>(PREFAB_ASSET_STRING);
+            if (Instance.IsBoatSpawned()) {
+                Instance.ChangeSpawnedBoat();
+            }
+        
+        }
         else
             Debug.LogError("Definition was null");
+    }
+
+    private bool IsBoatSpawned() {
+        return FindObjectOfType<PlayerBoat>() != null;
+    }
+
+    private void ChangeSpawnedBoat() {
+        FindObjectOfType<PlayerBoat>().Change();
     }
 }

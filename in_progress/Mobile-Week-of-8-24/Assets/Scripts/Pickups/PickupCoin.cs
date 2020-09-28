@@ -31,7 +31,8 @@ public class PickupCoin : Pickup
     }
 
     private void SwapForGem() {
-        Instantiate(gemSwap, transform.position, transform.rotation, transform.parent);
+        GameObject go = Instantiate(gemSwap, transform.position, transform.rotation, transform.parent);
+        go.GetComponent<MoveAlongPath>().path = GetComponent<MoveAlongPath>().path;
         Destroy(this.gameObject);
     }
 }

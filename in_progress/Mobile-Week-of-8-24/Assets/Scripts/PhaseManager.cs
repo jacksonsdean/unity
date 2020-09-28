@@ -50,7 +50,7 @@ public class PhaseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        NextPhase();
     }
 
     public void EnemyDefeated() {
@@ -61,20 +61,24 @@ public class PhaseManager : MonoBehaviour
     }
 
     private void NextPhase(){
-        currentPhase++;
+        //currentPhase++;
+
+         float meters = GameManager.meters;
 
         PhaseManager.info = new PhaseInfo {
-            enemySpeed          =    enemySpeedCuve.Evaluate(currentPhase),
-            spawnRate           =    spawnRateCurve.Evaluate(currentPhase),
-            moveChance          =    enemyMoveChanceCurve.Evaluate(currentPhase),
-            enemiesThisPhase    =    (int)enemiesPerPhaseCurve.Evaluate(currentPhase),
-            enemyDifficulty    =     enemiesDifficultyCurve.Evaluate(currentPhase),
+            enemySpeed          =    enemySpeedCuve.Evaluate(meters),
+            spawnRate           =    spawnRateCurve.Evaluate(meters),
+            moveChance          =    enemyMoveChanceCurve.Evaluate(meters),
+            enemiesThisPhase    =    (int)enemiesPerPhaseCurve.Evaluate(meters),
+            enemyDifficulty    =     enemiesDifficultyCurve.Evaluate(meters),
         };
 
         nEnemiesLeftThisPhase = info.enemiesThisPhase;
-        foreach (EnemySpawner spawner in spawners){
-            spawner.SetRate(info.spawnRate);
-        }
+        //foreach (EnemySpawner spawner in spawners){
+        //    spawner.SetRate(info.spawnRate);
+        //}
+
+        GameManager.UpdateBaseGameSpeed(info.enemySpeed, info.spawnRate);
 
     }
 }

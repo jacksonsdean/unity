@@ -46,7 +46,7 @@ public class AudioManager : MonoBehaviour
     }
 
      void PlayRandomThemeInternal(bool loop = false) {
-        AudioClip clip = _themes[Random.Range(0, _themes.Length - 1)];
+        AudioClip clip = _themes[Random.Range(0, _themes.Length)];
         PlayInternal(clip);
         if (loop) {
             StartCoroutine(Loop(clip.length - fadeTime / 2.0f));

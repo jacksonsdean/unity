@@ -8,7 +8,7 @@ public class ModelCamera : MonoBehaviour
 {
 
     public Camera Camera3D;
-    public int ImageSize;
+    public Vector2Int resolution;
 
 
     private Sprite Result;
@@ -18,12 +18,22 @@ public class ModelCamera : MonoBehaviour
     [SerializeField]
     Transform target;
 
+    [SerializeField]
+    bool overrideFilename;
+
+    [SerializeField]
+    bool useTarget;
+
+    [SerializeField]
+    string filenameOverride;
+
 #if UNITY_EDITOR
     public void SetTarget()
     {
-        if (!Debug.isDebugBuild) return;
+        //if (!Debug.isDebugBuild) return;
+        
 
-        mRenderTexture = new RenderTexture(ImageSize, ImageSize, 32);
+        mRenderTexture = new RenderTexture(resolution.x, resolution.y, 32);
         Camera3D.targetTexture = mRenderTexture;
         transform.SetParent(target, false);
         Camera3D.Render();
@@ -37,7 +47,7 @@ public class ModelCamera : MonoBehaviour
 
     IEnumerator UpdateImport(string path)
     {
-        if (!Debug.isDebugBuild) yield return null;
+        //if (!Debug.isDebugBuild) yield return null;
 
         //yield return new WaitForSeconds(2.0f);
         AssetDatabase.Refresh();
@@ -59,23 +69,26 @@ public class ModelCamera : MonoBehaviour
 
     private void DoPostRender()
     {
-        if (!Debug.isDebugBuild) return;
+        //if (!Debug.isDebugBuild) return;
         if (mRenderTexture != null)
         {
             RenderTexture.active = mRenderTexture;
-            var virtualPhoto = new Texture2D(ImageSize, ImageSize, TextureFormat.RGBA32, false);
-            virtualPhoto.ReadPixels(new Rect(0, 0, ImageSize, ImageSize), 0, 0);
+            var virtualPhoto = new Texture2D(resolution.x, resolution.y, TextureFormat.RGBA32, false);
+            virtualPhoto.ReadPixels(new Rect(0, 0, resolution.x, resolution.y), 0, 0);
             virtualPhoto.Apply();
 
             RenderTexture.active = null;
             Camera3D.targetTexture = null;
 
-            Result = Sprite.Create(virtualPhoto, new Rect(Vector2.zero, new Vector2(ImageSize, ImageSize)), Vector2.zero);
+            Result = Sprite.Create(virtualPhoto, new Rect(Vector2.zero, new Vector2(resolution.x, resolution.y)), Vector2.zero);
             Result.texture.alphaIsTransparency = true;
 
 
             //string filename = target.GetComponentInChildren<MeshRenderer>().name + ".png";
-            string filename = target.GetChild(0).GetChild(0).name + ".png";
+            
+            
+            string filename = overrideFilename? filenameOverride : target.GetChild(0).GetChild(0).name + ".png";
+            
             string path = Path.Combine(Application.dataPath, "Resources", "Store", filename);
 
             byte[] bytes;
@@ -100,7 +113,8 @@ public class ModelCamera : MonoBehaviour
     }
     public void TakePhoto() {
         Debug.Log("Taking Photo");
-        SetTarget();
+        if(useTarget)
+            SetTarget();
         DoPostRender();
     }
 #endif

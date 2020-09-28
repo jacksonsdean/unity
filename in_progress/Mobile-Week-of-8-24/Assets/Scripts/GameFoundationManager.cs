@@ -11,10 +11,13 @@ using UnityEngine.GameFoundation.DefaultLayers;
 using UnityEngine.GameFoundation.DefaultLayers.Persistence;
 using TMPro;
 using System.Runtime.CompilerServices;
+using UnityEngine.Purchasing.Security;
 using System;
+using UnityEngine.Purchasing;
 
 public class GameFoundationManager : MonoBehaviour
 {
+    public static GameFoundationManager Instance;
     static IDataPersistence localPersistence;
     static PersistenceDataLayer dataLayer;
 
@@ -29,6 +32,16 @@ public class GameFoundationManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        if (Instance)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Instance = this;
+        }
+        
         Initialize();
     }
 
@@ -44,11 +57,16 @@ public class GameFoundationManager : MonoBehaviour
     }
 
     public static bool IsItemOwned(InventoryItemDefinition item) {
-           return InventoryManager.FindItemsByDefinition(item.key).Length > 0;
+        if (item == null) return false;
+        return InventoryManager.FindItemsByDefinition(item.key).Length > 0;
     }
 
     public static void Initialize() {
         if (GameFoundation.IsInitialized) return;
+
+  
+
+
         JsonDataSerializer dataSerializer = new JsonDataSerializer();
         // choose where and how the data is stored
         localPersistence = new LocalPersistence("game-foundataion-data", dataSerializer);
@@ -58,7 +76,11 @@ public class GameFoundationManager : MonoBehaviour
             try
             {
                 GameFoundation.Initialize(dataLayer);
+               /* TransactionManager.SetIAPValidator(new CrossPlatformValidator(
+                     GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier));*/
+
                 isInit = true;
+
             }
             catch (NullReferenceException e)
             {
@@ -76,6 +98,9 @@ public class GameFoundationManager : MonoBehaviour
         }
         // tell Game Foundation to initialize using this
         // persistence system. Only call Initialize once per session.
+
+
+      
     }
 
     static void Save()
@@ -123,5 +148,79 @@ public class GameFoundationManager : MonoBehaviour
         OnUpdateBoatDatabase -= UpdateOwnedItems;
 
     }
+
+
+
+
+
+
+    public void OnIAPPurchaseComplete(Product product) {
+        //popup thanks
+        IAPTransaction transaction = GameFoundation.catalogs.transactionCatalog.FindIAPTransactionByProductId(product.definition.id);
+
+        var result = TransactionManager.BeginTransaction(transaction);
+
+
+        Sprite sprite = null;
+        if (transaction != null) {
+            if(transaction.GetDetail<AssetsDetail>()!=null)
+                sprite = transaction.GetDetail<AssetsDetail>().GetAsset<Sprite>("icon");
+        
+        }
+
+        PopupBuilder builder = new PopupBuilder();
+        builder.title = "Thanks!";
+        builder.text = "Thank you for your purchase of " + product.metadata.localizedTitle;
+        builder.showConfirmButton = true;
+        builder.showDeclineButton = false;
+        if(sprite)
+            builder.graphic = sprite;
+
+        PopupManager.Instance.Show(builder);
+
+
+
+    }
+
+
+    public void OnIAPPurchaseFailed() {
+        // Popup failed
+    }
+
+
+    IEnumerator InitiateIAPTransaction(BaseTransaction transaction)
+    {
+        // Gets the handle of the transaction.
+        var deferredResult = TransactionManager.BeginTransaction(transaction);
+
+        try{
+            // Waits for the process to finish
+            while (!deferredResult.isDone)
+            {
+                yield return null;
+            }
+
+            // The process failed
+            if (!deferredResult.isFulfilled)
+            {
+                Debug.LogException(deferredResult.error);
+            }
+
+            // The process succeeded
+            else
+            {
+                var result = deferredResult.result;
+                Debug.LogFormat("IAP transaction complete, {0}", deferredResult.result);
+
+                // TODO: display the result
+            }
+        }
+        finally{
+            // A process handle can be released.
+            deferredResult.Release();
+          
+        }
+    }
+
 
 }

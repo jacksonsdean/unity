@@ -43,7 +43,6 @@ public class BoatItem : MonoBehaviour
     void UpdateUI() {
         for (int i = 0; i < images.Length; i++)
         {
-            Debug.LogFormat("{0}: {1}", key, PlayerPrefabManager.currentKey == key);
             images[i].color = PlayerPrefabManager.currentKey == key ? origColors[i] : unselectedColor;
         }
     }

@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class PlayerBoat : MonoBehaviour
 {
+    GameObject current = null;
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(PlayerPrefabManager.current, transform.position, transform.rotation, this.transform);
+        SpawnBoat();
     }
 
-   
+    void SpawnBoat() {
+        current = Instantiate(PlayerPrefabManager.current, transform.position, transform.rotation, this.transform);
+        
+    }
+
+    public void Change() {
+        Destroy(current);
+        SpawnBoat();
+
+    }
 }

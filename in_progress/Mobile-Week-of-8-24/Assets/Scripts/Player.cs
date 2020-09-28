@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.XR.WSA;
 
 public class Player : MonoBehaviour
@@ -23,10 +24,22 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject deathEffect;
 
+    internal void SetDebug(bool v)
+    {
+        if (v) {
+            killLayers = 0;
+        }
+    }
+
     [SerializeField]
     Transform fireFromRight;
     [SerializeField]
     Transform fireFromLeft;
+
+    internal void SetSpeed(float v)
+    {
+        speed = v;
+    }
 
     [SerializeField]
     GameObject projectilePrefeb;
@@ -42,13 +55,21 @@ public class Player : MonoBehaviour
     bool lastFireWasRight = false;
     public bool dead = false;
 
+    [SerializeField]
+    ParticleSystem ripples;
+    float speedRippleRateDist;
+    float speedRippleRateTime;
+    float ripplesStartSpeed;
+    float ripplesLifetime;
+   
+    float minSpeedRippleRateDist;
+    float minSpeedRippleRateTime;
+    float minRipplesStartSpeed;
+    float minRipplesLifetime;
 
-    float smoothInputHorizontal = 0;
-    Quaternion rPreTurn;
-    Quaternion originalRot;
-    Vector3 posPreTouch;
+    [SerializeField]
+    Transform followTarget;
 
-    float maxRot = 65.0f;
 
     // Start is called before the first frame update
     void Awake(){
@@ -61,16 +82,27 @@ public class Player : MonoBehaviour
             Player.Instance = this;
         }
         animator = GetComponent<Animator>();
-
        
+        speedRippleRateDist = ripples.emission.rateOverDistance.constant;
+        speedRippleRateTime = ripples.emission.rateOverTime.constant;
+        ripplesStartSpeed   = ripples.main.startSpeed.constant;
+        ripplesLifetime     = ripples.main.startLifetime.constant;
+
+
+        minSpeedRippleRateDist  =   speedRippleRateDist    / 4.0f;
+        minSpeedRippleRateTime  =   speedRippleRateTime    / 3.0f;
+        minRipplesStartSpeed    =   ripplesStartSpeed      / 3.0f;
+        minRipplesLifetime      =   ripplesLifetime        / 2.0f;
+
+
     }
     void Start(){
         invFireRate = 1 / fireRate;
         lastFire = -invFireRate;
-        //rPreTurn = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
-        rPreTurn = transform.rotation;
-        originalRot = transform.rotation;
-        posPreTouch = transform.position;
+
+        lookTar = followTarget.position;
+        moveTar = followTarget.position;
+
     }
 
     // Update is called once per frame
@@ -91,125 +123,148 @@ public class Player : MonoBehaviour
 
     private void HandleInput() {
         if (dead) return;
+        if (!GameManager.Instance.playing) return;
+
         if (Application.isMobilePlatform){
             HandleTouchInput();
         }
         else
         {
             HandleKeyboardInput();
+            HandleMouseInput();
         }
+
     }
+    Vector3 lookTar ;
+    Vector3 moveTar ;
+
+
+    void UpdatePositionAndRotation(bool interacting, float xPos) {
+        lookTar = followTarget.position;
+        moveTar.x = Mathf.Lerp(moveTar.x, 1.1f * lookTar.x, Time.deltaTime * touchSensitivity);
+
+        if (interacting)
+            lookTar.x = xPos;
+
+        followTarget.position = lookTar;
+        moveTar.y = transform.position.y;
+        moveTar.z = transform.position.z;
+
+
+        Vector3 dirToTar = (lookTar - transform.position).normalized;
+
+        Quaternion tarRot = Quaternion.LookRotation(dirToTar, -Vector3.forward);
 
 
 
-   void HandleKeyboardInput() {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, tarRot, Time.deltaTime * speed * touchSensitivity);
+        transform.position = Vector3.Lerp(transform.position, moveTar, Time.deltaTime * speed * touchSensitivity*100.0f);
 
-        float moveX = Input.GetAxis("Horizontal");
-        this.transform.Translate(speed * moveX * Time.deltaTime, 0, 0, Space.World);
 
         if (transform.position.x > GameManager.screenEdges.maxX)
             transform.position = new Vector3(GameManager.screenEdges.maxX, transform.position.y, transform.position.z);
         if (transform.position.x < GameManager.screenEdges.minX)
             transform.position = new Vector3(GameManager.screenEdges.minX, transform.position.y, transform.position.z);
-
-        animator.SetFloat("VelX", moveX);
-
-        Quaternion rPreTurn = transform.localRotation;
-        //transform.Rotate(0, 0, moveX * speed * Time.deltaTime *2.0f, Space.World);
-        Quaternion desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * 80.0f, 0);
-
-
-        if (Mathf.Abs(moveX) < 0.01f)
-        {
-            transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime);
-        }
-        else
-            transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime * speed);
-
-        //if (transform.rotation.eulerAngles.y > 75.0f) {
-        //transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, 75.0f, transform.rotation.eulerAngles.z));
-
-        //}
     }
 
+
+    private void HandleMouseInput()
+    {
+        if (Input.GetMouseButton(0)) { 
+            DecreaseSpeed();
+            MinRipples();
+        }
+        else
+            IncreaseSpeed();
+
+        UpdatePositionAndRotation(Input.GetMouseButton(0), ScreenToWorld(Input.mousePosition).x);
+    }
+    void HandleKeyboardInput() {
+
+        float moveX = Input.GetAxis("Horizontal");
+        animator.SetFloat("VelX", moveX);
+
+        if (Math.Abs(moveX) >0.01)
+        {
+            lookTar.x += moveX*Time.deltaTime*speed * touchSensitivity; // touch
+        }
+
+        UpdatePositionAndRotation(Math.Abs(moveX) > 0.01, lookTar.x);
+    }
 
     private void HandleTouchInput()
     {
-        rPreTurn = transform.localRotation;
-        Quaternion desiredRot  = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
-        float rotSpeedScalar = 2.0f;
-
-        float moveX = 0.0f;
-        if (Input.touchCount >= 1)
+        float xPos = 0;
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            Vector3 target = GetTargetPos(touch);
-            if (touch.phase == TouchPhase.Began)
-            {
-                rPreTurn = transform.localRotation;
-                posPreTouch = transform.position;
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                rPreTurn = transform.localRotation;
-                posPreTouch = transform.position;
+            xPos = ScreenToWorld(touch.position).x; // touch
 
-            }
-            else if (touch.phase == TouchPhase.Moved)
-            {
-                
-                moveX = Mathf.Clamp(10.0f * (target.x - transform.position.x), -1, 1);
-                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed * touchSensitivity);
-                rotSpeedScalar *= (1.0f+Mathf.Abs(target.x - transform.position.x));
+            //Speed
+            DecreaseSpeed();
 
-                desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * maxRot, 0);
+            //if (touch.phase == TouchPhase.Began)
+                MinRipples();
 
-            }
-            else if (touch.phase == TouchPhase.Stationary) {
-                moveX = Mathf.Clamp(10.0f * (target.x - transform.position.x), -1, 1);
-                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed * touchSensitivity);
-                //rotSpeedScalar = 10.0f * Mathf.Abs(target.x - transform.position.x);
-            }
+            GameManager.lastTouchTime = Time.time;
 
-            if (Mathf.Abs(target.x - transform.position.x)<0.01f) {
-                desiredRot  = Quaternion.Euler(transform.localRotation.eulerAngles.x, 0, 0);
-
-            }
         }
-            
-
-            transform.localRotation = Quaternion.RotateTowards(rPreTurn, desiredRot, rotSpeedScalar*Time.deltaTime * speed * touchSensitivity);
-   
-
-
-        /*
-        Quaternion desiredRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, moveX * 80.0f, 0);
-
-
-        if (Mathf.Abs(moveX) < 0.01f)
-        {
-            transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime/2.0f);
+        else {
+            // not touching screen
+            IncreaseSpeed();
         }
-        else
-            transform.localRotation = Quaternion.Lerp(rPreTurn, desiredRot, Time.deltaTime * speed * .1f);
-            */
+
+        UpdatePositionAndRotation(Input.touchCount>0, xPos);
+
+
 
     }
 
-    private Vector3 GetTargetPos(Touch touch) {
+    private void IncreaseSpeed(){
+        GameManager.UpdateGameSpeed(false);
+
+
+        // TODO could be made more performant 
+        float normalizedSpeed = GameManager.GetNormalizedSpeed();
+
+        var emission = ripples.emission;
+        var main = ripples.main;
+        emission.rateOverDistance =     minSpeedRippleRateDist + normalizedSpeed * speedRippleRateDist;
+        emission.rateOverTime =         minSpeedRippleRateTime + normalizedSpeed * speedRippleRateTime;
+        main.startSpeed =               minRipplesStartSpeed + normalizedSpeed * ripplesStartSpeed;
+        main.startLifetime =            minRipplesLifetime + normalizedSpeed * ripplesLifetime;
+    }
+
+    private void DecreaseSpeed() {
+        GameManager.UpdateGameSpeed(true);
+      
+
+    }
+
+    public void MinRipples() {
+        var emission = ripples.emission;
+        var main = ripples.main;
+        emission.rateOverDistance = minSpeedRippleRateDist;
+        emission.rateOverTime = minSpeedRippleRateTime;
+        main.startSpeed = minRipplesStartSpeed;
+        main.startLifetime = minRipplesLifetime;
+    }
+    private Vector3 ScreenToWorld(Vector2 pos) {
         Transform cameraTransform = Camera.main.transform;
         Vector3 heading = transform.position - cameraTransform.position;
 
-        Vector3 touchPosition = touch.position;
-        touchPosition.z = Vector3.Dot(heading, cameraTransform.forward);
+        Vector3 outPos = pos;
+        outPos.z = Vector3.Dot(heading, cameraTransform.forward);
 
         Vector3 target = transform.position;
-        target.x = Camera.main.ScreenToWorldPoint(touchPosition).x;
+        target.x = Camera.main.ScreenToWorldPoint(outPos).x;
         return target;
+
     }
 
     private void OnTriggerEnter(Collider other){
         if (dead || !GameManager.Instance.playing) return;
+       
         if (other.CompareTag("PlayerSpawnDeath")) Destroy(this.gameObject);
 
         if (((1 << other.gameObject.layer) & killLayers) != 0){

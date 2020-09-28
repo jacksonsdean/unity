@@ -35,7 +35,7 @@ public class MainMenu : MonoBehaviour
 
         }
         else
-            inventory.SetActive(false);
+            inventory.GetComponent<FadeOnActive>().OnClose();
     }
 
 
@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour
 
         }
         else
-            options.SetActive(false);
+            options.GetComponent<FadeOnActive>().OnClose();
     }
 
     public void OnOutAnimDone() {
@@ -64,6 +64,6 @@ public class MainMenu : MonoBehaviour
             
         }
         else
-            store.SetActive(false);
+            store.GetComponent<FadeOnActive>().OnClose();
     }
 }
