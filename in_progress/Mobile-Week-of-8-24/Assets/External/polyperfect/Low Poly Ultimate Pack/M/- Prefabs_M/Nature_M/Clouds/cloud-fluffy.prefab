@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4000014281035360}
   - component: {fileID: 33000010600475228}
   - component: {fileID: 23000014045296054}
+  - component: {fileID: -6047912760215215746}
   m_Layer: 0
   m_Name: cloud-fluffy
   m_TagString: Untagged
@@ -79,3 +80,49 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &-6047912760215215746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012428686606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7a5579d500b894da5cc506387e1098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 0.52156866}
+    key1: {r: 0.9672553, g: 0.7137264, b: 0.9670149, a: 0.52156866}
+    key2: {r: 0.7785794, g: 0.504717, b: 1, a: 0}
+    key3: {r: 1, g: 0.6703293, b: 0.3726415, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 14071
+    ctime2: 31033
+    ctime3: 46838
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  sunsetRange: {x: 0.8, y: 0.15}
+  sunriseRange: {x: 0.3, y: 0.37}
+  update: 0
+  updateInterval: 1
+  t: 0

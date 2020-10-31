@@ -21,25 +21,29 @@ public class FadeOnActive : MonoBehaviour
             StartCoroutine(FadeInEnum());
     }
 
-    public void OnClose()
+    public void OnClose(float overrideV)
     {
         group.alpha = 1;
         if (GameManager.Instance && GameManager.Instance.screenFadeController)
-            StartCoroutine(FadeOutEnum());
+            StartCoroutine(FadeOutEnum(overrideV));
     }
 
-    IEnumerator FadeInEnum() {
-        yield return GameManager.Instance.screenFadeController.FadeOut(fadeTime);
+    IEnumerator FadeInEnum(float overrideV = -1) {
+        if (overrideV == -1)
+            overrideV = fadeTime;
+        yield return GameManager.Instance.screenFadeController.FadeOut(overrideV);
         group.alpha = 1;
-        yield return GameManager.Instance.screenFadeController.FadeIn(fadeTime);
+        yield return GameManager.Instance.screenFadeController.FadeIn(overrideV);
     }
 
 
-    IEnumerator FadeOutEnum()
+    IEnumerator FadeOutEnum(float overrideV = -1)
     {
-        yield return GameManager.Instance.screenFadeController.FadeOut(fadeTime);
+        if (overrideV == -1)
+            overrideV = fadeTime;
+        yield return GameManager.Instance.screenFadeController.FadeOut(overrideV);
         group.alpha = 0;
-        yield return GameManager.Instance.screenFadeController.FadeIn(fadeTime);
+        yield return GameManager.Instance.screenFadeController.FadeIn(overrideV);
         this.gameObject.SetActive(false);
     }
 }

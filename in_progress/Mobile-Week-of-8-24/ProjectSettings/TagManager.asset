@@ -15,6 +15,9 @@ TagManager:
   - Popup Image
   - Popup Confirm
   - Popup Decline
+  - Checkmark Shine
+  - Cinematic Camera
+  - UpgradeLevelUI
   layers:
   - Default
   - TransparentFX

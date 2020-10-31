@@ -8,7 +8,8 @@ public class PlayRandomSoundOnAwake : MonoBehaviour
 
     // Start is called before the first frame update
     void Start(){
-        GetComponent<AudioSource>().PlayOneShot(options[Random.Range(0, options.Length-1)]);  
+        if (AudioManager.GetSFXVolume() > 0)
+            GetComponent<AudioSource>().PlayOneShot(options[Random.Range(0, options.Length-1)]);  
     }
 
 }

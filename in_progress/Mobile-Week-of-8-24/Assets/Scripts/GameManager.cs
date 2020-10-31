@@ -7,6 +7,11 @@ using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.GameFoundation.Data;
 using UnityEngine.GameFoundation;
+using UnityEngine.GameFoundation.UI;
+using System.Linq;
+using DG.Tweening;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 //using Jackson;
 
 public struct ScreenEdges{
@@ -23,7 +28,6 @@ public class GameManager : MonoBehaviour
     private static readonly float METER_MODIFIER = .15f;
     private static readonly float WATER_BASE_SPEED = .5f;
 
- 
 
     public static float gameSpeed = 1;
     public static float spawnRate = 1;
@@ -35,12 +39,16 @@ public class GameManager : MonoBehaviour
     public delegate void UpdateGameSpeedAction();
     public static event UpdateGameSpeedAction OnUpdateGameSpeed;
 
-   
+    public delegate void GameStartAction();
+    public static event GameStartAction OnStartGame;
+
+    public delegate void GameEndAction();
+    public static event GameEndAction OnEndGame;
 
     public bool playing = false;
 
 
-    public int score;
+    public static int score;
 
     // Game speed
     [SerializeField]
@@ -48,18 +56,18 @@ public class GameManager : MonoBehaviour
     private static float _maxGameSpeed;
 
     [SerializeField]
-    float gameSpeedIncreasePerSecond;
+    float gameSpeedIncreasePerSecond = 0;
     private static float _gameSpeedIncreasePerSecond;
 
     internal static float baseGameSpeed;
     internal static float gameSpeedBoost = 3.75f;
 
     [SerializeField]
-    float maxSpawnRate;
+    float maxSpawnRate = 0;
     private static float _maxSpawnRate;
 
     [SerializeField]
-    float spawnRateIncreasePerSecond;
+    float spawnRateIncreasePerSecond = 0;
     private static float _spawnRateIncreasePerSecond;
     internal static float baseSpawnRate;
 
@@ -68,22 +76,29 @@ public class GameManager : MonoBehaviour
 
 
     [SerializeField]
-    private GameObject mainMenu;
+    private GameObject mainMenu =null;
     static GameObject _mainMenu;
 
     [SerializeField]
-    private GameObject playerPrefab;
+    private GameObject playerPrefab = null;
 
     [SerializeField]
-    private Transform playerSpawn;
+    private Transform playerSpawn = null;
 
     [SerializeField]
     private int scoreAnimThreshold;
 
     [SerializeField]
-    GameObject backToMenuButton;
+     GameObject backToMenuButton = null;
     [SerializeField]
-    GameObject losePanel;
+    GameObject losePanel = null;
+    [SerializeField]
+    GameObject continuePanel = null;
+    [SerializeField]
+    RewardedAd continueRewardedAd = null;
+
+    [SerializeField]
+    public RectTransform backButtonTransform = null;
 
     private PhaseManager phaseManager;
     private CinemachineImpulseSource impulseSource;
@@ -91,11 +106,13 @@ public class GameManager : MonoBehaviour
 
     public ScreenFadeController screenFadeController;
     internal static float meters;
+    internal static int coinsThisRun;
 
     private float currentWaterSpeed = 1.0f;
     private float maxWaterSpeed = 2.0f;
 
     private float waterOffset = 0;
+    private bool usedContinue = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -114,50 +131,54 @@ public class GameManager : MonoBehaviour
         ShowMainMenu();
         impulseSource = GetComponent<CinemachineImpulseSource>();
         phaseManager = GetComponent<PhaseManager>();
-        //SpawnPlayer();
+
         screenFadeController = GetComponentInChildren<ScreenFadeController>();
+        losePanel.SetActive(false);
+        continuePanel.SetActive(false);
+
+
     }
 
-   
+
 
     private void Start(){
         currentWaterSpeed = WATER_BASE_SPEED;
-        //Shader.SetGlobalFloat("_WaterScrollSpeed", currentWaterSpeed);
         Shader.SetGlobalFloat("_WaterOffsetY", waterOffset);
+
+
         CheckForPreRegGift();
       
     }
 
-    void Confirm()
-    {
-        Debug.Log("Popup confirmed");
+    static void Confirm(GameObject popup){
     }
-    void Decline()
-    {
-        Debug.Log("Popup declined");
+    static void Decline(GameObject popup){
     }
-    private void CheckForPreRegGift() {
 
-        
-        //TODO REMOVE!
-        //TransactionManager.BeginTransaction(GameFoundation.catalogs.transactionCatalog.FindItem("preregistrationGiftT"));
-
+    static public void CheckForPreRegGift() {
         var preRegDef = GameFoundation.catalogs.inventoryCatalog.FindItem("preregistrationGift");
 
         if (TransactionManager.IsIapProductOwned("preregistration_gift"))
-            //if (GameFoundationManager.IsItemOwned(preRegDef))
         {
             if (PlayerPrefs.GetInt("pre-reg-notified", 0) == 0) // Hasn't been notified
             {
                 PopupBuilder builder = new PopupBuilder();
-                builder.title = "Test Title";
-                builder.text = "Lorem ipsum";
+                builder.title = "Thank you!";
+                builder.text = "Thank you for preregistering!\n\nHere's your banana boat";
                 builder.showConfirmButton = true;
-                builder.showDeclineButton = true;
+                builder.showDeclineButton = false;
                 builder.confirmCallback = Confirm;
                 builder.declineCallback = Decline;
                 builder.graphic = Resources.Load<Sprite>("Store/promotion/banana_badge");
                 PopupManager.Instance.Show(builder);
+
+              
+                PlayerPrefs.SetInt("pre-reg-notified", 1);
+                PlayerPrefs.Save();
+            }
+
+            if (!GameFoundationManager.IsItemOwned(GameFoundation.catalogs.inventoryCatalog.FindItem("banana"))) {
+                var trans = TransactionManager.BeginTransaction(GameFoundation.catalogs.transactionCatalog.FindItem("banana-pre-reg"));
             }
         }
     }
@@ -167,7 +188,10 @@ public class GameManager : MonoBehaviour
     }
     void ShowMainMenu() {
         _mainMenu.SetActive(true);
-        backToMenuButton.SetActive(false);
+
+        backButtonTransform.DOScale(0.0f, 0.0f).OnComplete(() =>{
+            backToMenuButton.SetActive(false);
+        });
 
     }
 
@@ -215,7 +239,6 @@ public class GameManager : MonoBehaviour
         waterDelta *= Time.deltaTime*8.0f;
         currentWaterSpeed += waterDelta;
         currentWaterSpeed = Mathf.Clamp(currentWaterSpeed, 0, maxWaterSpeed);
-        //Shader.SetGlobalFloat("_WaterScrollSpeed", currentWaterSpeed);
 
         waterOffset += currentWaterSpeed * Time.deltaTime;
 
@@ -249,12 +272,80 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void DeclineRewardContinue(GameObject popup) {
+        GameOver();
+        continuePanel.GetComponent<CanvasGroup>().DOFade(0, .4f).OnComplete(() => { continuePanel.SetActive(false); });
+    }
+
+    public void RewardCompleteContinue(GameObject popup){
+        ClearCloseEnemies();
+
+        BannerAd.HideBannerAd();
+        StartGame();
+        usedContinue = true;
+    }
+
+    private void GameOver() {
+
+        CalculateScore();
+        LeaderboardManager.ReportDistance(meters);
+        LeaderboardManager.ReportScore(score);
+
+        AnalyticsManager.LogProgression(GameAnalyticsSDK.GAProgressionStatus.Complete, "Main", score);
+
+        losePanel.SetActive(true);
+        RectTransform[] rts = losePanel.GetComponentsInChildren<RectTransform>();
+        for (int i = 0; i < rts.Length; i++)
+        {
+            if (i == 0)
+            {
+                rts[i].GetComponent<Image>().DOFade(1.0f, 1).SetEase(Ease.InOutCubic).ChangeStartValue(0.0f).OnComplete(()=> { ScorePanel.DoAnimation(); });
+            }
+            else if (i == 1 || i == 2 || i == 3)
+            {
+                rts[i].DOScale(Vector3.one, 1.12f).SetEase(Ease.OutBounce).ChangeStartValue(Vector3.zero);
+            }
+            else
+            {
+                rts[i].DOScale(Vector3.one, 1.24f).SetEase(Ease.OutBounce).SetDelay(.85f).ChangeStartValue(Vector3.zero);
+            }
+
+        }
+
+        // Reset temporary upgrades
+        UpgradeManager.ResetUpgrades();
+
+    }
     public void Lose() {
         playing = false;
-        losePanel.SetActive(true);
-        losePanel.GetComponent<Animator>().SetTrigger("Show");
+        OnEndGame?.Invoke();
 
-        //backToMenuButton.SetActive(false);
+
+        // Show meters and currency:
+        if (Options.zenMode)
+        {
+            FindObjectsOfType<CurrencyHudView>().ToList().ForEach((item) =>
+            {
+                item.gameObject.SetActive(true);
+                item.GetComponent<RectTransform>().DOScaleY(1, 1.0f).SetEase(Ease.OutBounce).ChangeStartValue(0);
+            });
+            backButtonTransform.DOAnchorPos(new Vector3(50, -250), .5f).SetEase(Ease.OutBounce).SetDelay(.4f);
+            backButtonTransform.GetComponent<Image>().DOFade(1.0f, .6f).SetDelay(.3f);
+            MeterCounter.Instance.FadeIn();
+        }
+
+        if (usedContinue)
+        {
+            GameOver();
+        }
+        else {
+            // Ask to continue
+            BannerAd.ShowBannerAd();
+            continuePanel.SetActive(true);
+            continuePanel.GetComponent<CanvasGroup>().DOFade(1, .35f).ChangeStartValue(0);
+            continueRewardedAd.ShowContinuePopup(RewardCompleteContinue, DeclineRewardContinue, .1f);
+        
+        }
 
     }
 
@@ -262,20 +353,31 @@ public class GameManager : MonoBehaviour
         Instantiate(playerPrefab, playerSpawn.position, playerSpawn.rotation, null);
     }
 
+  
+    // Called from gameover panel button
     public void ResetGame() {
-        losePanel.GetComponent<Animator>().SetTrigger("Hide");
-        RemoveAllEnemies();
+        usedContinue = false;
+        BannerAd.HideBannerAd();
+        ResetScore();
+        ClearCloseEnemies();
         StartGame();
+
     }
 
 
     public void ReturnToMenu() {
+        UIAudioManager.PlayClickSound();
+        if (playing)
+        {
+            LeaderboardManager.ReportDistance(meters);
+            LeaderboardManager.ReportScore(score);
+        }
         playing = false;
+        OnEndGame?.Invoke();
         LoadLevel(SceneManager.GetActiveScene().buildIndex);
-        //mainMenu.SetActive(true);
-        ////mainMenu.GetComponent<Animator>().SetTrigger("show");
-
+        BannerAd.HideBannerAd();
     }
+
     internal static float GetMaxSpeed()
     {
         return _maxGameSpeed;
@@ -295,7 +397,7 @@ public class GameManager : MonoBehaviour
     }
     internal static void UpdateGameSpeed(bool touchingScreen)
     {
-        if (touchingScreen)
+        if (touchingScreen || Options.zenMode)
         {
             lastTouchTime = Time.time;
 
@@ -324,53 +426,95 @@ public class GameManager : MonoBehaviour
         GameManager.OnUpdateGameSpeed?.Invoke();
     }
 
-    public void StartGame() {
-        if (!MainMenu.Ready) return;
-        //MainMenu.Ready = false;
+
+    public void FirstStart() {
 
         backToMenuButton.SetActive(true);
+        backButtonTransform.DOScale(1.0f,1.0f).ChangeStartValue(0.0f).SetEase(Ease.OutBounce);
 
-        SpawnPlayer();
-
-        _mainMenu.SetActive(false);
         ResetScore();
-        playing = true;
-        //scoreAnim.gameObject.SetActive(true);
-        phaseManager.Restart();
-        lastTouchTime = Time.time;
-        meters = 0;
-        MeterCounter.Instance.FadeIn();
+
+        StartGame();
+
+       
     }
 
-    private void RemoveAllEnemies() {
+
+    public void StartGame() {
+        //ui
+        if (Options.zenMode)
+        {
+            FindObjectsOfType<CurrencyHudView>().ToList().ForEach(item => item.GetComponent<RectTransform>().DOScaleY(0, .4f).SetEase(Ease.InBounce));
+            backButtonTransform.DOAnchorPos(new Vector3(50, -50), .5f).SetEase(Ease.OutBounce).SetDelay(.4f);
+            backButtonTransform.GetComponent<Image>().DOFade(.7f, .6f).SetDelay(.3f);
+            MeterCounter.Instance.FadeOut();
+        }
+        else
+        {
+            MeterCounter.Instance.FadeIn();
+        }
+
+        SpawnPlayer();
+        playing = true;
+        lastTouchTime = Time.time;
+
+        if (continuePanel.activeSelf) {
+            CanvasGroup group = continuePanel.GetComponent<CanvasGroup>();
+            group.DOFade(0,.5f).OnComplete(()=>{ continuePanel.SetActive(false); });
+        }
+
+        if (losePanel.activeSelf) {
+            RectTransform[] rts = losePanel.GetComponentsInChildren<RectTransform>();
+            for (int i = 0; i < rts.Length; i++)
+            {
+
+                if (i == 0)
+                {
+                    rts[i].GetComponent<Image>().DOFade(0, .78f).SetEase(Ease.InOutCubic);
+                }
+                else if (i == 1 || i == 2 || i == 3)
+                {
+                    rts[i].DOScale(Vector3.zero, .43f).SetEase(Ease.InBounce);
+                }
+                else
+                {
+                    rts[i].DOScale(Vector3.zero, .63f).SetEase(Ease.InBounce).OnComplete(() => { losePanel.SetActive(false); }); ;
+                }
+            }
+                
+        }
+
+
+        OnStartGame?.Invoke();
+    }
+
+    private void ClearCloseEnemies() {
         GameObject[] gos = GameObject.FindGameObjectsWithTag("Enemy");
         for (int i = 0; i < gos.Length; i++){
-            Destroy(gos[i]);
+            if (gos[i].transform.position.y < 30.0f)
+            {
+                gos[i].transform.DOMoveZ(20,.5f);
+                gos[i].transform.DOScaleZ(0, .5f).OnComplete(() =>
+                {
+                    Destroy(gos[i]);
+                });
+            }
         }
     }
 
-    public void addScore(int amt) {
-        score += amt;
-
-#if true
-        float force = 1.0f;
-        //if (score % 10 == 0)
-        //    force *= 7.5f;
-
-        impulseSource.GenerateImpulse(force);
-#endif
-
-        NotifyEnemyDefeated();
-        
-    }
-
-  
     public void NotifyEnemyDefeated() {
         phaseManager.EnemyDefeated();
     }
 
     private void ResetScore() {
         score = 0;
+        coinsThisRun = 0;
+        phaseManager.Restart();
+        meters = 0;
+    }
+
+    private void CalculateScore() {
+        score = Mathf.FloorToInt(meters) + Mathf.FloorToInt(coinsThisRun*UpgradeManager.CoinScoreMultiplier);
     }
 
     private void OnDrawGizmos()
@@ -406,7 +550,13 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(LoadLevelEnum(level));
     }
-
+    public void LoadLevel(string level)
+    {
+        SceneUtility.GetBuildIndexByScenePath(level);
+        int level_index = SceneUtility.GetBuildIndexByScenePath(level);
+        if (level_index>=0)
+            StartCoroutine(LoadLevelEnum(level_index));
+    }
     IEnumerator LoadLevelEnum(int level)
     {
         yield return screenFadeController.FadeOut();

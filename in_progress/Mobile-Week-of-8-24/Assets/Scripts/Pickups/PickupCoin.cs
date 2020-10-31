@@ -23,10 +23,19 @@ public class PickupCoin : Pickup
     }
 
     protected override void Collect(){
+        int amt = 1;
+        if (currency == "coins")
+        {
+            amt = UpgradeManager.CoinsPerPickup;
+        }
+        else if (currency == "gems")
+            amt = UpgradeManager.GemsPerPickup;
+
+        GameManager.coinsThisRun+=amt;
+
         var definition = GameFoundation.catalogs.currencyCatalog.FindItem(currency);
-        WalletManager.AddBalance(definition, 1);
+        WalletManager.AddBalance(definition, amt);
         GameFoundationManager.UpdateBoatDatabase();
-        GameManager.Instance.addScore(1); 
         base.Collect(); 
     }
 

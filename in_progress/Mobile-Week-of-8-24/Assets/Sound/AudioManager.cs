@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,21 +11,23 @@ public class AudioManager : MonoBehaviour
     static AudioSource audioSource;
 
     [SerializeField]
-    AudioClip[] themes;
+    AudioClip[] themes = null;
     private static AudioClip[] _themes;
 
     [SerializeField]
-    float maxVolume;
-    static float _maxVolume;
+    float maxVolume = 0;
+    static float _maxVolume = 0;
+
+    static float _sfxVolume = 1;
 
     [SerializeField]
-    float fadeTime;
-    static float _fadeTime;
+    float fadeTime = 0;
 
-    static float FADESTEPS = 100.0f;
-
+    bool isLooping = false;
     bool firstLoad = true;
 
+    float timeSinceLastPlay = 0.0f;
+    float timeBetweenSongsThreshold = 2.0f;
     private void Awake(){
         if (!AudioManager.Instance)
             AudioManager.Instance = this;
@@ -35,7 +39,6 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         AudioManager.audioSource = GetComponent<AudioSource>();
-        _fadeTime = fadeTime;
         _themes = themes;
         _maxVolume = maxVolume;
         
@@ -45,21 +48,77 @@ public class AudioManager : MonoBehaviour
         firstLoad = false;
     }
 
-     void PlayRandomThemeInternal(bool loop = false) {
-        AudioClip clip = _themes[Random.Range(0, _themes.Length)];
+    internal static float GetMaxMusicVolume()
+    {
+        return _maxVolume;
+    }
+
+    internal static float GetSFXVolume()
+    {
+        return _sfxVolume;
+    }
+
+    internal static void SetSFXVolume(float v)
+    {
+        _sfxVolume = v;
+    }
+    internal static void SetMaxMusicVolume(float v)
+    {
+        _maxVolume = v;
+        audioSource.volume = _maxVolume;
+    }
+
+    void PlayRandomThemeInternal(bool loop = false) {
+        AudioClip clip = _themes[UnityEngine.Random.Range(0, _themes.Length)];
         PlayInternal(clip);
-        if (loop) {
+        isLooping = loop;
+        if (isLooping)
             StartCoroutine(Loop(clip.length - fadeTime / 2.0f));
+    }
+
+    IEnumerator Loop(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        PlayRandomThemeInternal(true);
+    }
+
+    void PlayInternal(AudioClip clip) {
+        if (audioSource.clip && audioSource.isPlaying)
+        {
+            //StartCoroutine(FadeBetweenEnum(clip));
+            FadeToClip(clip);
+        }
+        else
+            PlayImmediate(clip);
+    }
+
+    
+    private void Update(){
+        if (audioSource.isPlaying)
+        {
+            timeSinceLastPlay = 0.0f;
+        }
+        else {
+            if (isLooping) {
+                timeSinceLastPlay += Time.deltaTime;
+                if (timeSinceLastPlay > timeBetweenSongsThreshold) {
+                    PlayRandomThemeInternal();
+                }
+            }
         }
     }
 
+    private void FadeToClip(AudioClip clip)
+    {
+        //Fade Out
+        audioSource.DOFade(0, fadeTime / 2.0f).OnComplete(
+            () => {
+                //Set Track and fade in
+                SetTrack(clip);
+                audioSource.DOFade(maxVolume, fadeTime / 2.0f); }
+        );
 
-    void PlayInternal(AudioClip clip) {
-        StopAllCoroutines();
-        if (audioSource.clip)
-            StartCoroutine(FadeBetweenEnum(clip));
-        else 
-            PlayImmediate(clip);
+       
     }
 
     void PlayImmediate(AudioClip clip) {
@@ -67,43 +126,13 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
     }
 
-    IEnumerator Loop(float delayTime) {
-        yield return new WaitForSeconds(delayTime);
-        PlayRandomThemeInternal(true);
-    }
 
     public static void PlayRandomTheme(bool loop = false) {
         Instance.PlayRandomThemeInternal(loop);
     }
-    static IEnumerator FadeBetweenEnum(AudioClip toClip) {
-        yield return FadeOut();
-        SetTrack(toClip);
-        audioSource.Play();
-        yield return FadeIn();
-
-    }
-
-    static IEnumerator FadeOut() {
-        float thisFadeSteps = audioSource.volume * FADESTEPS;
-        while (audioSource.volume >= .01f){
-            audioSource.volume -= (1.0f / thisFadeSteps);
-            yield return new WaitForSeconds(_fadeTime / thisFadeSteps);
-        }
-        audioSource.volume = 0;
-    }
-
-    static IEnumerator FadeIn() {
-        float thisFadeSteps = _maxVolume * FADESTEPS;
-        while (audioSource.volume < _maxVolume-0.01f){
-            audioSource.volume += (1.0f / thisFadeSteps);
-            yield return new WaitForSeconds(_fadeTime / thisFadeSteps);
-        }
-        audioSource.volume = _maxVolume;
-    }
-
-    static void SetTrack(AudioClip clipToset) {
+    static void SetTrack(AudioClip clipToSet) {
         
-        audioSource.clip = clipToset;
+        audioSource.clip = clipToSet;
     }
 
 }

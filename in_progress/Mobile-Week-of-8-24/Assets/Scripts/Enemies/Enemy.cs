@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -89,8 +90,7 @@ public class Enemy : MonoBehaviour
 
         internal void hurt(float damage, Vector3 hitPoint, bool giveScore =true)
     {
-       if(giveScore)GameManager.Instance.addScore((int)damage);
-
+        // Add score?
         health -= damage;
         Instantiate(hurtEffect, hitPoint,Quaternion.identity, null);
         if (health <= 0) Die(giveScore);
@@ -101,9 +101,6 @@ public class Enemy : MonoBehaviour
             theseMats[i].SetColor("_EmissionColor" ,col);
 
         }
-        //thisMat.SetColor("_Color" ,col);
-
-
     }
 
     protected virtual void MoveDown() {
@@ -137,45 +134,18 @@ public class Enemy : MonoBehaviour
 
 
     // Update is called once per frame
-    protected virtual void Update(){
-      
-
+    protected virtual void FixedUpdate(){
         MoveDown();
         CheckEdges();
-
-        //transform.position = new Vector3(transform.position.x, transform.position.y, startZ);
-        
-        //transform.RotateAroundLocal(Vector3.forward, rotZ*Time.deltaTime);
-        //transform.RotateAroundLocal(Vector3.right, rotX*Time.deltaTime);
-        //transform.RotateAroundLocal(Vector3.up, rotY*Time.deltaTime);
-
-        //if(light)
-        //    light.intensity = (health / maxHealth) * lightMaxInt;
-
-
     }
 
     void Die(bool giveScore = true) {
         Instantiate(deathEffect, transform.position, Quaternion.identity, null);
-        if (giveScore){
-            GameManager.Instance.addScore((int)maxHealth);
-            GameManager.Instance.NotifyEnemyDefeated();
-        }
-
+        // Add score?
         Destroy(this.gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player")) {
-            if (!other.GetComponent<Player>().dead) {
-                //GameManager.Instance.addScore(1);
-                //audioSource.PlayOneShot(clips[UnityEngine.Random.Range(0, clips.Length-1)]);
-            }
-        }
-    }
-
-
+   
     private void UpdateSpeed() {
         speed = GameManager.gameSpeed;
     }

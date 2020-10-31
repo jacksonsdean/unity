@@ -14,17 +14,30 @@ public class BoatItem : MonoBehaviour
 
     Image[] images;
     string key;
+
+
+    public bool selected = false;
     private void Awake()
+    {
+        Init();
+    }
+    public void Init()
     {
         images = GetComponentsInChildren<Image>();
         origColors = new Color[images.Length];
 
         for (int i = 0; i < images.Length; i++)
         {
-            origColors[i] = images[i].color; 
+            if (!images[i].color.Equals(unselectedColor))
+                origColors[i] = images[i].color;
+            else {
+                origColors[i] = Color.white;
+            }
 
         }
          key = GetComponent<InventoryItemHudView>().itemDefinitionKey;
+        selected = false;
+
     }
 
     private void Start()
@@ -34,26 +47,42 @@ public class BoatItem : MonoBehaviour
 
 
     public void OnClick() {
+        key = GetComponent<InventoryItemHudView>().itemDefinitionKey;
+
         PlayerPrefabManager.SetCurrent(key);
         UpdateUI();
+        UIAudioManager.PlayClickSound();
+
 
     }
 
 
-    void UpdateUI() {
+    public void UpdateUI() {
         for (int i = 0; i < images.Length; i++)
         {
-            images[i].color = PlayerPrefabManager.currentKey == key ? origColors[i] : unselectedColor;
+            if (PlayerPrefabManager.currentKey == key)
+            {
+                images[i].color = origColors[i];
+                selected = true;
+
+            }
+            else {
+                images[i].color = unselectedColor;
+                selected = false;
+            }
         }
     }
 
     private void OnEnable()
     {
+        Init();
+        UpdateUI();
         GameFoundationManager.OnUpdateBoatDatabase += UpdateUI;
         PlayerPrefabManager.OnBoatChanged += UpdateUI;
     }
     private void OnDisable()
     {
+
         GameFoundationManager.OnUpdateBoatDatabase -= UpdateUI;
         PlayerPrefabManager.OnBoatChanged -= UpdateUI;
         

@@ -9,6 +9,12 @@ public class SetInteractiveShaderEffects : MonoBehaviour
         
     Transform target;
 
+    [SerializeField]
+    public bool controlCameraPos = true;
+    [SerializeField]
+    public bool isUI = false;
+    [SerializeField]
+    Canvas canvas;
     void Awake()
     {
         Shader.SetGlobalTexture("_GlobalEffectRT", rt);
@@ -25,10 +31,13 @@ public class SetInteractiveShaderEffects : MonoBehaviour
         else
         {
 
-            //transform.position = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z); // orig
-            transform.position = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z-1);
-            Shader.SetGlobalVector("_Position", transform.position);
+            if(controlCameraPos)
+                transform.position = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z-1);
+
+            //Shader.SetGlobalVector("_Position", transform.position);
         }
+       
+            Shader.SetGlobalVector("_Position", transform.position);
     }
 
 

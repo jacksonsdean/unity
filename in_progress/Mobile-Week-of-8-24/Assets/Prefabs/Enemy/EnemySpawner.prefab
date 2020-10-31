@@ -44,15 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rate: 1
+  enemyPrefabsOverride:
+  - prefabs:
+    - {fileID: 7458979476116257337, guid: e850d6cd4935e7e4f9d8105778b942a0, type: 3}
   enemyPrefabs:
-  - arr:
-    - {fileID: 7458979476116257337, guid: b3145f90ad9c89c4b847db68e8b4be29, type: 3}
-    - {fileID: 3499308141524401776, guid: 4704aade407df004297d015b37ba2c40, type: 3}
-  - arr:
-    - {fileID: 8375011565501724621, guid: d25f1210109878645ba475f5b157cd45, type: 3}
-    - {fileID: 2435130547315277457, guid: 2d1676417281c82498d927bfaf371b09, type: 3}
-    - {fileID: 760927926679763647, guid: 399151d69bda6ea4f80c38460bb342b8, type: 3}
-    - {fileID: 3946237773834361323, guid: 4fe9c86b3c29a674fb9d66ffbcbd7a85, type: 3}
-    - {fileID: 7227845292574703231, guid: a896bfe5b3484c7498c033a01d4c6c59, type: 3}
-  minHardDifficulty: 1
-  aboveScreenOffset: 30
+  - prefabs: []
+  - prefabs: []
+  overrideEnemies: 0
+  aboveScreenOffset: 40

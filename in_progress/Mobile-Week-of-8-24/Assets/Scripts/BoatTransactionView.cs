@@ -13,7 +13,7 @@ public class BoatTransactionView : MonoBehaviour
     Color origItemColor = Color.white;
 
     TransactionItemView view;
-    private void Awake(){
+    private void Awake() {
         view = GetComponent<TransactionItemView>();
     }
 
@@ -38,27 +38,47 @@ public class BoatTransactionView : MonoBehaviour
             //view.GetComponent<Image>().color = disabledColor;
         }
 
+        UpdateColor();
 
+    }
+
+
+    private void UpdateColor() {
+        if (!view || !view.purchaseButton) return;
         if (!view.purchaseButton.availableToPurchaseState)
         {
             //view.itemIconImageField.GetComponent<Image>().color = disabledColor;
             view.itemIconImageField.GetComponent<Image>().color = disabledColor;
         }
-        else {
+        else
+        {
             view.itemIconImageField.GetComponent<Image>().color = origItemColor;
 
         }
     }
+
+
+    public bool CanAfford() {
+        BaseTransaction trans = view.GetTransaction();
+
+        VirtualTransaction t = (VirtualTransaction)GameFoundation.catalogs.transactionCatalog.FindItem(trans.key);
+        var d = t.costs.GetCurrencyExchange(t.costs.CurrencyExchangeCount - 1);
+        Currency c = d.currency;
+        long amt = d.amount;
+
+        return amt <= WalletManager.GetBalance(c);
+
+    }
+
     public void OnGraphicClick() {
         if (!view.interactable) return;
         //view.purchaseButton.Purchase();
     }
 
 
-
-
     private void OnEnable() {
         GameFoundationManager.OnUpdateBoatDatabase += UpdateUI;
+        UpdateColor();
     }
     private void OnDisable()
     {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EM_Settings
   m_EditorClassIdentifier: 
   mAdvertisingSettings:
-    mAutoLoadAdsMode: 2
+    mAutoLoadAdsMode: 0
     mAdCheckingInterval: 10
     mAdLoadingInterval: 20
     mIosDefaultAdNetworks:
@@ -23,7 +23,7 @@ MonoBehaviour:
     mAndroidDefaultAdNetworks:
       bannerAdNetwork: 0
       interstitialAdNetwork: 0
-      rewardedAdNetwork: 0
+      rewardedAdNetwork: 10
     mAdColony:
       mEnable: 0
       mAppId:
@@ -57,13 +57,13 @@ MonoBehaviour:
         mAndroidId: 
       mDefaultBannerAdId:
         mIosId: 
-        mAndroidId: 
+        mAndroidId: ca-app-pub-4911684283528317/8798825495
       mDefaultInterstitialAdId:
         mIosId: 
-        mAndroidId: 
+        mAndroidId: ca-app-pub-4911684283528317/1970527414
       mDefaultRewardedAdId:
         mIosId: 
-        mAndroidId: 
+        mAndroidId: ca-app-pub-4911684283528317/9502297411
       mCustomBannerAdIds:
         keys: []
         values: []
@@ -195,13 +195,13 @@ MonoBehaviour:
         keys: []
         values: []
     mUnityAds:
-      mEnable: 0
+      mEnable: 1
       mAppId:
-        mIosId: 
-        mAndroidId: 
+        mIosId: 3847582
+        mAndroidId: 3847583
       mDefaultBannerAdId:
-        mIosId: 
-        mAndroidId: 
+        mIosId: 3847582
+        mAndroidId: 3847583
       mDefaultInterstitialAdId:
         mIosId: video
         mAndroidId: video
@@ -215,23 +215,47 @@ MonoBehaviour:
         keys: []
         values: []
       mCustomRewardedAdIds:
-        keys: []
-        values: []
+        keys:
+        - mName: Continue
+          mUseCustomName: 1
+        - mName: Rewarded Coins
+          mUseCustomName: 1
+        - mName: Before Level Coins
+          mUseCustomName: 1
+        values:
+        - mIosId: Continue
+          mAndroidId: Continue
+        - mIosId: rewardedCoins
+          mAndroidId: rewardedCoins
+        - mIosId: beforeLevelCoins
+          mAndroidId: beforeLevelCoins
       mEnableTestMode: 0
   mGameServiceSettings:
     mAutoInit: 1
     mAutoInitDelay: 0
-    mAndroidMaxLoginRequests: 0
-    mGpgsDebugLogEnabled: 0
-    mGpgsPopupGravity: 0
+    mAndroidMaxLoginRequests: 30
+    mGpgsDebugLogEnabled: 1
+    mGpgsPopupGravity: 1
     mGpgsShouldRequestServerAuthCode: 0
     mGpgsForceRefreshServerAuthCode: 0
     mGpgsOauthScopes: []
-    mLeaderboards: []
+    mLeaderboards:
+    - _name: Score
+      _iosId: 
+      _androidId: CgkIzJXFv8AfEAIQAg
+    - _name: Distance
+      _iosId: 
+      _androidId: CgkIzJXFv8AfEAIQAQ
     mAchievements: []
-    mAndroidXmlResources: 
+    mAndroidXmlResources: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!--\r\nGoogle
+      Play game services IDs.\r\nSave this file as res/values/games-ids.xml in your
+      project.\r\n-->\r\n<resources>\r\n  <!-- app_id -->\r\n  <string name=\"app_id\"
+      translatable=\"false\">1082465012428</string>\r\n  <!-- package_name -->\r\n 
+      <string name=\"package_name\" translatable=\"false\">com.Jackson.DandyDrift</string>\r\n 
+      <!-- leaderboard Distance -->\r\n  <string name=\"leaderboard_distance\" translatable=\"false\">CgkIzJXFv8AfEAIQAQ</string>\r\n<!--
+      leaderboard Score -->\r\n  <string name=\"leaderboard_score\" translatable=\"false\">CgkIzJXFv8AfEAIQAg</string>\r\n</resources>\r\n"
     mEnableMultiplayer: 0
-    mEnableSavedGames: 0
+    mEnableSavedGames: 1
     mAutoConflictResolutionStrategy: 0
     mGpgsDataSource: 0
   mInAppPurchaseSettings:
@@ -275,7 +299,14 @@ MonoBehaviour:
       mContent: 
       mTitle: Privacy Consent
       mToggles: []
-      mActionButtons: []
+      mActionButtons:
+      - id: 
+        title: 
+        interactable: 0
+        titleColor: {r: 0, g: 0, b: 0, a: 0}
+        backgroundColor: {r: 0, g: 0, b: 0, a: 0}
+        uninteractableTitleColor: {r: 0, g: 0, b: 0, a: 0}
+        uninteractableBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     mConsentDialogComposerSettings:
       mToggleSelectedIndex: 0
       mButtonSelectedIndex: 0
@@ -284,7 +315,8 @@ MonoBehaviour:
     mDefaultRatingDialogContent:
       mTitle: Rate $PRODUCT_NAME
       mMessage: How would you rate $PRODUCT_NAME?
-      mLowRatingMessage: That's bad. Would you like to give us some feedback instead?
+      mLowRatingMessage: Sorry to hear that. Would you like to give us some feedback
+        instead?
       mHighRatingMessage: Awesome! Let's do it!
       mPostponeButtonText: Not Now
       mRefuseButtonText: Don't Ask Again
@@ -307,10 +339,37 @@ MonoBehaviour:
       mValue: '[Your usage description]'
     - mKey: NSPhotoLibraryAddUsageDescription
       mValue: '[Your usage description]'
-  mIsAdModuleEnable: 0
+  mNativeApisSettings:
+    mIsMediaEnabled: 0
+    mMediaSettings:
+      mAndroidPermissions:
+      - mElementName: uses-permission
+        mValue: android.permission.WRITE_EXTERNAL_STORAGE
+      - mElementName: uses-feature
+        mValue: android.hardware.camera
+      mIOSInfoPlistKeys:
+      - mKey: NSPhotoLibraryUsageDescription
+        mValue: '[Your usage description]'
+      - mKey: NSPhotoLibraryAddUsageDescription
+        mValue: '[Your usage description]'
+      - mKey: NSCameraUsageDescription
+        mValue: '[Your usage description]'
+      - mKey: NSMicrophoneUsageDescription
+        mValue: '[Your usage description]'
+    mIsContactsEnabled: 0
+    mContactsSettings:
+      mAndroidPermissions:
+      - mElementName: uses-permission
+        mValue: android.permission.WRITE_CONTACTS
+      - mElementName: uses-permission
+        mValue: android.permission.READ_CONTACTS
+      mIOSInfoPlistKeys:
+      - mKey: NSContactsUsageDescription
+        mValue: '[Your usage description]'
+  mIsAdModuleEnable: 1
   mIsIAPModuleEnable: 0
-  mIsGameServiceModuleEnable: 0
+  mIsGameServiceModuleEnable: 1
   mIsNotificationModuleEnable: 0
   mIsSharingModuleEnable: 0
   mActiveModuleIndex: 0
-  mIsSelectingModule: 1
+  mIsSelectingModule: 0

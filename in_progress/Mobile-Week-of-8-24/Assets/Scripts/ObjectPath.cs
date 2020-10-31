@@ -49,7 +49,7 @@ public class ObjectPath : MonoBehaviour
         return waypoints[index];
     }
 
-    public void SetNextWaypoint(ref int currentIndex, ref ObjectWaypoint currentWaypoint, ref ObjectWaypoint nextWaypoint, ref PathDir dir) {
+    public void SetNextWaypoint(ref int currentIndex, ref ObjectWaypoint currentWaypoint, ref ObjectWaypoint nextWaypoint, ref PathDir dir, ref bool pingDown, ref bool pingUp) {
 
         switch (dir)
         {
@@ -96,10 +96,15 @@ public class ObjectPath : MonoBehaviour
             }
         }
 
+        if (currentIndex - 1 < 0 || currentIndex+1 >= waypoints.Length) {
+            pingDown = true;
+        }
 
 
-        if (nextWaypoint != null)
+        if (nextWaypoint != null){
             currentWaypoint = nextWaypoint;
+        }
+
         nextWaypoint = Get(currentIndex);
 
     }

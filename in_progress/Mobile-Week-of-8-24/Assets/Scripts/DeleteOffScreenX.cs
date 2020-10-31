@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 public class DeleteOffScreenX : MonoBehaviour
 {
-
+    public static readonly bool ENABLED = false;
     BoxCollider col;
 
     private void Awake()
@@ -15,7 +15,7 @@ public class DeleteOffScreenX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!col) return;
+        if (!col || !ENABLED) return;
         Vector3 right = col.bounds.center + col.bounds.extents;
         Vector3 left = col.bounds.center - col.bounds.extents;
         if (right.x > GameManager.screenEdges.maxX && left.x > GameManager.screenEdges.maxX)

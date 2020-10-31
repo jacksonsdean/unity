@@ -11,7 +11,7 @@ public class EnemyCliff : Enemy
     }
 
     // Update is called once per frame
-    protected override void Update()
+    protected override void FixedUpdate()
     {
         MoveDown();
         

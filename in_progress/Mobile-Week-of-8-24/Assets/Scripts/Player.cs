@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using UnityEngine.XR.WSA;
 
@@ -11,7 +12,7 @@ public class Player : MonoBehaviour
     public static Player Instance;
 
     [SerializeField]
-    float fireRate;
+    float fireRate = 0;
 
     [SerializeField]
     float speed;
@@ -20,9 +21,9 @@ public class Player : MonoBehaviour
     LayerMask killLayers;
 
     [SerializeField]
-    GameObject spawnEffect;
+    GameObject spawnEffect = null;
     [SerializeField]
-    GameObject deathEffect;
+    GameObject deathEffect = null;
 
     internal void SetDebug(bool v)
     {
@@ -32,9 +33,9 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField]
-    Transform fireFromRight;
+    Transform fireFromRight=null;
     [SerializeField]
-    Transform fireFromLeft;
+    Transform fireFromLeft=null;
 
     internal void SetSpeed(float v)
     {
@@ -42,10 +43,10 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField]
-    GameObject projectilePrefeb;
+    GameObject projectilePrefeb = null;
 
     [SerializeField]
-    private float touchSensitivity;
+    private float touchSensitivity = 0;
 
     Animator animator;
 
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour
     public bool dead = false;
 
     [SerializeField]
-    ParticleSystem ripples;
+    ParticleSystem ripples = null;
     float speedRippleRateDist;
     float speedRippleRateTime;
     float ripplesStartSpeed;
@@ -68,8 +69,9 @@ public class Player : MonoBehaviour
     float minRipplesLifetime;
 
     [SerializeField]
-    Transform followTarget;
+    Transform followTarget = null;
 
+    bool _invulnerable = false;
 
     // Start is called before the first frame update
     void Awake(){
@@ -94,8 +96,15 @@ public class Player : MonoBehaviour
         minRipplesStartSpeed    =   ripplesStartSpeed      / 3.0f;
         minRipplesLifetime      =   ripplesLifetime        / 2.0f;
 
+        _invulnerable = true;
+        Invoke("EndInvulnerable", 3.0f);
 
     }
+
+    void EndInvulnerable() {
+        _invulnerable = false;
+    }
+
     void Start(){
         invFireRate = 1 / fireRate;
         lastFire = -invFireRate;
@@ -110,13 +119,7 @@ public class Player : MonoBehaviour
     {
         if (GameManager.Instance.playing){
             HandleInput();
-            if (Time.time > invFireRate + lastFire)
-            {
-                Fire();
-            }
         }
-
-       
     }
 
     
@@ -171,8 +174,9 @@ public class Player : MonoBehaviour
     private void HandleMouseInput()
     {
         if (Input.GetMouseButton(0)) { 
+            if (IsOverUIElement(Input.mousePosition)) 
+                return;
             DecreaseSpeed();
-            MinRipples();
         }
         else
             IncreaseSpeed();
@@ -184,12 +188,34 @@ public class Player : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal");
         animator.SetFloat("VelX", moveX);
 
-        if (Math.Abs(moveX) >0.01)
+        if (Math.Abs(moveX) > 0.01)
         {
-            lookTar.x += moveX*Time.deltaTime*speed * touchSensitivity; // touch
+            lookTar.x += moveX * Time.deltaTime * speed * touchSensitivity; // touch
+            DecreaseSpeed();
+        }
+        else {
+            if (Input.GetAxis("Vertical") < 0)
+            {
+                DecreaseSpeed();
+            }
+            else
+            {
+                IncreaseSpeed();
+            }
         }
 
         UpdatePositionAndRotation(Math.Abs(moveX) > 0.01, lookTar.x);
+    }
+
+ 
+
+    private bool IsOverUIElement(Vector3 position)
+    {
+        var eventData = new PointerEventData(EventSystem.current);
+        eventData.position = position;
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        return results.Count > 0;
     }
 
     private void HandleTouchInput()
@@ -198,13 +224,11 @@ public class Player : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
+            if (IsOverUIElement(touch.position)) return;
             xPos = ScreenToWorld(touch.position).x; // touch
 
             //Speed
             DecreaseSpeed();
-
-            //if (touch.phase == TouchPhase.Began)
-                MinRipples();
 
             GameManager.lastTouchTime = Time.time;
 
@@ -220,6 +244,21 @@ public class Player : MonoBehaviour
 
     }
 
+    private GameObject[] GetObjectsInKillLayer()
+    {
+        int layer = LayerMask.NameToLayer("KillPlayer");
+        var ret = new List<GameObject>();
+
+        foreach (Transform t in transform.root.transform.GetComponentsInChildren<Transform>(true))
+        {
+            if (t.gameObject.layer == layer)
+            {
+                ret.Add(t.gameObject);
+            }
+        }
+        return ret.ToArray();
+    }
+
     private void IncreaseSpeed(){
         GameManager.UpdateGameSpeed(false);
 
@@ -229,15 +268,16 @@ public class Player : MonoBehaviour
 
         var emission = ripples.emission;
         var main = ripples.main;
-        emission.rateOverDistance =     minSpeedRippleRateDist + normalizedSpeed * speedRippleRateDist;
-        emission.rateOverTime =         minSpeedRippleRateTime + normalizedSpeed * speedRippleRateTime;
-        main.startSpeed =               minRipplesStartSpeed + normalizedSpeed * ripplesStartSpeed;
-        main.startLifetime =            minRipplesLifetime + normalizedSpeed * ripplesLifetime;
+        emission.rateOverDistance =     minSpeedRippleRateDist + normalizedSpeed * speedRippleRateDist/2.0f;
+        emission.rateOverTime =         minSpeedRippleRateTime + normalizedSpeed * speedRippleRateTime/2.0f;
+        main.startSpeed =               minRipplesStartSpeed + normalizedSpeed * ripplesStartSpeed/2.0f;
+        main.startLifetime =            minRipplesLifetime + normalizedSpeed * ripplesLifetime/2.0f;
     }
 
     private void DecreaseSpeed() {
         GameManager.UpdateGameSpeed(true);
-      
+        MinRipples();
+
 
     }
 
@@ -268,11 +308,22 @@ public class Player : MonoBehaviour
         if (other.CompareTag("PlayerSpawnDeath")) Destroy(this.gameObject);
 
         if (((1 << other.gameObject.layer) & killLayers) != 0){
-            Die();
-            //Destroy(other.gameObject);
-        
+            Die(FindEnemyName(other.gameObject));
         }
     }
+
+    private string FindEnemyName(GameObject gameObject)
+    {
+        Transform t = gameObject.transform;
+        while (t != null) {
+            if (t.CompareTag("Enemy")) 
+                return t.gameObject.name.Split('(')[0];
+            t = t.parent ? t.parent : null;
+        }
+        return "";
+    }
+
+
 
     private void Fire() {
         if (dead) return;
@@ -288,11 +339,13 @@ public class Player : MonoBehaviour
         Instantiate(projectilePrefeb, pos, Quaternion.identity, null);
     }
 
-    private void Die() {
-        if (dead) return;
+    private void Die(string enemyName = "") {
+        if (_invulnerable || dead) return;
         dead = true;
         animator.SetTrigger("Die");
         Player.Instance = null;
+        AnalyticsManager.LogProgression(GameAnalyticsSDK.GAProgressionStatus.Fail,"Main",Mathf.RoundToInt(GameManager.meters), enemyName);
+
         GameManager.Instance.Lose();
         Instantiate(deathEffect, transform.position, Quaternion.identity, null);
     }

@@ -6,12 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Graphics.unity
-    guid: 489887ba08165194dad42f0c769412ad
+    path: Assets/Scenes/PreloadScene.unity
+    guid: ad326cc6c3785a945974aad54b859a09
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: a8191ea12b2b9694080c92fb23616fa5
+  - enabled: 1
+    path: Assets/Scenes/Gallery.unity
+    guid: ae402240d9b766348af14c3e82a87be2
+  - enabled: 0
+    path: Assets/Scenes/Graphics.unity
+    guid: 489887ba08165194dad42f0c769412ad
   - enabled: 0
     path: Assets/Scenes/Movies.unity
     guid: 75955d356309eed41bf02fda4ed27797
+  - enabled: 0
+    path: Assets/EasyMobile/Demo/Scenes/Modules/GameServicesDemo_Multiplayer_TurnBasedKitchenSink.unity
+    guid: be8bfc7d76044ec44927cd91bc5244d9
+  - enabled: 0
+    path: Assets/EasyMobile/Demo/Scenes/Modules/UtilitiesDemo.unity
+    guid: 2a8606c42f28c41b48b5efb8063a2ffe
   m_configObjects: {}

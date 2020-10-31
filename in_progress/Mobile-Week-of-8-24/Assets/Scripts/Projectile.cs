@@ -7,10 +7,10 @@ public class Projectile : MonoBehaviour
     Rigidbody rb;
 
     [SerializeField]
-    float maxVelocity;
+    float maxVelocity = 0.0f;
 
     [SerializeField]
-    LayerMask hitLayers;
+    LayerMask hitLayers = 0;
 
 
     [SerializeField]

@@ -1,50 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &899933705292159088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4138870519080866108}
-  - component: {fileID: 3217773302291777685}
-  m_Layer: 0
-  m_Name: Waypoint (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4138870519080866108
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899933705292159088}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5274296294887767897}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3217773302291777685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899933705292159088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5e03f320353dd2449c4ac762058f7f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  next: {fileID: 6797677794516185845}
-  last: {fileID: 6986311026039878452}
 --- !u!1 &4220524855197845368
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e03f320353dd2449c4ac762058f7f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  next: {fileID: 3217773302291777685}
+  next: {fileID: 0}
   last: {fileID: 0}
 --- !u!1 &5788403595385795663
 GameObject:
@@ -115,11 +70,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5788403595385795663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4.5}
+  m_LocalPosition: {x: 0, y: 0, z: -6.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6068628160194561874}
-  - {fileID: 4138870519080866108}
   - {fileID: 3944143632013818866}
   m_Father: {fileID: 3962909901689074385}
   m_RootOrder: 1
@@ -198,7 +152,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5274296294887767897}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6797677794516185845
 MonoBehaviour:
@@ -213,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   next: {fileID: 0}
-  last: {fileID: 3217773302291777685}
+  last: {fileID: 0}
 --- !u!65 &6414632604921119075
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -256,8 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d81dc750b8deb7e409f3bf3f828304e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 3
-  amplitude: 3.1
+  rate: 2
+  amplitude: 0.75
+  startOffset: 1
+  randomizeOffset: 1
 --- !u!1001 &7355522433174846088
 PrefabInstance:
   m_ObjectHideFlags: 0

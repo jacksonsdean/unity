@@ -20,9 +20,11 @@ public class TabView : MonoBehaviour
     }
 
     public void Change(TabButton tabButton) {
+
         if (tabButton == currentlySelected) {
             return;
         }
+        UIAudioManager.PlayClickSound();
 
         currentlySelected = tabButton;
         foreach (var tab in tabs)

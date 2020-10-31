@@ -117,6 +117,23 @@ MonoBehaviour:
   m_Values:
   - Boats/butterfly
   - Store/butterfly
+--- !u!114 &-8800238534584114667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_coinsPerPickupLevel4_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -8416029072581277735}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/coins/1
 --- !u!114 &-8785510163624035944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +155,29 @@ MonoBehaviour:
   m_StaticPropertyValues: []
   m_DetailValues:
   - {fileID: -3090476096512687237}
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
+--- !u!114 &-8760467015622106789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_gemPickup6
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gem  Pickup 6
+  m_Key: gemPickup6
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
@@ -177,6 +217,54 @@ MonoBehaviour:
   m_Values:
   - Boats/train
   - Store/train
+--- !u!114 &-8606820611242951410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_coinsPerPickupLevel6_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -5902385216196494101}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/coins/2
+--- !u!114 &-8432120461556784911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_gemsPerPickupLevel2
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gems Per Pickup Level 2
+  m_Key: gemsPerPickupLevel2
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: 3272692585285264421}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -5002451615489131953}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 1500
 --- !u!114 &-8422075436320234464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +282,37 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/blueSofa
+--- !u!114 &-8416029072581277735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_coinsPerPickupLevel4
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coins Per Pickup Level 4
+  m_Key: coinsPerPickupLevel4
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -8800238534584114667}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -2589735835938094363}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 900
 --- !u!114 &-8411277596609413490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,7 +474,7 @@ MonoBehaviour:
   m_Names:
   - icon
   m_Values:
-  - Store/gem
+  - Store/gems/0
 --- !u!114 &-8226317548031648923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,8 +523,31 @@ MonoBehaviour:
   m_Costs:
     m_Items: []
     m_Currencies:
-    - m_Currency: {fileID: 4912814492817695589}
-      m_Amount: 999
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 1800
+--- !u!114 &-8172722248306916139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_gemPickup3
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gem  Pickup 3
+  m_Key: gemPickup3
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &-8035407281818613889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,6 +735,32 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
       m_Amount: 15
+--- !u!114 &-7685034541645858357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_null
+  m_EditorClassIdentifier: 
+  m_DisplayName: null
+  m_Key: null
+  m_Tags:
+  - {fileID: -5800264170057032779}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_Rewards:
+    m_Items: []
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies: []
 --- !u!114 &-7632099281693940292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,7 +918,7 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
-      m_Amount: 15
+      m_Amount: 30
 --- !u!114 &-7401698498595016674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,7 +1028,7 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
-      m_Amount: 200
+      m_Amount: 150
 --- !u!114 &-7236218732486423839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,6 +1046,40 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/bath
+--- !u!114 &-7235617342419376731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_gemsPerPickupLevel3_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 5288803728026036578}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/gems/2
+--- !u!114 &-7235376950086552877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_coinsPerPickupLevel2_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 4180897584781051461}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/coins/0
 --- !u!114 &-7202151143612976647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,6 +1336,23 @@ MonoBehaviour:
   m_Values:
   - Boats/pool
   - Store/pool
+--- !u!114 &-6495372464871412812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_gemsPerPickupLevel5_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -1198482821761971169}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/gems/3
 --- !u!114 &-6332864833196482312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1189,6 +1408,23 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/tug2
+--- !u!114 &-6177174994760416953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_gemsPerPickupLevel1_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -4840465746987268994}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/gems/0
 --- !u!114 &-6161500316257229114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1347,6 +1583,7 @@ MonoBehaviour:
   - {fileID: 4795383625423647347}
   - {fileID: -4200523525537426887}
   - {fileID: 6185323817831409494}
+  - {fileID: -2983926376300352626}
 --- !u!114 &-6001782798737704771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1412,6 +1649,37 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/coin
+--- !u!114 &-5902385216196494101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_coinsPerPickupLevel6
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coins Per Pickup Level 6
+  m_Key: coinsPerPickupLevel6
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -8606820611242951410}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 8196292975237982428}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 2200
 --- !u!114 &-5872979071850031960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1494,6 +1762,20 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
       m_Amount: 600
+--- !u!114 &-5800264170057032779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4178f7fa125e7644ba2a2d0c6300db1, type: 3}
+  m_Name: Tag_null
+  m_EditorClassIdentifier: 
+  m_Key: null
+  m_Catalog: {fileID: 4221544002983397555}
 --- !u!114 &-5736453600387387018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1770,6 +2052,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Key: boat
   m_Catalog: {fileID: 4221544002983397555}
+--- !u!114 &-5002451615489131953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_gemPickup2
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gem  Pickup 2
+  m_Key: gemPickup2
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &-4938457956459644945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1801,6 +2106,37 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
       m_Amount: 15
+--- !u!114 &-4840465746987268994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_gemsPerPickupLevel1
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gems Per Pickup Level 1
+  m_Key: gemsPerPickupLevel1
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -6177174994760416953}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -1886202759242675601}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 700
 --- !u!114 &-4805881986860634266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1894,6 +2230,23 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
       m_Amount: 30
+--- !u!114 &-4553299126636947140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_coinsPerPickupLevel5_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 5046045898279743779}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/coins/1
 --- !u!114 &-4345612297795074090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1924,7 +2277,7 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
-      m_Amount: 150
+      m_Amount: 175
 --- !u!114 &-4290285050960682017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2004,6 +2357,8 @@ MonoBehaviour:
     m_Enabled: 1
   - m_Transaction: {fileID: 6754147205240227869}
     m_Enabled: 1
+  - m_Transaction: {fileID: -8411277596609413490}
+    m_Enabled: 0
 --- !u!114 &-4189929462034323552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2522,6 +2877,78 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/icebreaker
+--- !u!114 &-2983926376300352626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81b157322addcd439104bd3c59b830b, type: 3}
+  m_Name: Store_boatsStoreGems
+  m_EditorClassIdentifier: 
+  m_DisplayName: Main - gems
+  m_Key: boatsStoreGems
+  m_Tags: []
+  m_Catalog: {fileID: -6008735605285602642}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_StoreItems:
+  - m_Transaction: {fileID: -7897097134721523296}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 3358484208491691014}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2429014147115638578}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -7696201098766747099}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -4938457956459644945}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -7471430689592284791}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 8211789104567857037}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 6488620998300491857}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 291862109456265909}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 314340278131681318}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2690796074944352047}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -4611552036564201706}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 5322639953719269645}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -7447531611632076936}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2596281808376392040}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -5678851026473667272}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -4001752138606018114}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 6542292541965496889}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -7048649543373560869}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -6076216397855557931}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 3106997765688729531}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2337340756359402539}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 5803417264153676404}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -7294806544826192714}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -1209415421467827832}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2828824991446984067}
+    m_Enabled: 1
 --- !u!114 &-2921111861626248184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2629,7 +3056,7 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
-      m_Amount: 200
+      m_Amount: 180
 --- !u!114 &-2689061861836106431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2663,6 +3090,29 @@ MonoBehaviour:
   m_Values:
   - Boats/blueSofa
   - Store/blueSofa
+--- !u!114 &-2589735835938094363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_coinPickup4
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin Pickup 4
+  m_Key: coinPickup4
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &-2539425908044900655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3000,6 +3450,29 @@ MonoBehaviour:
   m_Values:
   - Boats/book
   - Store/book
+--- !u!114 &-1886202759242675601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_gemPickup1
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gem  Pickup 1
+  m_Key: gemPickup1
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &-1857212892174705304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3016,7 +3489,7 @@ MonoBehaviour:
   m_Names:
   - icon
   m_Values:
-  - Store/gem
+  - Store/gems/4
 --- !u!114 &-1753956635875715513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3268,6 +3741,37 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
       m_Amount: 150
+--- !u!114 &-1198482821761971169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_gemsPerPickupLevel5
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gems Per Pickup Level 5
+  m_Key: gemsPerPickupLevel5
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -6495372464871412812}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -546642605091850657}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 4912814492817695589}
+      m_Amount: 240
 --- !u!114 &-1175277994459895610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3289,6 +3793,29 @@ MonoBehaviour:
   m_StaticPropertyValues: []
   m_DetailValues:
   - {fileID: 4485284531012438412}
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
+--- !u!114 &-1133532078645762335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_coinPickup5
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin Pickup 5
+  m_Key: coinPickup5
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
@@ -3526,6 +4053,29 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/penguin
+--- !u!114 &-546642605091850657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_gemPickup5
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gem  Pickup 5
+  m_Key: gemPickup5
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &-515157096916154464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3543,6 +4093,37 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/raft
+--- !u!114 &-459337481759256213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_coinsPerPickupLevel1
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coins Per Pickup Level 1
+  m_Key: coinsPerPickupLevel1
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: 2264094400943511208}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 1116676043262288656}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 50
 --- !u!114 &-416707880408725948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3567,6 +4148,23 @@ MonoBehaviour:
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
+--- !u!114 &-150640807177422014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_coinsPerPickupLevel3_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 1476573568926365267}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/coins/1
 --- !u!114 &-129941392151470059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3597,7 +4195,7 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
-      m_Amount: 100
+      m_Amount: 210
 --- !u!114 &-69453000512100328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3614,7 +4212,7 @@ MonoBehaviour:
   m_Names:
   - icon
   m_Values:
-  - Store/gem
+  - Store/gems/2
 --- !u!114 &-13873418084145645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3657,6 +4255,23 @@ MonoBehaviour:
   m_CurrencyCatalog: {fileID: 4731074396628625200}
   m_TransactionCatalog: {fileID: 3965805815559898476}
   m_GameParameterCatalog: {fileID: 2338302034949156487}
+--- !u!114 &84698271346694454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_gemsPerPickupLevel4_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 1489393770982031027}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/gems/2
 --- !u!114 &95852538948311373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3851,6 +4466,29 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/barrel
+--- !u!114 &596985259063093973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_gemPickup4
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gem  Pickup 4
+  m_Key: gemPickup4
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &597173182066848048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4135,6 +4773,29 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
       m_Amount: 20
+--- !u!114 &1116676043262288656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_coinPickup1
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin Pickup 1
+  m_Key: coinPickup1
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &1163450060070699015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4294,6 +4955,18 @@ MonoBehaviour:
   - {fileID: -4183106829969717298}
   - {fileID: 5471292261255766304}
   - {fileID: 5479565311587314430}
+  - {fileID: 1116676043262288656}
+  - {fileID: 4027304536171358657}
+  - {fileID: 4337849351039711038}
+  - {fileID: -2589735835938094363}
+  - {fileID: -1133532078645762335}
+  - {fileID: 8196292975237982428}
+  - {fileID: -1886202759242675601}
+  - {fileID: -5002451615489131953}
+  - {fileID: -8172722248306916139}
+  - {fileID: 596985259063093973}
+  - {fileID: -546642605091850657}
+  - {fileID: -8760467015622106789}
 --- !u!114 &1464566002450725481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4325,6 +4998,68 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
       m_Amount: 112
+--- !u!114 &1476573568926365267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_coinsPerPickupLevel3
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coins Per Pickup Level 3
+  m_Key: coinsPerPickupLevel3
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -150640807177422014}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 4337849351039711038}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 500
+--- !u!114 &1489393770982031027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_gemsPerPickupLevel4
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gems Per Pickup Level 4
+  m_Key: gemsPerPickupLevel4
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: 84698271346694454}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 596985259063093973}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 4912814492817695589}
+      m_Amount: 120
 --- !u!114 &1542455151323669807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4518,6 +5253,23 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
       m_Amount: 190
+--- !u!114 &2264094400943511208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_coinsPerPickupLevel1_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -459337481759256213}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/coins/0
 --- !u!114 &2322650136063581635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4836,6 +5588,23 @@ MonoBehaviour:
   m_Values:
   - Boats/boat-house
   - Store/boat-house
+--- !u!114 &2902848956534923884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_gemsPerPickupLevel6_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: 5610715713371852936}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/gems/4
 --- !u!114 &2971718547561157092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5028,6 +5797,23 @@ MonoBehaviour:
     m_Currencies:
     - m_Currency: {fileID: 4912814492817695589}
       m_Amount: 70
+--- !u!114 &3272692585285264421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef78d1e65e02740dca774d4b2d1ecad2, type: 3}
+  m_Name: Detail_gemsPerPickupLevel2_Assets
+  m_EditorClassIdentifier: 
+  m_ItemDefinition: {fileID: -8432120461556784911}
+  m_Names:
+  - icon
+  m_Values:
+  - Store/gems/1
 --- !u!114 &3284650391213556574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5136,7 +5922,7 @@ MonoBehaviour:
     m_Items: []
     m_Currencies:
     - m_Currency: {fileID: 3284650391213556574}
-      m_Amount: 200
+      m_Amount: 135
 --- !u!114 &3558077845994752561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5424,6 +6210,43 @@ MonoBehaviour:
   - {fileID: 2656881322618557473}
   - {fileID: -8411277596609413490}
   - {fileID: 9215621042922932834}
+  - {fileID: -7685034541645858357}
+  - {fileID: 8806231610650802334}
+  - {fileID: -459337481759256213}
+  - {fileID: 4180897584781051461}
+  - {fileID: 1476573568926365267}
+  - {fileID: -8416029072581277735}
+  - {fileID: 5046045898279743779}
+  - {fileID: -5902385216196494101}
+  - {fileID: -4840465746987268994}
+  - {fileID: -8432120461556784911}
+  - {fileID: 5288803728026036578}
+  - {fileID: 1489393770982031027}
+  - {fileID: -1198482821761971169}
+  - {fileID: 5610715713371852936}
+--- !u!114 &4027304536171358657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_coinPickup2
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin Pickup 2
+  m_Key: coinPickup2
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &4117302947791981780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5472,6 +6295,37 @@ MonoBehaviour:
   - icon
   m_Values:
   - Store/pool
+--- !u!114 &4180897584781051461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_coinsPerPickupLevel2
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coins Per Pickup Level 2
+  m_Key: coinsPerPickupLevel2
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -7235376950086552877}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 4027304536171358657}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 200
 --- !u!114 &4221544002983397555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5489,6 +6343,8 @@ MonoBehaviour:
   - {fileID: 1048637995318359425}
   - {fileID: 963321718439267216}
   - {fileID: -2689061861836106431}
+  - {fileID: -5800264170057032779}
+  - {fileID: 4936503421550930271}
   m_Database: {fileID: 11400000}
 --- !u!114 &4252095589458853096
 MonoBehaviour:
@@ -5509,6 +6365,29 @@ MonoBehaviour:
   m_Values:
   - Boats/speed2
   - Store/speed2
+--- !u!114 &4337849351039711038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_coinPickup3
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin Pickup 3
+  m_Key: coinPickup3
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &4357971953215840139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5757,149 +6636,93 @@ MonoBehaviour:
   m_StoreItems:
   - m_Transaction: {fileID: 6369512594158232063}
     m_Enabled: 1
-  - m_Transaction: {fileID: 1075341671183537404}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -3099946627271148432}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 6738168441465688234}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -129941392151470059}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 2429014147115638578}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 3358484208491691014}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7447531611632076936}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -2201808415489515905}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -4611552036564201706}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -2764304539831153007}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 2828824991446984067}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 5163535425280546528}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 6007390886161799470}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7696201098766747099}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 6488620998300491857}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -928666331097643951}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 5322639953719269645}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 3457953493951073014}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7294806544826192714}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -4001752138606018114}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -1275451548359186776}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -4345612297795074090}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 3798080850941060019}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -3269560009521615840}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 2200593489848572169}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 6966839957401013017}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 2690796074944352047}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -5678851026473667272}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 1464566002450725481}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -9040311576061230003}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 4117302947791981780}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 291862109456265909}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7341612155543708321}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 2990864360306734650}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 5057158296820659257}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 8211789104567857037}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 9005607683989454304}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -5845217908033304672}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -2377642798727772299}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 7839900095115428203}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -4938457956459644945}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -2407911401133388367}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7048649543373560869}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 3558077845994752561}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -8854810471351416458}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -6999542306878966422}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -1209415421467827832}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -6076216397855557931}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 6542292541965496889}
+  - m_Transaction: {fileID: -8368558593758953781}
     m_Enabled: 1
   - m_Transaction: {fileID: 4903205672405921032}
     m_Enabled: 1
-  - m_Transaction: {fileID: 2596281808376392040}
+  - m_Transaction: {fileID: 1075341671183537404}
     m_Enabled: 1
-  - m_Transaction: {fileID: 5803417264153676404}
+  - m_Transaction: {fileID: 4117302947791981780}
     m_Enabled: 1
-  - m_Transaction: {fileID: -2274887503875381650}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 5782782525981048581}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 7016493444561167706}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -8179624869947547754}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -1075791902976098570}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 2334218708300228946}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 703047878305163254}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 314340278131681318}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -3955056257092091022}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -1030390384237766687}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -8368558593758953781}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7471430689592284791}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -7897097134721523296}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -1357890122184213114}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -2337340756359402539}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 7698951546757537402}
-    m_Enabled: 1
-  - m_Transaction: {fileID: 3106997765688729531}
-    m_Enabled: 1
-  - m_Transaction: {fileID: -4205043970210437501}
+  - m_Transaction: {fileID: 2990864360306734650}
     m_Enabled: 1
   - m_Transaction: {fileID: 2656881322618557473}
     m_Enabled: 1
+  - m_Transaction: {fileID: -3099946627271148432}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 5163535425280546528}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 7698951546757537402}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -8854810471351416458}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 6007390886161799470}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2334218708300228946}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -3955056257092091022}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 3558077845994752561}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 1464566002450725481}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -7341612155543708321}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 7016493444561167706}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -9040311576061230003}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 3457953493951073014}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 6738168441465688234}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 6966839957401013017}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -1357890122184213114}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -4345612297795074090}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2764304539831153007}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2377642798727772299}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 2200593489848572169}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2274887503875381650}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -928666331097643951}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -1275451548359186776}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -4205043970210437501}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -129941392151470059}
+    m_Enabled: 1
   - m_Transaction: {fileID: 9215621042922932834}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2201808415489515905}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 5782782525981048581}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 3798080850941060019}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 9005607683989454304}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 5057158296820659257}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -1075791902976098570}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -1030390384237766687}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -2407911401133388367}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -5845217908033304672}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 7839900095115428203}
+    m_Enabled: 1
+  - m_Transaction: {fileID: 703047878305163254}
+    m_Enabled: 1
+  - m_Transaction: {fileID: -8179624869947547754}
     m_Enabled: 1
 --- !u!114 &4812897589976757535
 MonoBehaviour:
@@ -5990,6 +6813,20 @@ MonoBehaviour:
   m_InitialBalance: 10
   m_MaximumBalance: 0
   m_Type: 1
+--- !u!114 &4936503421550930271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4178f7fa125e7644ba2a2d0c6300db1, type: 3}
+  m_Name: Tag_upgrade
+  m_EditorClassIdentifier: 
+  m_Key: upgrade
+  m_Catalog: {fileID: 4221544002983397555}
 --- !u!114 &5007000405093026732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6014,6 +6851,37 @@ MonoBehaviour:
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
+--- !u!114 &5046045898279743779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_coinsPerPickupLevel5
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coins Per Pickup Level 5
+  m_Key: coinsPerPickupLevel5
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -4553299126636947140}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -1133532078645762335}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 3284650391213556574}
+      m_Amount: 1500
 --- !u!114 &5057158296820659257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6150,6 +7018,37 @@ MonoBehaviour:
   m_Values:
   - Boats/fridge
   - Store/fridge
+--- !u!114 &5288803728026036578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_gemsPerPickupLevel3
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gems Per Pickup Level 3
+  m_Key: gemsPerPickupLevel3
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: -7235617342419376731}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -8172722248306916139}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 4912814492817695589}
+      m_Amount: 60
 --- !u!114 &5304569670739950515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6331,6 +7230,37 @@ MonoBehaviour:
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
+--- !u!114 &5610715713371852936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_gemsPerPickupLevel6
+  m_EditorClassIdentifier: 
+  m_DisplayName: Gems Per Pickup Level 6
+  m_Key: gemsPerPickupLevel6
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues:
+  - {fileID: 2902848956534923884}
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: -8760467015622106789}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies:
+    - m_Currency: {fileID: 4912814492817695589}
+      m_Amount: 500
 --- !u!114 &5734858893994221828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6388,7 +7318,7 @@ MonoBehaviour:
   m_Names:
   - icon
   m_Values:
-  - Store/gem
+  - Store/gems/3
 --- !u!114 &5782782525981048581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7434,6 +8364,29 @@ MonoBehaviour:
   m_Values:
   - Boats/redSofa
   - Store/redSofa
+--- !u!114 &8196292975237982428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbd052539327467295d2009d33aa660, type: 3}
+  m_Name: Item_coinPickup6
+  m_EditorClassIdentifier: 
+  m_DisplayName: Coin Pickup 6
+  m_Key: coinPickup6
+  m_Tags:
+  - {fileID: 4936503421550930271}
+  m_Catalog: {fileID: 1328516516571643280}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_InitialAllocation: 0
+  m_PropertyKeys: []
+  m_PropertyDefaultValues: []
 --- !u!114 &8211789104567857037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7500,7 +8453,7 @@ MonoBehaviour:
   m_Names:
   - icon
   m_Values:
-  - Store/gem
+  - Store/gems/1
 --- !u!114 &8509015097233005118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7582,6 +8535,33 @@ MonoBehaviour:
   m_InitialAllocation: 0
   m_PropertyKeys: []
   m_PropertyDefaultValues: []
+--- !u!114 &8806231610650802334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188049432bcf74f78b314dc2b03ee516, type: 3}
+  m_Name: VirtualTransaction_banana-pre-reg
+  m_EditorClassIdentifier: 
+  m_DisplayName: Banana Pre-Registration
+  m_Key: banana-pre-reg
+  m_Tags: []
+  m_Catalog: {fileID: 3965805815559898476}
+  m_StaticPropertyKeys: []
+  m_StaticPropertyValues: []
+  m_DetailValues: []
+  m_Rewards:
+    m_Items:
+    - m_Item: {fileID: 6952012119626854468}
+      m_Amount: 1
+    m_Currencies: []
+  m_Costs:
+    m_Items: []
+    m_Currencies: []
 --- !u!114 &8934221460726663482
 MonoBehaviour:
   m_ObjectHideFlags: 0

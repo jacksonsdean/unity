@@ -7,18 +7,25 @@ using UnityEngine.UI;
 public class TabButton : MonoBehaviour
 {
     [SerializeField]
-    TabView tabView;
+    TabView tabView = null;
     [SerializeField]
-    Color offColor;
+    Color offColor = Color.white;
+    
+    [SerializeField]
+    Color offColorIcon = Color.white;
 
     [SerializeField]
-    GameObject tabGameObject;
+    GameObject tabGameObject = null;
 
+    [SerializeField]
+    Image iconImage = null;
 
     public bool selected = false;
 
     Image[] images;
     Color[] imageColors;
+
+
 
     private void Awake()
     {
@@ -28,6 +35,8 @@ public class TabButton : MonoBehaviour
         {
             imageColors[i] = images[i].color;
         }
+
+        iconImage.color = offColorIcon;
     }
 
     public void Click() {
@@ -55,6 +64,9 @@ public class TabButton : MonoBehaviour
         {
             images[i].color = offColor;
         }
+
+        iconImage.color = offColorIcon;
+
     }
 
     private void OnColor() {

@@ -5,6 +5,6 @@ using UnityEngine;
 public class StoreSpriteTypeTag : MonoBehaviour
 {
     [SerializeField]
-    string type;
+    string type = null;
     public string Get() { return type; }
 }

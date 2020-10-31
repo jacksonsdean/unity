@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4000013150887210}
   - component: {fileID: 33000012532805110}
   - component: {fileID: 23000013389487560}
-  - component: {fileID: 64468253404071074}
-  m_Layer: 0
+  - component: {fileID: 3929329643372590013}
+  m_Layer: 8
   m_Name: stone-pointy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1000012236178170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 7.1067743, y: 7.106773, z: 7.106773}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -80,8 +80,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &64468253404071074
-MeshCollider:
+--- !u!65 &3929329643372590013
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +90,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300002, guid: 2e262dac35a353247839292320a9d2ab, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.8193851, y: 1.0169742, z: 0.6955109}
+  m_Center: {x: 0.13674252, y: 0.44657385, z: -0.03287158}

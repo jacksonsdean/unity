@@ -25,7 +25,10 @@ public abstract class Pickup : MonoBehaviour
 
     protected virtual void Collect() {
         GameObject g = Instantiate(collectFX, transform.position, Quaternion.identity, transform.parent.parent);
-        g.GetComponent<AudioSource>().PlayOneShot(clips[UnityEngine.Random.Range(0, clips.Length - 1)]);
+
+        if(AudioManager.GetSFXVolume()>0)
+            g.GetComponent<AudioSource>().PlayOneShot(clips[UnityEngine.Random.Range(0, clips.Length - 1)]);
+
         Destroy(this.gameObject);
     }
 }

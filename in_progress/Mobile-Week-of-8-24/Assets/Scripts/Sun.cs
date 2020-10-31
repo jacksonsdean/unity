@@ -6,22 +6,32 @@ public class Sun : MonoBehaviour
 {
 
     [SerializeField]
-    AnimationCurve rotationSpeedCurve;
+    AnimationCurve rotationSpeedCurve = null;
     [SerializeField]
-    AnimationCurve brightnessCurve;
+    AnimationCurve brightnessCurve = null;
     public float speedMult = 0.5f;
     float speed = 1.0f;
     private float currentDayPercent = 0;
 
-    Light light;
+    Light mLight;
 
     private Quaternion startRot;
+
+   public static float TimeOfDay = 0.0f;
+
+    public static Sun Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        light = GetComponent<Light>();
+        mLight = GetComponent<Light>();
         startRot = transform.rotation;
+
     }
 
     // Update is called once per frame
@@ -29,7 +39,7 @@ public class Sun : MonoBehaviour
     {
 
         speed = rotationSpeedCurve.Evaluate(currentDayPercent);
-        light.intensity = brightnessCurve.Evaluate(currentDayPercent);
+        mLight.intensity = brightnessCurve.Evaluate(currentDayPercent);
         float deltaTheta = speedMult * speed * Time.deltaTime;
         currentDayPercent += (deltaTheta/360.0f);
         if (currentDayPercent >= 1.0f)
@@ -40,5 +50,6 @@ public class Sun : MonoBehaviour
         else {
             transform.Rotate(deltaTheta, 0,0,Space.World);
         }
+        TimeOfDay = currentDayPercent;
     }
 }

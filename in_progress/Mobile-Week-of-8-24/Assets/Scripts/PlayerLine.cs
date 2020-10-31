@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerLine : MonoBehaviour
 {
     [SerializeField]
-    Transform[] tail;
+    Transform[] tail = null;
 
 
     LineRenderer lr;

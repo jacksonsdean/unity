@@ -180,7 +180,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ddad0dfd6ad7a54458ef5908f5df2fc6, type: 3}
   - {fileID: 8300000, guid: 9b738113de324e849a50120a25f0814e, type: 3}
   currency: coins
-  gemChance: 0.015
+  gemChance: 0.03
   gemSwap: {fileID: 6323541620236071845, guid: c8d26538689ea8d48b2b78a681dc36d9, type: 3}
 --- !u!95 &1532533485467921516
 Animator:
@@ -217,6 +217,7 @@ MonoBehaviour:
   speed: 5
   startAtRandomPoint: 1
   randomDir: 1
+  lookAtTarget: 0
 --- !u!114 &8647944230563196769
 MonoBehaviour:
   m_ObjectHideFlags: 0

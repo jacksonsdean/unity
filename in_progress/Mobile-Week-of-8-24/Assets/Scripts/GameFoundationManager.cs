@@ -2,24 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.GameFoundation;
-using UnityEngine.GameFoundation.DataAccessLayers;
-using UnityEngine.GameFoundation.Data;
-using UnityEngine.Events;
 
-using UnityEngine.GameFoundation.DefaultCatalog;
 using UnityEngine.GameFoundation.DefaultLayers;
 using UnityEngine.GameFoundation.DefaultLayers.Persistence;
-using TMPro;
-using System.Runtime.CompilerServices;
-using UnityEngine.Purchasing.Security;
 using System;
-using UnityEngine.Purchasing;
+using UnityEngine.GameFoundation.UI;
+using System.IO;
 
 public class GameFoundationManager : MonoBehaviour
 {
     public static GameFoundationManager Instance;
     static IDataPersistence localPersistence;
-    static PersistenceDataLayer dataLayer;
+    public static PersistenceDataLayer dataLayer;
 
     public static bool isInit = false;
     public static Dictionary<string, bool> ownedItems;
@@ -28,7 +22,9 @@ public class GameFoundationManager : MonoBehaviour
     public delegate void UpdateBoatDatabaseAction();
     public static event UpdateBoatDatabaseAction OnUpdateBoatDatabase;
 
-            
+    public delegate void LoadedDataFromDiskAction();
+    public static event LoadedDataFromDiskAction OnLoadedDataFromDisk;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -41,12 +37,55 @@ public class GameFoundationManager : MonoBehaviour
         {
             Instance = this;
         }
-        
+
+
+
         Initialize();
+        DontDestroyOnLoad(this.gameObject);
+
+#if UNITY_EDITOR
+        //GenerateDataBaseCSV();
+#endif
+
     }
 
-    private void Start(){
+    private void Start() {
         UpdateBoatDatabase();
+    }
+
+    private static void GenerateDataBaseCSV() {
+        List<VirtualTransaction> transactions = new List<VirtualTransaction>();
+        GameFoundation.catalogs.transactionCatalog.GetTransactions<VirtualTransaction>(transactions);
+        string output = "Name,Price,Type\n";
+        foreach (var virtualTransaction in transactions)
+        {
+            output += virtualTransaction.displayName + ",";
+            try
+            {
+                output += virtualTransaction.costs.GetCurrencyExchange(0).amount + ",";
+                output += virtualTransaction.costs.GetCurrencyExchange(0).currency.displayName + ",";
+            }
+            catch (IndexOutOfRangeException ie)
+            {
+                Debug.LogError(ie);
+                output += ",,";
+            }
+            output += "\n";
+        }
+
+        string directory = Application.dataPath + "/CSV";
+        string filePath = directory + "/Transactions.csv";
+
+        System.IO.StreamWriter outStream;
+
+        if (!System.IO.Directory.Exists(directory))
+            System.IO.Directory.CreateDirectory(directory);
+
+        System.IO.File.Delete(filePath);
+        outStream = System.IO.File.CreateText(filePath);
+
+        outStream.Write(output);
+        outStream.Close();
     }
 
     public static void UpdateBoatDatabase()
@@ -58,14 +97,16 @@ public class GameFoundationManager : MonoBehaviour
 
     public static bool IsItemOwned(InventoryItemDefinition item) {
         if (item == null) return false;
-        return InventoryManager.FindItemsByDefinition(item.key).Length > 0;
+        return IsItemOwned(item.key);
+    }
+
+    public static bool IsItemOwned(string itemKey)
+    {
+        return InventoryManager.FindItemsByDefinition(itemKey).Length > 0;
     }
 
     public static void Initialize() {
         if (GameFoundation.IsInitialized) return;
-
-  
-
 
         JsonDataSerializer dataSerializer = new JsonDataSerializer();
         // choose where and how the data is stored
@@ -76,8 +117,8 @@ public class GameFoundationManager : MonoBehaviour
             try
             {
                 GameFoundation.Initialize(dataLayer);
-               /* TransactionManager.SetIAPValidator(new CrossPlatformValidator(
-                     GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier));*/
+                /* TransactionManager.SetIAPValidator(new CrossPlatformValidator(
+                      GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier));*/
 
                 isInit = true;
 
@@ -87,8 +128,8 @@ public class GameFoundationManager : MonoBehaviour
                 Debug.LogError("Error Initializing Game Foundation: " + e.ToString());
             }
             finally {
-               
-                if(GameFoundation.IsInitialized)
+
+                if (GameFoundation.IsInitialized)
                     UpdateBoatDatabase();
 
             }
@@ -96,17 +137,57 @@ public class GameFoundationManager : MonoBehaviour
         else {
             Debug.LogError("Data layer was null");
         }
-        // tell Game Foundation to initialize using this
-        // persistence system. Only call Initialize once per session.
 
-
-      
     }
 
-    static void Save()
-    {
-        dataLayer.Save();
+    static bool isSaving = false;
+    public static void Save(){
+        if (isSaving) return;
+        Instance.StartCoroutine("SaveEnum");
+
     }
+
+    public static void LoadFromDisk() {
+        GameFoundation.Uninitialize();
+        GameFoundation.Initialize(dataLayer);
+        UpdateBoatDatabase();
+        OnLoadedDataFromDisk?.Invoke();
+        UpgradeManager.ResetUpgrades();
+
+    }
+
+    private IEnumerator SaveEnum() {
+        isSaving = true;
+        // Gets the handle of the transaction.
+        var deferredResult = dataLayer.Save();
+        try
+        {
+            // Waits for the process to finish
+            while (!deferredResult.isDone)
+            {
+                yield return null;
+            }
+
+            // The process failed
+            if (!deferredResult.isFulfilled)
+            {
+                Debug.LogException(deferredResult.error);
+            }
+
+            // The process succeeded
+            else{
+                SavedGameManager.SaveToOnlineDatabase();
+            }
+        }
+        finally
+        {
+            // A process handle can be released.
+            deferredResult.Release();
+            isSaving = false;
+
+        }
+    }
+
 
     private static void UpdateOwnedItems()
     {
@@ -125,66 +206,121 @@ public class GameFoundationManager : MonoBehaviour
         if (Debug.isDebugBuild) {
             if (Input.GetKeyDown(KeyCode.F1)) {
                 WalletManager.AddBalance(GameFoundation.catalogs.currencyCatalog.FindItem("coins"), 100);
-                OnUpdateBoatDatabase();
+                UpdateBoatDatabase();
             }
             if (Input.GetKeyDown(KeyCode.F2))
             {
                 WalletManager.AddBalance(GameFoundation.catalogs.currencyCatalog.FindItem("gems"), 100);
-                OnUpdateBoatDatabase();
+                UpdateBoatDatabase();
+
             }
         }
     }
 
-
-    private void OnEnable()
-    {
-        OnUpdateBoatDatabase += Save;
-        OnUpdateBoatDatabase += UpdateOwnedItems;
+    private void UpdateStoreUI() {
+        foreach (StoreView item in Resources.FindObjectsOfTypeAll<StoreView>())
+        {
+            foreach (TransactionItemView transaction in item.GetComponentsInChildren<TransactionItemView>())
+            {
+                transaction.SetNoPriceString(transaction.noPriceString=="FREE"? "FREE!" : "FREE");
+            }
+        }
     }
 
-    private void OnDisable()
+    void WalletBalanceChanged(BalanceChangedEventArgs args) {
+        Save();
+    }
+
+    private void OnLevelWasLoaded(int level)
     {
         OnUpdateBoatDatabase -= Save;
         OnUpdateBoatDatabase -= UpdateOwnedItems;
+        OnUpdateBoatDatabase -= UpdateStoreUI;
+        WalletManager.balanceChanged -= WalletBalanceChanged;
+
+        OnUpdateBoatDatabase += Save;
+        OnUpdateBoatDatabase += UpdateOwnedItems;
+        OnUpdateBoatDatabase += UpdateStoreUI;
+        OnUpdateBoatDatabase += UpdateStoreUI;
+        WalletManager.balanceChanged += WalletBalanceChanged;
+    }
+
+    private void OnEnable(){
+        OnUpdateBoatDatabase += Save;
+        OnUpdateBoatDatabase += UpdateOwnedItems;
+        OnUpdateBoatDatabase += UpdateStoreUI;
+        WalletManager.balanceChanged += WalletBalanceChanged;
 
     }
 
+    private void OnDisable(){
+        OnUpdateBoatDatabase -= Save;
+        OnUpdateBoatDatabase -= UpdateOwnedItems;
+        OnUpdateBoatDatabase -= UpdateStoreUI;
+        WalletManager.balanceChanged -= WalletBalanceChanged;
 
+    }
 
-
-
-
-    public void OnIAPPurchaseComplete(Product product) {
+    public void OnIAPPurchaseComplete(IAPTransaction transaction) {
         //popup thanks
-        IAPTransaction transaction = GameFoundation.catalogs.transactionCatalog.FindIAPTransactionByProductId(product.definition.id);
-
-        var result = TransactionManager.BeginTransaction(transaction);
-
-
         Sprite sprite = null;
         if (transaction != null) {
             if(transaction.GetDetail<AssetsDetail>()!=null)
                 sprite = transaction.GetDetail<AssetsDetail>().GetAsset<Sprite>("icon");
-        
         }
 
         PopupBuilder builder = new PopupBuilder();
         builder.title = "Thanks!";
-        builder.text = "Thank you for your purchase of " + product.metadata.localizedTitle;
+        builder.text = "Thank you for your purchase of " + transaction.product.metadata.localizedTitle;
         builder.showConfirmButton = true;
         builder.showDeclineButton = false;
         if(sprite)
             builder.graphic = sprite;
 
         PopupManager.Instance.Show(builder);
+    }
 
+    public void OnCoinPurchaseComplete(BaseTransaction transaction)
+    {
+        //popup thanks
+        Sprite sprite = null;
+        if (transaction != null)
+        {
+            if (transaction.GetDetail<AssetsDetail>() != null)
+                sprite = transaction.GetDetail<AssetsDetail>().GetAsset<Sprite>("icon");
+        }
 
+        PopupBuilder builder = new PopupBuilder();
+        builder.title = "Thanks!";
+        builder.text = "Thank you for your purchase of " + transaction.displayName;
+        builder.showConfirmButton = true;
+        builder.showDeclineButton = false;
+        if (sprite)
+            builder.graphic = sprite;
 
+        PopupManager.Instance.Show(builder);
     }
 
 
-    public void OnIAPPurchaseFailed() {
+    public void OnIAPPurchaseFailed(BaseTransaction t, Exception e) {
         // Popup failed
+        PopupBuilder b = new PopupBuilder();
+        if (!e.Message.Contains("UserCancelled"))
+        {
+            b.title = "Transaction Cancelled";
+            b.text = "You were not charged";
+        }
+        else
+        {
+            b.title = "Transaction failed";
+
+            b.text = "Something unexpectedly went wrong, sorry! \n\nError:\n";
+            b.text += e.Message;
+        }
+
+        b.Show();
+
+        Debug.LogError(e);
     }
 
 

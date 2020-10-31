@@ -30,14 +30,23 @@ public class MoveAlongPath : MonoBehaviour
     [SerializeField]
     bool lookAtTarget = false;
 
+    float baseSpeed = 1;
+
+    Vector3 lastWaypointPos;
+
     // Start is called before the first frame update
     void Start()
     {
-        Init();  
+        Init();
+        baseSpeed = speed;
+        lastWaypointPos = transform.position;
+
     }
 
     public void Init() {
         dir = PathDir.Forward;
+
+        currentIndex = 0;
 
         if (randomDir)
         {
@@ -89,6 +98,37 @@ public class MoveAlongPath : MonoBehaviour
     }
 
     void GetNextWaypoint() {
-        path.SetNextWaypoint(ref currentIndex, ref currentWaypoint, ref nextWaypoint, ref dir);
+        bool pingDown = false;
+        bool pingUp = false;
+        lastWaypointPos = currentWaypoint.position;
+        path.SetNextWaypoint(ref currentIndex, ref currentWaypoint, ref nextWaypoint, ref dir, ref pingDown, ref pingUp);
+
+
+        return;
+        if (pingDown) {
+            StartCoroutine("PingSpeedDown");
+        }
+        else if (pingUp) {
+            StartCoroutine("PingSpeedUp");
+        }
+    }
+    IEnumerator PingSpeedDown()
+    {
+        while (speed > .5f)
+        {
+            if (Vector3.Distance(transform.position, nextWaypoint.transform.position)<3.0f) {
+                speed -= .1f;
+                speed = Mathf.Clamp(speed, .5f, baseSpeed);
+            }
+                yield return new WaitForSeconds(.1f);
+        }
+    }
+    IEnumerator PingSpeedUp() {
+        StopAllCoroutines();
+        while (speed < baseSpeed) {
+            speed += 0.1f;
+            yield return new WaitForSeconds(.1f);
+        }
+        speed = baseSpeed;
     }
 }

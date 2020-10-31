@@ -3,22 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.GameFoundation;
-using UnityEngine.GameFoundation.DefaultCatalog;
-using UnityEngine.GameFoundation.UI;
+using UnityEngine.Purchasing;
 
 public class StoreManager : MonoBehaviour
 {
 
     
-    public void OnTransactionSuceed(BaseTransaction t) {
-        if (t.HasTag("boat"))
-        {
-            var definition = GameFoundation.catalogs.storeCatalog.FindItem(t.key);
+    public void OnTransactionSucceed(BaseTransaction t) {
 
-            GameFoundationManager.UpdateBoatDatabase();
+        if (t.HasTag("boat")){
+            var definition = GameFoundation.catalogs.storeCatalog.FindItem(t.key);
             PlayerPrefabManager.SetCurrent(t.rewards.GetItemExchange(0).item.key);
         }
-    
+
+        else if (t.HasTag("iap"))
+        {
+            GameFoundationManager.Instance.OnIAPPurchaseComplete((IAPTransaction)t);
+        }
+        else if (t.HasTag("coins")) {
+            GameFoundationManager.Instance.OnCoinPurchaseComplete(t);
+        }
+
+        GameFoundationManager.UpdateBoatDatabase();
+
+
     }
-   
+
+
+    public void OnTransactionFail(BaseTransaction t, Exception e)
+    {
+        if(t.HasTag("iap"))
+            GameFoundationManager.Instance.OnIAPPurchaseFailed(t, e);
+
+    }
+
+
 }

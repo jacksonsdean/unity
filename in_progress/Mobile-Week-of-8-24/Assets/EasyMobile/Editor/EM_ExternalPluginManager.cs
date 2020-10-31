@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System;
 
 namespace EasyMobile.Editor
 {
@@ -33,6 +34,9 @@ namespace EasyMobile.Editor
 
         // TapJoy
         public const string TapJoyNameSpace = "TapjoyUnity";
+
+        //UnityAds
+        public const string UnityAdNameSpace = "UnityEngine.Advertisements";
 
         // Unity Monetization
         public const string UnityMonetizationClass = "UnityEngine.Monetization";
@@ -177,6 +181,16 @@ namespace EasyMobile.Editor
             if (!EM_Settings.Advertising.Tapjoy.Enable)
                 return false;
             return EM_EditorUtil.NamespaceExists(TapJoyNameSpace);
+        }
+
+        /// Determindes if UnityAds plugin is available.
+        /// </summary>
+        /// <returns><c>true</c> if UnityAds plugin is available, otherwise <c>false</c>.</returns>
+        public static bool IsUnityAdAvail()
+        {
+            if (!EM_Settings.Advertising.UnityAds.Enable)
+                return false;
+            return EM_EditorUtil.NamespaceExists(UnityAdNameSpace);
         }
 
         /// Determines if Unity Monetization plugin is available.

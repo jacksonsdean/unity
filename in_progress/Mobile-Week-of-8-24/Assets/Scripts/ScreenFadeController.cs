@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ScreenFadeController : MonoBehaviour
 {
+    public static ScreenFadeController Instance;
     CanvasGroup group;
 
     [SerializeField]
@@ -12,8 +13,21 @@ public class ScreenFadeController : MonoBehaviour
     [SerializeField]
     float timeBetweenSteps = 0.01f;
 
+    public static float GetFadeTime() {
+        return Instance.GetFadeTimeInternal();
+    }
+
+    private float GetFadeTimeInternal() {
+        return fadeTime;
+    }
+
     void Awake()
     {
+        if (Instance)
+            Destroy(this.gameObject);
+        else
+            Instance = this;
+
         group = GetComponent<CanvasGroup>();   
     }
 

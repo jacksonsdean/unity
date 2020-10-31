@@ -5,12 +5,15 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner Instance;
+
     const string PREFAB_FOLDER = "Enemies";
     const string DIFFICULTY_0 = "Easy";
     const string DIFFICULTY_1 = "Medium";
     const string DIFFICULTY_2 = "Hard";
+    const string DIFFICULTY_3 = "Very Hard";
 
-    int nDifficultyLevels = 3;
+    int nDifficultyLevels = 4;
 
     [Serializable]
     public struct TierArray
@@ -43,6 +46,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
+        if (EnemySpawner.Instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else {
+            Instance = this;
+        }
+
         if (overrideEnemies)
         {
             enemyPrefabs = enemyPrefabsOverride;
@@ -54,6 +65,7 @@ public class EnemySpawner : MonoBehaviour
             enemyPrefabs[0].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_0);
             enemyPrefabs[1].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_1);
             enemyPrefabs[2].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_2);
+            enemyPrefabs[3].prefabs = Resources.LoadAll<GameObject>(PREFAB_FOLDER + "/" + DIFFICULTY_3);
 
         }
     }

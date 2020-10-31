@@ -12,7 +12,8 @@ public class PreventMultipleClicks : MonoBehaviour
     public void OnClick() {
         GetComponent<Button>().interactable = false;
         Invoke("EnableClick", refactoryPeriod);
-    
+        UIAudioManager.PlayClickSound();
+
     }
 
 
