@@ -72,33 +72,28 @@ public class GameManager : MonoBehaviour
     internal static float baseSpawnRate;
 
     internal static float lastTouchTime = 0.0f;
+    public static int storedScore = 0;
+    public static long storedMeters = 0;
 
-
-
-    [SerializeField]
-    private GameObject mainMenu =null;
-    static GameObject _mainMenu;
 
     [SerializeField]
     private GameObject playerPrefab = null;
 
-    [SerializeField]
-    private Transform playerSpawn = null;
 
     [SerializeField]
     private int scoreAnimThreshold;
 
-    [SerializeField]
-     GameObject backToMenuButton = null;
-    [SerializeField]
+
+    static GameObject _mainMenu;
+
+    private Transform playerSpawn = null;
+
+    GameObject backToMenuButton = null;
+    public RectTransform backButtonTransform = null;
     GameObject losePanel = null;
-    [SerializeField]
     GameObject continuePanel = null;
-    [SerializeField]
     RewardedAd continueRewardedAd = null;
 
-    [SerializeField]
-    public RectTransform backButtonTransform = null;
 
     private PhaseManager phaseManager;
     private CinemachineImpulseSource impulseSource;
@@ -124,17 +119,14 @@ public class GameManager : MonoBehaviour
         else{
             GameManager.Instance = this;
         }
-        _mainMenu = mainMenu;
       
         UpdateScreenEdges();
 
-        ShowMainMenu();
         impulseSource = GetComponent<CinemachineImpulseSource>();
         phaseManager = GetComponent<PhaseManager>();
 
         screenFadeController = GetComponentInChildren<ScreenFadeController>();
-        losePanel.SetActive(false);
-        continuePanel.SetActive(false);
+       
 
 
     }
@@ -151,8 +143,12 @@ public class GameManager : MonoBehaviour
     }
 
     static void Confirm(GameObject popup){
+        AnalyticsManager.LogUI("confirmPreRegGift", DesignEventType.Clicked);
+
     }
     static void Decline(GameObject popup){
+        AnalyticsManager.LogUI("declinePreRegGift", DesignEventType.Clicked);
+
     }
 
     static public void CheckForPreRegGift() {
@@ -275,6 +271,8 @@ public class GameManager : MonoBehaviour
     public void DeclineRewardContinue(GameObject popup) {
         GameOver();
         continuePanel.GetComponent<CanvasGroup>().DOFade(0, .4f).OnComplete(() => { continuePanel.SetActive(false); });
+        AnalyticsManager.LogUI("declineContinueReward", DesignEventType.Clicked);
+
     }
 
     public void RewardCompleteContinue(GameObject popup){
@@ -286,8 +284,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void GameOver() {
+        //Gameplay UI Meter Panel
+        MeterCounter.Instance.FadeOut();
 
         CalculateScore();
+        storedScore = score;
+        storedMeters = (long)meters;
+
         LeaderboardManager.ReportDistance(meters);
         LeaderboardManager.ReportScore(score);
 
@@ -299,7 +302,11 @@ public class GameManager : MonoBehaviour
         {
             if (i == 0)
             {
-                rts[i].GetComponent<Image>().DOFade(1.0f, 1).SetEase(Ease.InOutCubic).ChangeStartValue(0.0f).OnComplete(()=> { ScorePanel.DoAnimation(); });
+                Color startColor = rts[i].GetComponent<Image>().color;
+                rts[i].GetComponent<Image>().DOFade(1.0f, 1)
+                    .SetEase(Ease.InOutCubic)
+                    .ChangeStartValue(new Color(startColor.r,startColor.g,startColor.b, 0.0f))
+                    .OnComplete(()=> { ScorePanel.DoAnimation(); });
             }
             else if (i == 1 || i == 2 || i == 3)
             {
@@ -329,7 +336,7 @@ public class GameManager : MonoBehaviour
                 item.gameObject.SetActive(true);
                 item.GetComponent<RectTransform>().DOScaleY(1, 1.0f).SetEase(Ease.OutBounce).ChangeStartValue(0);
             });
-            backButtonTransform.DOAnchorPos(new Vector3(50, -250), .5f).SetEase(Ease.OutBounce).SetDelay(.4f);
+            backButtonTransform.DOAnchorPos(new Vector3(100, -320), .5f).SetEase(Ease.OutBounce).SetDelay(.4f);
             backButtonTransform.GetComponent<Image>().DOFade(1.0f, .6f).SetDelay(.3f);
             MeterCounter.Instance.FadeIn();
         }
@@ -350,7 +357,15 @@ public class GameManager : MonoBehaviour
     }
 
     private void SpawnPlayer() {
-        Instantiate(playerPrefab, playerSpawn.position, playerSpawn.rotation, null);
+        if (!playerSpawn)
+        {
+            Instantiate(playerPrefab, new Vector3( 0,-20.0f,0), Quaternion.Euler(-90.0f,0,0), null);
+
+        }
+        else
+        {
+            Instantiate(playerPrefab, playerSpawn.position, playerSpawn.rotation, null);
+        }
     }
 
   
@@ -367,6 +382,8 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMenu() {
         UIAudioManager.PlayClickSound();
+        AnalyticsManager.LogUI("returnToMenu", DesignEventType.Clicked);
+
         if (playing)
         {
             LeaderboardManager.ReportDistance(meters);
@@ -374,9 +391,14 @@ public class GameManager : MonoBehaviour
         }
         playing = false;
         OnEndGame?.Invoke();
-        LoadLevel(SceneManager.GetActiveScene().buildIndex);
+        LoadMenu();
         BannerAd.HideBannerAd();
     }
+
+    public void LoadMenu() {
+        LoadLevel(SceneManager.GetActiveScene().buildIndex);
+    }
+
 
     internal static float GetMaxSpeed()
     {
@@ -430,7 +452,7 @@ public class GameManager : MonoBehaviour
     public void FirstStart() {
 
         backToMenuButton.SetActive(true);
-        backButtonTransform.DOScale(1.0f,1.0f).ChangeStartValue(0.0f).SetEase(Ease.OutBounce);
+        backButtonTransform.DOScale(1.0f,1.0f).ChangeStartValue(Vector3.zero).SetEase(Ease.OutBounce);
 
         ResetScore();
 
@@ -445,7 +467,7 @@ public class GameManager : MonoBehaviour
         if (Options.zenMode)
         {
             FindObjectsOfType<CurrencyHudView>().ToList().ForEach(item => item.GetComponent<RectTransform>().DOScaleY(0, .4f).SetEase(Ease.InBounce));
-            backButtonTransform.DOAnchorPos(new Vector3(50, -50), .5f).SetEase(Ease.OutBounce).SetDelay(.4f);
+            backButtonTransform.DOAnchorPos(new Vector3(100, -100), .5f).SetEase(Ease.OutBounce).SetDelay(.4f);
             backButtonTransform.GetComponent<Image>().DOFade(.7f, .6f).SetDelay(.3f);
             MeterCounter.Instance.FadeOut();
         }
@@ -454,16 +476,18 @@ public class GameManager : MonoBehaviour
             MeterCounter.Instance.FadeIn();
         }
 
+        DoubleCoinsReward.Instance.Hide();
+
         SpawnPlayer();
         playing = true;
         lastTouchTime = Time.time;
 
-        if (continuePanel.activeSelf) {
+        if (continuePanel && continuePanel.activeSelf) {
             CanvasGroup group = continuePanel.GetComponent<CanvasGroup>();
             group.DOFade(0,.5f).OnComplete(()=>{ continuePanel.SetActive(false); });
         }
 
-        if (losePanel.activeSelf) {
+        if (losePanel&& losePanel.activeSelf) {
             RectTransform[] rts = losePanel.GetComponentsInChildren<RectTransform>();
             for (int i = 0; i < rts.Length; i++)
             {
@@ -486,17 +510,21 @@ public class GameManager : MonoBehaviour
 
 
         OnStartGame?.Invoke();
+
+        AnalyticsManager.LogProgression(GameAnalyticsSDK.GAProgressionStatus.Start, "Main", 0);
     }
 
     private void ClearCloseEnemies() {
         GameObject[] gos = GameObject.FindGameObjectsWithTag("Enemy");
         for (int i = 0; i < gos.Length; i++){
-            if (gos[i].transform.position.y < 30.0f)
+            if (i >= gos.Length) continue;
+            GameObject go = gos[i];
+            if (go.transform.position.y < 40.0f)
             {
-                gos[i].transform.DOMoveZ(20,.5f);
-                gos[i].transform.DOScaleZ(0, .5f).OnComplete(() =>
+                go.transform.DOMoveZ(20,.5f);
+                go.transform.DOScaleZ(0, .5f).OnComplete(() =>
                 {
-                    Destroy(gos[i]);
+                    Destroy(go);
                 });
             }
         }
@@ -543,19 +571,35 @@ public class GameManager : MonoBehaviour
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         screenFadeController.FadeIn();
+        _mainMenu = GameObject.FindGameObjectWithTag("MainMenu");
+        losePanel = GameObject.FindGameObjectWithTag("LosePanel");
+        continuePanel = GameObject.FindGameObjectWithTag("ContinuePanel");
+        backToMenuButton = GameObject.FindGameObjectWithTag("BackToMenuButton");
+        continueRewardedAd = GameObject.FindGameObjectWithTag("RewardedAd").GetComponent<RewardedAd>();
+        playerSpawn = GameObject.FindGameObjectWithTag("PlayerSpawn").transform;
+        backButtonTransform = backToMenuButton.GetComponent<RectTransform>();
+
+        ShowMainMenu();
+        losePanel.SetActive(false);
+        continuePanel.SetActive(false);
+
     }
 
 
     public void LoadLevel(int level)
     {
-        StartCoroutine(LoadLevelEnum(level));
+        ScreenFadeController.Instance.FadeOutTween().OnComplete(() => SceneManager.LoadScene(level));
     }
     public void LoadLevel(string level)
     {
         SceneUtility.GetBuildIndexByScenePath(level);
         int level_index = SceneUtility.GetBuildIndexByScenePath(level);
-        if (level_index>=0)
-            StartCoroutine(LoadLevelEnum(level_index));
+        if (level_index >= 0) {
+            ScreenFadeController.Instance.FadeOutTween().OnComplete(()=> SceneManager.LoadScene(level));
+
+            //ScreenFadeController.Instance.FadeInTween();
+            
+        }
     }
     IEnumerator LoadLevelEnum(int level)
     {

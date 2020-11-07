@@ -48,7 +48,7 @@ public class BoatItem : MonoBehaviour
 
     public void OnClick() {
         key = GetComponent<InventoryItemHudView>().itemDefinitionKey;
-
+        AnalyticsManager.LogUI("switchBoatButton_"+key, DesignEventType.Clicked);
         PlayerPrefabManager.SetCurrent(key);
         UpdateUI();
         UIAudioManager.PlayClickSound();

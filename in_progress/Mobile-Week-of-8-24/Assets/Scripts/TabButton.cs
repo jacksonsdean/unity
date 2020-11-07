@@ -42,6 +42,8 @@ public class TabButton : MonoBehaviour
     public void Click() {
         selected = !selected;
         tabView.Change(this);
+        AnalyticsManager.LogUI("tabButtonSwitch_"+this.gameObject.name, DesignEventType.Clicked);
+
     }
 
     internal void On()

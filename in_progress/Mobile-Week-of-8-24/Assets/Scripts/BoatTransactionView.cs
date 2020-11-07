@@ -31,14 +31,19 @@ public class BoatTransactionView : MonoBehaviour
         bool owned = GameFoundationManager.IsItemOwned(def.item);
         view.interactable = !owned;
 
+
         if (owned)
         {
             this.gameObject.SetActive(false);
             //view.itemIconImageField.GetComponent<Image>().color = disabledColor;
             //view.GetComponent<Image>().color = disabledColor;
         }
+        else
+        {
 
-        UpdateColor();
+            UpdateColor();
+        }
+
 
     }
 
@@ -55,6 +60,8 @@ public class BoatTransactionView : MonoBehaviour
             view.itemIconImageField.GetComponent<Image>().color = origItemColor;
 
         }
+        view.enabled = false;
+        view.enabled = true;
     }
 
 
@@ -71,18 +78,25 @@ public class BoatTransactionView : MonoBehaviour
     }
 
     public void OnGraphicClick() {
+        AnalyticsManager.LogUI("boatTransactionGraphic", DesignEventType.Clicked);
+
         if (!view.interactable) return;
         //view.purchaseButton.Purchase();
     }
 
+    void OnWalletChanged(BalanceChangedEventArgs args) {
+        UpdateUI();
+    }
 
     private void OnEnable() {
         GameFoundationManager.OnUpdateBoatDatabase += UpdateUI;
+       WalletManager.balanceChanged += OnWalletChanged;
         UpdateColor();
     }
     private void OnDisable()
     {
         GameFoundationManager.OnUpdateBoatDatabase -= UpdateUI;
+       WalletManager.balanceChanged -= OnWalletChanged;
 
     }
 }

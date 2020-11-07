@@ -50,6 +50,9 @@ public class UpgradeButton : MonoBehaviour
     {
         // Check if currency available
         StartCoroutine(InitiateTransaction(transaction));
+        AnalyticsManager.LogUI("upgradePurchaseButton_"+transaction.displayName, DesignEventType.Clicked);
+
+
     }
 
     IEnumerator InitiateTransaction(BaseTransaction transaction)
@@ -75,8 +78,6 @@ public class UpgradeButton : MonoBehaviour
             else
             {
                 var result = deferredResult.result;
-
-
             }
         }
         finally

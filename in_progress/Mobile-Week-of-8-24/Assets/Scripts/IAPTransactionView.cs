@@ -26,7 +26,7 @@ public class IAPTransactionView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mIndex = transform.GetSiblingIndex();
+        mIndex = GetIndex();
 
         spriteType = GetComponentInParent<StoreSpriteTypeTag>().Get();
         image.sprite = LoadSprite(spriteType, mIndex.ToString());
@@ -35,10 +35,16 @@ public class IAPTransactionView : MonoBehaviour
         tmp.text = t.amount.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+    private int GetIndex() {
+        int index = 0;
+        foreach (Transform item in transform.parent)
+        {
+            if (item.Equals(transform))
+                break;
+            if(!item.CompareTag("StoreVideo"))
+                index++;
+        }
+        return index;
     }
 
     Sprite LoadSprite(string type, string name) {

@@ -15,7 +15,7 @@ public class PickupCoin : Pickup
     [SerializeField]
     GameObject gemSwap;
 
-    private void Awake()
+    protected override void Awake()
     {
         if (Random.Range(0.0f, 1.0f) < gemChance) {
             SwapForGem();

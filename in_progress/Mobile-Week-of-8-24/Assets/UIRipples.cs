@@ -14,7 +14,7 @@ public class UIRipples : MonoBehaviour
     {
         parentTransform = transform.parent.GetComponent<RectTransform>();
         preMoveScale = GetComponent<RectTransform>().localScale;
-        transform.parent = null;
+        transform.SetParent(null);
         GetComponent<RectTransform>().localScale = preMoveScale;
     }
 

@@ -54,7 +54,7 @@ public class MeterCounter : MonoBehaviour
         if (isShown) return;
         isShown = true;
         group.DOFade(1.0f,.85f).ChangeStartValue(0.0f);
-        transform.parent.GetComponent<RectTransform>().DOAnchorPosY(-33.0f, .85f).SetEase(Ease.OutBounce).ChangeStartValue(300.0f);
+        transform.parent.GetComponent<RectTransform>().DOAnchorPosY(-33.0f, .85f).SetEase(Ease.OutBounce).ChangeStartValue(Vector2.up*300.0f);
 
 
         if (Screen.width < Screen.height)
@@ -62,7 +62,7 @@ public class MeterCounter : MonoBehaviour
             foreach (var rt in secondaryGroup.GetComponentsInChildren<RectTransform>())
             {
                 if (rt.gameObject.Equals(secondaryGroup.gameObject) || rt.GetComponent<UnityEngine.UI.Text>() != null) continue;
-                rt.DOScaleX(1.0f, .3f).SetDelay(.85f).ChangeStartValue(0.0f);
+                rt.DOScaleX(1.0f, .3f).SetDelay(.85f).ChangeStartValue(new Vector3(0.0f,1.0f,1.0f));
             }
         }
     }   
@@ -74,8 +74,8 @@ public class MeterCounter : MonoBehaviour
             if (rt.gameObject.Equals(secondaryGroup.gameObject)) continue;
             rt.DOScaleX(0.0f, .3f);
         }
-        group.DOFade(0.0f, .85f).SetDelay(.35f);
         transform.parent.GetComponent<RectTransform>().DOAnchorPosY(300.0f,1.0f).SetDelay(.35f);
+        group.DOFade(0.0f, .85f).SetDelay(1.0f);
     }
 
    

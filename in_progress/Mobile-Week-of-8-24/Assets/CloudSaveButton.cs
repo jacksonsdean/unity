@@ -12,5 +12,7 @@ public class CloudSaveButton : MonoBehaviour
     }
     public void OpenCloudSaveUI() {
         SavedGameManager.ShowGPGSSavedGameUI();
+        AnalyticsManager.LogUI("optionsCloudSave", DesignEventType.Clicked);
+
     }
 }

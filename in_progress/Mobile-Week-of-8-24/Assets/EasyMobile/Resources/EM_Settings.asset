@@ -21,8 +21,8 @@ MonoBehaviour:
       interstitialAdNetwork: 0
       rewardedAdNetwork: 0
     mAndroidDefaultAdNetworks:
-      bannerAdNetwork: 0
-      interstitialAdNetwork: 0
+      bannerAdNetwork: 10
+      interstitialAdNetwork: 10
       rewardedAdNetwork: 10
     mAdColony:
       mEnable: 0
@@ -212,13 +212,19 @@ MonoBehaviour:
         keys: []
         values: []
       mCustomInterstitialAdIds:
-        keys: []
-        values: []
+        keys:
+        - mName: ReturnToMainMenuInterstitial
+          mUseCustomName: 1
+        values:
+        - mIosId: ReturnToMainMenuInterstitial
+          mAndroidId: ReturnToMainMenuInterstitial
       mCustomRewardedAdIds:
         keys:
         - mName: Continue
           mUseCustomName: 1
         - mName: Rewarded Coins
+          mUseCustomName: 1
+        - mName: Rewarded Gems
           mUseCustomName: 1
         - mName: Before Level Coins
           mUseCustomName: 1
@@ -227,6 +233,8 @@ MonoBehaviour:
           mAndroidId: Continue
         - mIosId: rewardedCoins
           mAndroidId: rewardedCoins
+        - mIosId: RewardedGems
+          mAndroidId: RewardedGems
         - mIosId: beforeLevelCoins
           mAndroidId: beforeLevelCoins
       mEnableTestMode: 0

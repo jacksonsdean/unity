@@ -1,6 +1,9 @@
-﻿using EasyMobile;
+﻿using DG.Tweening;
+using EasyMobile;
+using System.CodeDom;
 using UnityEngine;
 using UnityEngine.GameFoundation;
+using UnityEngine.UI;
 
 public class RewardedAd : MonoBehaviour
 {
@@ -16,6 +19,8 @@ public class RewardedAd : MonoBehaviour
 
     [SerializeField]
     int coinRewardAmount = 0;
+    [SerializeField]
+    int gemRewardAmount = 0;
 
     [SerializeField]
     Color graphicTint = Color.white;
@@ -27,9 +32,15 @@ public class RewardedAd : MonoBehaviour
 
     static AdPlacement beforeLevelCoinsAd = AdPlacement.PlacementWithName("Before Level Coins");
     static AdPlacement rewardedCoinsAd = AdPlacement.PlacementWithName("Rewarded Coins");
-
+    static AdPlacement rewardedGemsAd = AdPlacement.PlacementWithName("Rewarded Gems");
+    
+    static Button coinsBeforeLevelButton = null;
+    
     public static int GetRewardedCoinsAmount() {
         return Instance.coinRewardAmount;
+    } 
+    public static int GetRewardedGemsAmount() {
+        return Instance.gemRewardAmount;
     }
 
     private void Awake()
@@ -46,6 +57,7 @@ public class RewardedAd : MonoBehaviour
             Advertising.LoadRewardedAd(continueAd);
             Advertising.LoadRewardedAd(beforeLevelCoinsAd);
             Advertising.LoadRewardedAd(rewardedCoinsAd);
+            Advertising.LoadRewardedAd(rewardedGemsAd);
         }
         catch (System.Exception e) {
             Debug.LogError(e);
@@ -71,18 +83,22 @@ public class RewardedAd : MonoBehaviour
     {
         Debug.Log("Rewarded ad has completed. The user should be rewarded now.");
 
-
-
-        if (location.Equals(continueAd)) {
+        if (location.Equals(continueAd))
+        {
             acceptRewardCallback?.Invoke();
             showingAd = false;
-        } 
-        else if (location.Equals(rewardedCoinsAd)) {
+        }
+        else if (location.Equals(rewardedCoinsAd))
+        {
             RewardWithCoins();
-        } 
-        else if (location.Equals(beforeLevelCoinsAd)) {
+        }
+        else if (location.Equals(rewardedGemsAd)){
+            RewardWithGems();
+        }
+        else if (location.Equals(beforeLevelCoinsAd))
+        {
             RewardWithBeforeLevelCoins();
-        } 
+        }
         else { }
        
     }
@@ -102,6 +118,7 @@ public class RewardedAd : MonoBehaviour
 
     public void OnConfirmContinue(GameObject popup) {
         showingAd = false;
+        AnalyticsManager.LogUI("acceptContinueReward", DesignEventType.Clicked);
 
         // Show it if it's ready
         if (Advertising.IsRewardedAdReady(continueAd))
@@ -132,13 +149,16 @@ public class RewardedAd : MonoBehaviour
         b.delay = delay;
         b.graphic = graphic;
         b.graphicTint = graphicTint;
+        b.blockBackgroundRaycasts = false;
         b.Show();
 
     }
 
 
-    public static void ShowCoinsBeforeLevelAd() {
+    public static void ShowCoinsBeforeLevelAd(UnityEngine.UI.Button button) {
+        coinsBeforeLevelButton = button;
         // Show it if it's ready
+
         if (Advertising.IsRewardedAdReady(beforeLevelCoinsAd))
         {
             Advertising.ShowRewardedAd(beforeLevelCoinsAd);
@@ -150,17 +170,44 @@ public class RewardedAd : MonoBehaviour
         {
             Advertising.ShowRewardedAd(rewardedCoinsAd); ;
         }
+    }    
+    
+    public static void ShowRewardedGemsAd() {
+        // Show it if it's ready
+        if (Advertising.IsRewardedAdReady(rewardedGemsAd))
+        {
+            Advertising.ShowRewardedAd(rewardedGemsAd); ;
+        }
     }
 
     private static void RewardWithCoins() {
         Currency currency = GameFoundation.catalogs.currencyCatalog.FindItem("coins");
-        WalletManager.AddBalance(currency, GetRewardedCoinsAmount());
+        int amt = 0;
+        if (GameManager.coinsThisRun > 0)
+            amt = GameManager.coinsThisRun;
+        else
+            amt = GetRewardedCoinsAmount();
+
+        WalletManager.AddBalance(currency, amt);
     }
+
+    private static void RewardWithGems()
+    {
+        Currency currency = GameFoundation.catalogs.currencyCatalog.FindItem("gems");
+        WalletManager.AddBalance(currency, GetRewardedGemsAmount());
+    }
+
     private static void RewardWithBeforeLevelCoins() {
+        float time = 5.0f * 60.0f;
         UpgradeManager.BeginTemporary(
-           UpgradeManager.GetCoinsPerPickupMultiplier,
-           UpgradeManager.SetCoinsPerPickupMultiplier,
-           1.0f, 5.0f * 60.0f); // Add 1 to multiplier
+            UpgradeManager.GetCoinsPerPickupMultiplier,
+            UpgradeManager.SetCoinsPerPickupMultiplier,
+            1.0f,        // Add 1 to multiplier
+            time);
+
+        // Renable button 
+        float t = 1.0f;
+        DOTween.To(() => t, (float x) => { t = x; }, 0.0f, time).OnComplete(() => coinsBeforeLevelButton.enabled = true);
     }
 
 }

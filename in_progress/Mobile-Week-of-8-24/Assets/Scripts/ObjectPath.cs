@@ -41,6 +41,7 @@ public class ObjectPath : MonoBehaviour
     }
 
     public ObjectWaypoint Get(int index) {
+        if (waypoints.Length <= 0) return null;
         if (index >= waypoints.Length)
             return waypoints[waypoints.Length - 1];
         if (index < 0)

@@ -36,6 +36,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 8.831963, y: 35.848404, z: 8.082424}
   m_Center: {x: 3.32, y: 17.92421, z: -3.88}
+--- !u!64 &643956729924907926
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7147746752031753881}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: f652dd71fc24c7540908f3ec71d5df60, type: 3}
 --- !u!1001 &203922697288771801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -783,7 +797,7 @@ PrefabInstance:
     - target: {fileID: 8695991384117793943, guid: 74d8b01685e3a1743a87bc2e31a31962,
         type: 3}
       propertyPath: m_Name
-      value: EnemyRock 6
+      value: Medium00_Rocks
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6167427143549060480, guid: 74d8b01685e3a1743a87bc2e31a31962, type: 3}
@@ -1446,6 +1460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: rock (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: f652dd71fc24c7540908f3ec71d5df60, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f652dd71fc24c7540908f3ec71d5df60, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.532782
@@ -1492,6 +1510,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f652dd71fc24c7540908f3ec71d5df60, type: 3}
+--- !u!1 &7147746752031753881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: f652dd71fc24c7540908f3ec71d5df60,
+    type: 3}
+  m_PrefabInstance: {fileID: 7147746752031850553}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7937303890284646855
 PrefabInstance:
   m_ObjectHideFlags: 0

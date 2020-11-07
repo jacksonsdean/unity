@@ -8,13 +8,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum TempUpgradeType {
+public enum TempUpgradeType {
     CoinsMultiplier
 }
 public class TemporaryUpgrade : MonoBehaviour
 {
     [SerializeField]
-    TempUpgradeType type = TempUpgradeType.CoinsMultiplier;
+    public TempUpgradeType type = TempUpgradeType.CoinsMultiplier;
 
     [SerializeField]
     TextMeshProUGUI timeLabel = null;
@@ -60,6 +60,10 @@ public class TemporaryUpgrade : MonoBehaviour
         {
             StartCoroutine(CountDown(field, UpgradeManager.upgradeTimeLeft[field][0], UpgradeManager.upgradeTimeLeft[field][1]));
             ActiveUI();
+            GetComponentInChildren<Button>().enabled = false;
+            // Renable button after time
+            float t = 1.0f;
+            DOTween.To(() => t, (float x) => { t = x; }, 0.0f, UpgradeManager.upgradeTimeLeft[field][0]).OnComplete(() => GetComponentInChildren<Button>().enabled = true);
         }
 
         if (!isActive && doVideoAnim){
@@ -144,8 +148,7 @@ public class TemporaryUpgrade : MonoBehaviour
     }
 
     private void DoVideoAnimOpen(){
-        videoRT.DOAnchorPosX(0.0f,1.0f).ChangeStartValue(-30.0f);
-        videoRT.DOAnchorPosY(0.0f, 1.0f).ChangeStartValue(-140.0f);
+        videoRT.DOAnchorPos(new Vector2(0.0f,0.0f),1.0f).ChangeStartValue(new Vector2(-30.0f, -140.0f));
 
         videoRT.DOLocalRotate(Vector3.forward*25.0f,.60f).SetDelay(.5f).SetEase(Ease.OutElastic).ChangeStartValue(Vector3.forward * 25.0f);
 
@@ -161,15 +164,24 @@ public class TemporaryUpgrade : MonoBehaviour
 
     }
 
-    public void Hide() {
-            GetComponent<RectTransform>().DOScale(0.0f, 1.0f).SetEase(Ease.OutSine).OnComplete(()=> { gameObject.SetActive(false); });
+    public void Hide()
+    {
+        GetComponent<RectTransform>().DOAnchorPosX(500.0f, 1.0f).SetRelative(true).OnComplete(()=> { gameObject.AddComponent<LayoutElement>().ignoreLayout = true; });
     }
 
-    public void OnClick() {
+    public void Show()
+    {
+        GetComponent<RectTransform>().DOAnchorPosX(0.0f, 1.0f).SetRelative(false).OnComplete(() => { Destroy(GetComponent<LayoutElement>()); }); 
+    }
+
+    public void OnClick(Button button) {
+       button.enabled = false;
         switch (type)
         {
             case TempUpgradeType.CoinsMultiplier:
-               RewardedAd.ShowCoinsBeforeLevelAd();
+               RewardedAd.ShowCoinsBeforeLevelAd(button);
+                AnalyticsManager.LogUI("mainMenuRewardedAdCoinsMultiplier", DesignEventType.Clicked);
+
                 break;
             default:
                 break;

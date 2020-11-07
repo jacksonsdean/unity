@@ -17,7 +17,7 @@ public class LeaderboardManager : MonoBehaviour
 
     public static bool userDeclinedAskAgain = false;
 
-
+    static bool dirty = false;
     private void Awake()
     {
         if (current != null)
@@ -48,6 +48,8 @@ public class LeaderboardManager : MonoBehaviour
 
     private static void ManualInit(GameObject popup = null)
     {
+        AnalyticsManager.LogUI("acceptedLogInPopup", DesignEventType.Clicked);
+
         if (!GameServices.IsInitialized()){
             GameServices.Init();
         }
@@ -66,13 +68,20 @@ public class LeaderboardManager : MonoBehaviour
 
         SavedGameManager.ReadDefaultSavedGame();
 
+        //report stored
+        if (dirty) {
+            ReportDistance(GameManager.storedMeters);
+            ReportScore((int)GameManager.storedScore);
+        }
     }
 
 
-    static void DeclineLogIn(GameObject popup) {
+    static void DeclineLogInAskAgain(GameObject popup) {
         userDeclinedAskAgain = true;
         PlayerPrefs.SetInt(DECLINE_ASK_AGAIN_PREF, 1);
         PlayerPrefs.Save();
+        AnalyticsManager.LogUI("declineLogInAskAgain", DesignEventType.Clicked);
+
     }
 
     static void OnUserLoginFailed()
@@ -80,7 +89,7 @@ public class LeaderboardManager : MonoBehaviour
         Debug.Log("User login failed.");
         PopupBuilder popup = new PopupBuilder();
         popup.title = "Not logged in";
-        popup.declineCallback = DeclineLogIn;
+        popup.declineCallback = DeclineLogInAskAgain;
         popup.showConfirmButton = true;
         popup.showDeclineButton = true;
         popup.text = "Failed to log in, try again next time you start the game?";
@@ -99,12 +108,16 @@ public class LeaderboardManager : MonoBehaviour
             ShowLogInPopup("the leaderboard");
         }
     }
+    static void DeclineLogInCallback(GameObject g) {
+        AnalyticsManager.LogUI("declineLogInPopup", DesignEventType.Clicked);
+    }
 
     public static void ShowLogInPopup(string serviceName)
     {
         PopupBuilder popup = new PopupBuilder();
         popup.title = "Not logged in";
         popup.confirmCallback = ManualInit;
+        popup.declineCallback = DeclineLogInCallback;
         popup.showConfirmButton = true;
 
 #if UNITY_ANDROID
@@ -125,13 +138,15 @@ public class LeaderboardManager : MonoBehaviour
         if (GameServices.IsInitialized())
         {
             GameServices.ReportScore((long) meters, EM_GameServicesConstants.Leaderboard_Distance);
+            dirty = false;
         }
         else
         {
+            dirty = true;
             // TODO SHOW NOTE/ LEADERBOARD BUTTON
 
 #if UNITY_ANDROID
-    Debug.Log("Cannot add score to leaderboard: The user is not logged in to Google Play Games.");
+            Debug.Log("Cannot add score to leaderboard: The user is not logged in to Google Play Games.");
 
 #elif UNITY_IOS
     Debug.Log("Cannot add score to leaderboard: The user is not logged in to Game Center.");
@@ -145,10 +160,11 @@ public class LeaderboardManager : MonoBehaviour
         if (GameServices.IsInitialized())
         {
             GameServices.ReportScore((long)score, EM_GameServicesConstants.Leaderboard_Score);
+            dirty = false;
         }
         else
         {
-
+            dirty = true;
 #if UNITY_ANDROID
             Debug.Log("Cannot add score to leaderboard: The user is not logged in to Google Play Games.");
 

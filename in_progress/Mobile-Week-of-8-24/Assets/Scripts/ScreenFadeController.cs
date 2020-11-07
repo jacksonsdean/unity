@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class ScreenFadeController : MonoBehaviour
 {
     public static ScreenFadeController Instance;
@@ -56,6 +56,14 @@ public class ScreenFadeController : MonoBehaviour
         return StartCoroutine(FadeOutEnum(overrideTime));
     }
 
+    public Tween FadeInTween() {
+        return group.DOFade(0.0f, fadeTime);
+    }
+
+    public Tween FadeOutTween()
+    {
+        return group.DOFade(1.0f, fadeTime);
+    }
 
     private IEnumerator FadeOutEnum(float overrideTime = -1)
     {

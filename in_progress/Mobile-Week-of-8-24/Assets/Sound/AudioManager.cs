@@ -72,8 +72,8 @@ public class AudioManager : MonoBehaviour
         AudioClip clip = _themes[UnityEngine.Random.Range(0, _themes.Length)];
         PlayInternal(clip);
         isLooping = loop;
-        if (isLooping)
-            StartCoroutine(Loop(clip.length - fadeTime / 2.0f));
+        //if (isLooping)
+        //    StartCoroutine(Loop(clip.length - fadeTime / 2.0f));
     }
 
     IEnumerator Loop(float delayTime)
@@ -94,18 +94,23 @@ public class AudioManager : MonoBehaviour
 
     
     private void Update(){
-        if (audioSource.isPlaying)
-        {
-            timeSinceLastPlay = 0.0f;
+        if (!audioSource.isPlaying && isLooping) {
+            audioSource.clip = null;
+            PlayRandomThemeInternal(true);
         }
-        else {
-            if (isLooping) {
-                timeSinceLastPlay += Time.deltaTime;
-                if (timeSinceLastPlay > timeBetweenSongsThreshold) {
-                    PlayRandomThemeInternal();
-                }
-            }
-        }
+        
+        //if (audioSource.isPlaying)
+        //{
+        //    timeSinceLastPlay = 0.0f;
+        //}
+        //else {
+        //    if (isLooping) {
+        //        timeSinceLastPlay += Time.deltaTime;
+        //        if (timeSinceLastPlay > timeBetweenSongsThreshold) {
+        //            PlayRandomThemeInternal();
+        //        }
+        //    }
+        //}
     }
 
     private void FadeToClip(AudioClip clip)

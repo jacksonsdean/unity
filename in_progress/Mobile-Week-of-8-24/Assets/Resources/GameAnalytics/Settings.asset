@@ -62,10 +62,12 @@ MonoBehaviour:
   CustomDimensions01: []
   CustomDimensions02: []
   CustomDimensions03: []
-  ResourceItemTypes: []
+  ResourceItemTypes:
+  - Boat
+  - Currency
   ResourceCurrencies:
-  - Coins
-  - Gems
+  - Coin
+  - Gem
   LastCreatedGamePlatform: -1
   Platforms: 0b000000
   CurrentInspectorState: 1

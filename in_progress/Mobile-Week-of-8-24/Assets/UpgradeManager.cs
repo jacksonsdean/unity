@@ -53,6 +53,7 @@ public class UpgradeManager : MonoBehaviour
     TemporaryUpgrade temporaryCoinsMultiplier = null;
 
 
+
     public static float GetCoinsPerPickupMultiplier() {
         return CoinsPerPickupMultiplier;
     }
@@ -75,6 +76,7 @@ public class UpgradeManager : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(this.gameObject);
+
     }
     private void Start()
     {
@@ -164,5 +166,26 @@ public class UpgradeManager : MonoBehaviour
 
     }
 
-   
+    private void LevelLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode){
+        GameObject bar = GameObject.FindGameObjectWithTag("UpgradesBar");
+        if (bar)
+        {
+            foreach (Transform item in bar.transform)
+            {
+                if (item.GetComponent<TemporaryUpgrade>() && item.GetComponent<TemporaryUpgrade>().type == TempUpgradeType.CoinsMultiplier)
+                {
+                    temporaryCoinsMultiplier = item.GetComponent<TemporaryUpgrade>();
+                }
+            }
+        }
+    }
+    private void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += LevelLoaded;
+    }
+    private void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= LevelLoaded;
+    }
+
 }

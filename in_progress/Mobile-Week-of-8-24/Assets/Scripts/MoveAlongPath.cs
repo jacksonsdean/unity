@@ -48,25 +48,23 @@ public class MoveAlongPath : MonoBehaviour
 
         currentIndex = 0;
 
-        if (randomDir)
-        {
-            if (Random.Range(0, 1.0f) > 0.5f)
-            {
+        if (randomDir){
+            if (Random.Range(0, 1.0f) > 0.5f) {
                 dir = PathDir.Back;
             }
 
         }
 
-        if (startAtRandomPoint)
-        {
+        if (startAtRandomPoint){
             currentWaypoint = path.GetRandom(out currentIndex);
         }
-        else
-        {
+        else{
             currentIndex = 0;
             currentWaypoint = path.Get(currentIndex);
         }
-        transform.position = currentWaypoint.transform.position;
+
+        if(currentWaypoint)
+            transform.position = currentWaypoint.transform.position;
 
         GetNextWaypoint();
     }

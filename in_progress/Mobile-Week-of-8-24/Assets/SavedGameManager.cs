@@ -59,15 +59,22 @@ public class SavedGameManager : MonoBehaviour
     // Open a saved game with automatic conflict resolution
     public static void OpenSavedGame(Action<SavedGame, string> callbackOverride=null)
     {
-        // Open a saved game and resolve conflicts automatically if any.
-        if (callbackOverride == null) {
-            GameServices.SavedGames.OpenWithAutomaticConflictResolution(SAVED_GAME_NAME, OpenSavedGameDefaultCallback);
+        try
+        {
+            // Open a saved game and resolve conflicts automatically if any.
+            if (callbackOverride == null)
+            {
+                GameServices.SavedGames.OpenWithAutomaticConflictResolution(SAVED_GAME_NAME, OpenSavedGameDefaultCallback);
 
+            }
+            else
+            {
+                GameServices.SavedGames.OpenWithAutomaticConflictResolution(SAVED_GAME_NAME, callbackOverride);
+            }
         }
-        else {
-            GameServices.SavedGames.OpenWithAutomaticConflictResolution(SAVED_GAME_NAME, callbackOverride);
+        catch (NullReferenceException e) {
+                Debug.LogWarning("Saved Game Open Null Reference Exception: " + e.ToString());
         }
-
 
     }
 
@@ -107,12 +114,17 @@ public class SavedGameManager : MonoBehaviour
         {
             // The saved game is open and ready for writing
             // Prepare the updated metadata of the saved game
-            
-            GameServices.SavedGames.WriteSavedGameData(
-                savedGame,
-                data,
-                infoUpdate, OnSavedGameUpdated
-            );
+            try
+            {
+                GameServices.SavedGames.WriteSavedGameData(
+                    savedGame,
+                    data,
+                    infoUpdate, OnSavedGameUpdated
+                );
+            }
+            catch (NullReferenceException e) {
+                Debug.LogWarning("Saved Game Write Null Reference Exception: " + e.ToString());
+            }
             
         }
         else
@@ -193,30 +205,37 @@ public static void ReadDefaultSavedGame()
     // Updates values with data from saved game
     static void OnSavedGameRead(SavedGame game, byte[] data, string error)
     {
-        if (!string.IsNullOrEmpty(error))
+        try
         {
-            //NativeUI.Alert("Alert", "Saved game reading failed with error: " + error);
-        }
-        else
-        {
-            if (data.Length > 0)
+            if (!string.IsNullOrEmpty(error))
             {
-                // Data processing
-                string filePath = Application.persistentDataPath + "/" + GAME_FOUNDATION_DATA_FILENAME;
-
-                if (!File.Exists(filePath))
+                //NativeUI.Alert("Alert", "Saved game reading failed with error: " + error);
+            }
+            else
+            {
+                if (data.Length > 0)
                 {
-                    File.Create(filePath);
+                    // Data processing
+                    string filePath = Application.persistentDataPath + "/" + GAME_FOUNDATION_DATA_FILENAME;
+
+                    if (!File.Exists(filePath))
+                    {
+                        File.Create(filePath);
+                    }
+                    // Write to file:
+                    File.WriteAllBytes(filePath, data);
+                    GameFoundationManager.LoadFromDisk();
+                    GameManager.CheckForPreRegGift();
+                    //NativeUI.Alert("Saved Game Data Retrieved", "The data of saved game '" + game.Name + "' contains coin value: " + WalletManager.GetBalance("coins"));
                 }
-                // Write to file:
-                File.WriteAllBytes(filePath, data);
-                GameFoundationManager.LoadFromDisk();
-                GameManager.CheckForPreRegGift();
-                //NativeUI.Alert("Saved Game Data Retrieved", "The data of saved game '" + game.Name + "' contains coin value: " + WalletManager.GetBalance("coins"));
+                else
+                {
+                    //NativeUI.Alert("Alert", "Saved game '" + game.Name + "' has no data!");
+                }
             }
-            else { 
-                //NativeUI.Alert("Alert", "Saved game '" + game.Name + "' has no data!");
-            }
+        }
+        catch (NullReferenceException e) {
+            Debug.LogError(e);
         }
     }
 

@@ -51,6 +51,8 @@ public class MainMenu : MonoBehaviour
         Options.Instance = options.GetComponent<Options>();
         Options.LoadFromSave();
 
+        DOTween.SetTweensCapacity(500, 50);
+
     }
     private void Start(){
         //rippleCameraGame.gameObject.SetActive(false);
@@ -65,7 +67,7 @@ public class MainMenu : MonoBehaviour
            if(item.GetComponent<Button>())
                 item.GetComponent<Button>().enabled = false;
         }
-
+        AnalyticsManager.LogUI("mainMenuStart", DesignEventType.Clicked);
         UIAudioManager.PlayClickSound();
         DoStartGameAnimation();
     }
@@ -76,10 +78,12 @@ public class MainMenu : MonoBehaviour
 
         if (inventory && !inventory.activeSelf){
             OpenUI(rt);
+            AnalyticsManager.LogUI("mainMenuInventory", DesignEventType.Clicked);
 
         }
         else{
             CloseUI(rt);
+            AnalyticsManager.LogUI("mainMenuInventory", DesignEventType.Closed);
         }
     }
 
@@ -92,12 +96,14 @@ public class MainMenu : MonoBehaviour
         {
             OpenUI(rt);
             options.GetComponent<Options>().OnOpen();
+            AnalyticsManager.LogUI("mainMenuOptions", DesignEventType.Clicked);
 
         }
         else
         {
             options.GetComponent<Options>().OnClose();
             ShowUpgradeBar();
+            AnalyticsManager.LogUI("mainMenuOptions", DesignEventType.Closed);
         }
     }
 
@@ -123,6 +129,8 @@ public class MainMenu : MonoBehaviour
     public void OnClickLeaderboard() {
         UIAudioManager.PlayClickSound();
         LeaderboardManager.current.ShowLeaderboard();
+        AnalyticsManager.LogUI("mainMenuLeaderboard", DesignEventType.Clicked);
+
     }
 
     public void OnMenuReady() {
@@ -137,17 +145,21 @@ public class MainMenu : MonoBehaviour
         if (!store.activeSelf)
         {
             OpenUI(rt);
+            AnalyticsManager.LogUI("mainMenuStore", DesignEventType.Clicked);
 
         }
         else
         {
             CloseUI(rt);
+            AnalyticsManager.LogUI("mainMenuStore", DesignEventType.Closed);
         }
     }
 
     public void OnClickGallery(){
         UIAudioManager.PlayClickSound();
         GameManager.Instance.LoadLevel("Gallery");
+        AnalyticsManager.LogUI("mainMenuGallery", DesignEventType.Clicked);
+
     }
 
     public void OnClickUpgrades() {
@@ -156,10 +168,12 @@ public class MainMenu : MonoBehaviour
 
         if (upgrades.activeSelf) {
             CloseUI(rt);
+            AnalyticsManager.LogUI("mainMenuUpgrades", DesignEventType.Closed);
         }
         else
         {
             OpenUI(rt);
+            AnalyticsManager.LogUI("mainMenuUpgrades", DesignEventType.Clicked);
             UpgradeManager.ResetUpgrades();
         }
     }
@@ -198,7 +212,7 @@ public class MainMenu : MonoBehaviour
 
         title.DOAnchorPosY(title.anchoredPosition.y, inTime)
             .SetDelay(delay)
-            .ChangeStartValue(1000.0f);
+            .ChangeStartValue(new Vector2(0.0f,1000.0f));
 
 
         DOTween.To(
@@ -288,6 +302,7 @@ public class MainMenu : MonoBehaviour
 
         foreach (RectTransform item in buttons.transform)
         {
+            item.DOKill();
             item.DOPunchRotation(Vector3.forward * UnityEngine.Random.Range(-10.0f, 10.0f), punchTime / 1.5f);
 
             item.DOScale(.90f, punchTime*2.0f)

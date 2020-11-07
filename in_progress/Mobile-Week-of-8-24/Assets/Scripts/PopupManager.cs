@@ -25,7 +25,7 @@ public class PopupBuilder {
     public PopupCallback declineCallback = null;
     public float delay = 0;
     public Color? graphicTint = null;
-
+    public bool blockBackgroundRaycasts = true;
     public GameObject Show() {
         return PopupManager.ShowPopup(this);
     }
@@ -41,9 +41,16 @@ public class PopupBuilder {
         this.textSize = 0;
         this.textAlignment = TextAlignmentOptions.Center;
         this.delay = 0;
+        this.blockBackgroundRaycasts = true;
         Color? gfxTint = null;
     }
-    public PopupBuilder(string title, string text, Sprite graphic = null, bool showConfirmButton = true, bool showDeclineButton = false, PopupCallback confirmCallback = null, PopupCallback declineCallback = null, float textSize = 0, TextAlignmentOptions textAlign=TextAlignmentOptions.Center, float delay =0, Color? gfxTint = null)
+    public PopupBuilder(
+        string title, string text, Sprite graphic = null, bool showConfirmButton = true,
+        bool showDeclineButton = false, PopupCallback confirmCallback = null,
+        PopupCallback declineCallback = null, float textSize = 0,
+        TextAlignmentOptions textAlign = TextAlignmentOptions.Center, float delay = 0,
+        Color? gfxTint = null, bool blockBackgroundRaycasts = true
+        )
     {
         this.title = title;
         this.text = text;
@@ -56,6 +63,7 @@ public class PopupBuilder {
         this.textAlignment = textAlign;
         this.delay = delay;
         this.graphicTint = gfxTint;
+        this.blockBackgroundRaycasts = blockBackgroundRaycasts;
 
     }
 }
@@ -87,7 +95,7 @@ public class PopupManager : MonoBehaviour
     {
         UIAudioManager.PlayClickSound();
         if (thisPopup){
-            var components = thisPopup.GetComponent<PopupComponents>();
+            var components = thisPopup.GetComponentInChildren<PopupComponents>();
             components.confirm.interactable = false;
             components.confirmCallback?.Invoke(thisPopup);
             Close(thisPopup);
@@ -98,7 +106,7 @@ public class PopupManager : MonoBehaviour
         UIAudioManager.PlayClickSound();
 
         if (thisPopup) {
-        var components = thisPopup.GetComponent<PopupComponents>();
+        var components = thisPopup.GetComponentInChildren<PopupComponents>();
         components.decline.interactable = false;
         components.declineCallback?.Invoke(thisPopup);
         Close(thisPopup);
@@ -127,14 +135,16 @@ public class PopupManager : MonoBehaviour
          float textSize = 0,
          TextAlignmentOptions textAlign = TextAlignmentOptions.Center,
          float delay = 0,
-         Color? gfxTint = null)
+         Color? gfxTint = null,
+         bool blockBackgroundRaycasts = true
+         )
     {
-        return Instance.Show(title, text, graphic, showConfirmButton, showDeclineButton,confirmCallback, declineCallback, textSize, textAlign, delay, gfxTint);
+        return Instance.Show(title, text, graphic, showConfirmButton, showDeclineButton,confirmCallback, declineCallback, textSize, textAlign, delay, gfxTint, blockBackgroundRaycasts);
     }
 
 
     public GameObject Show(PopupBuilder builder) {
-        return Show(builder.title, builder.text, builder.graphic, builder.showConfirmButton, builder.showDeclineButton, builder.confirmCallback, builder.declineCallback, builder.textSize, builder.textAlignment, builder.delay, builder.graphicTint);
+        return Show(builder.title, builder.text, builder.graphic, builder.showConfirmButton, builder.showDeclineButton, builder.confirmCallback, builder.declineCallback, builder.textSize, builder.textAlignment, builder.delay, builder.graphicTint, builder.blockBackgroundRaycasts);
     }
 
     public GameObject Show(
@@ -147,11 +157,17 @@ public class PopupManager : MonoBehaviour
          float textSize = 0,
          TextAlignmentOptions textAlign = TextAlignmentOptions.Center,
          float delay = 0,
-         Color? gfxTint = null
+         Color? gfxTint = null,
+         bool blockBackgroundRaycasts = true
         )
     {
         GameObject thisPopup = Instantiate(popupPrefab, this.transform);
-        PopupComponents components = thisPopup.GetComponent<PopupComponents>();
+
+
+        if (!blockBackgroundRaycasts)
+            thisPopup.GetComponent<Image>().raycastTarget = false;
+        
+        PopupComponents components = thisPopup.GetComponentInChildren<PopupComponents>();
         components.confirmCallback = confirmCallback;
         components.declineCallback = declineCallback;
         openPopups.Add(thisPopup);
@@ -215,7 +231,7 @@ public class PopupManager : MonoBehaviour
     private void Open(GameObject popup, float delay = 0) {
         if (popup == null) return;
 
-        PopupComponents components = popup.GetComponent<PopupComponents>();
+        PopupComponents components = popup.GetComponentInChildren<PopupComponents>();
 
         popup.GetComponent<RectTransform>()
             .DOScale(1, animationDuration)

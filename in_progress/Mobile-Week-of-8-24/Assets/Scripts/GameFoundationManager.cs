@@ -278,6 +278,13 @@ public class GameFoundationManager : MonoBehaviour
             builder.graphic = sprite;
 
         PopupManager.Instance.Show(builder);
+
+
+     
+
+        AnalyticsManager.LogBusinessEvent(transaction);
+
+
     }
 
     public void OnCoinPurchaseComplete(BaseTransaction transaction)

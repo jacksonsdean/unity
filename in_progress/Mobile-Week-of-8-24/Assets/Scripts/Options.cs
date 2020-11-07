@@ -6,6 +6,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum OptionsState {
+    Closed, Opened,
+    Ready
+}
 public class Options : MonoBehaviour
 {
     private readonly string PREF_QUALITY = "Quality Level";
@@ -14,6 +18,8 @@ public class Options : MonoBehaviour
     private readonly string PREF_ZEN = "Zen Mode Enabled";
 
     public static Options Instance;
+
+    public static OptionsState state = OptionsState.Closed;
 
     public static bool zenMode => Instance._zenMode;
     private bool _zenMode = false;
@@ -52,13 +58,15 @@ public class Options : MonoBehaviour
 
     internal void OnOpen()
     {
+        state = OptionsState.Opened;
+        lastTestTime = Time.time;
         _openedTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_playTestSFXFlag && Time.time > _openedTime+.5f)
+        if (_playTestSFXFlag && state == OptionsState.Ready)
         {
             if (Time.time > lastTestTime + 1.0f)
             {
@@ -67,6 +75,7 @@ public class Options : MonoBehaviour
                 audioSource.PlayOneShot(sfxTestClip);
             }
         }
+        if (state == OptionsState.Opened) state = OptionsState.Ready;
     }
 
     void CloseComplete() {
@@ -74,6 +83,7 @@ public class Options : MonoBehaviour
     }
     internal void OnClose()
     {
+        state = OptionsState.Closed;
         GetComponent<RectTransform>().DOScale(Vector3.zero, .35f).OnComplete(CloseComplete);
         PlayerPrefs.Save();
 
@@ -130,6 +140,8 @@ public class Options : MonoBehaviour
     void OnConfirmQualityWarning(GameObject gameObject) {
         int val = 2;
         ConfirmQuality(val); // 2 is high graphics
+        AnalyticsManager.LogUI("optionsQualityHighConfirmed", DesignEventType.Clicked);
+
     }
 
     void OnDeclineQualityWarning(GameObject gameObject)
@@ -137,6 +149,8 @@ public class Options : MonoBehaviour
         int val = _prevGFXQuality == 2 ? 1 : _prevGFXQuality;
         ConfirmQuality(val); // 1 is med graphics, 2 is high
         UpdateQualityToggles(val);
+        AnalyticsManager.LogUI("optionsQualityHighDeclined", DesignEventType.Clicked);
+
     }
 
     void UpdateQualityToggles(int val) {
@@ -149,10 +163,11 @@ public class Options : MonoBehaviour
     }
 
     public void OnToggleQuality(int index) {
-        UIAudioManager.PlayClickSound();
+        if (state == OptionsState.Ready)
+            UIAudioManager.PlayClickSound();
         if (gfxToggleGroup.GetComponentsInChildren<Toggle>()[index].isOn)
         {
-            if (index == 2)
+            if (index == 2 && _prevGFXQuality !=2 && state == OptionsState.Ready)
             {
                 // High quality, show warning
                 PopupBuilder p = new PopupBuilder();
@@ -162,12 +177,22 @@ public class Options : MonoBehaviour
                 p.declineCallback = OnDeclineQualityWarning;
                 p.showConfirmButton = true;
                 p.showDeclineButton = true;
-                if(Time.time > _openedTime + .5f)
-                    p.Show();
+                p.Show();
+
+                AnalyticsManager.LogUI("optionsQualityHigh", DesignEventType.Clicked);
             }
-            else
+            else if (index == 0) {
+                ConfirmQuality(index);
+                if(state == OptionsState.Ready)
+                    AnalyticsManager.LogUI("optionsQualityLow", DesignEventType.Clicked);
+
+            }
+            else if(index==1)
             {
                 ConfirmQuality(index);
+                if (state == OptionsState.Ready)
+                    AnalyticsManager.LogUI("optionsQualityMed", DesignEventType.Clicked);
+
             }
         }
 
@@ -190,6 +215,9 @@ public class Options : MonoBehaviour
         AudioManager.SetMaxMusicVolume(v);
         PlayerPrefs.SetFloat(PREF_MUSIC, v);
         PlayerPrefs.Save();
+        if (state == OptionsState.Ready)
+            AnalyticsManager.LogUI("optionsSetMusicVolume", DesignEventType.Clicked);
+
     }
 
     public void OnSetSFXVolume(float v) {
@@ -198,7 +226,10 @@ public class Options : MonoBehaviour
         PlayerPrefs.Save();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         audioSource.volume = v;
-        if(Time.time>1) _playTestSFXFlag = true;
+        if (state == OptionsState.Ready){
+            _playTestSFXFlag = true;
+            AnalyticsManager.LogUI("optionsSetSFXVolume", DesignEventType.Clicked);
+        }
 
     }
 
@@ -207,6 +238,9 @@ public class Options : MonoBehaviour
         PlayerPrefs.SetInt(PREF_ZEN, t?1:0);
         PlayerPrefs.Save();
         ToggleShine();
+        if (state == OptionsState.Ready)
+            AnalyticsManager.LogUI("optionsZenModeToggle", DesignEventType.Clicked);
+
 
     }
 
@@ -214,6 +248,8 @@ public class Options : MonoBehaviour
         PopupBuilder b = new PopupBuilder();
         b.title = "Zen Mode";
         b.text = "Enable zen mode to remove the user interface and slow down the game.\n\nMakes the experience easier and more relaxing, but you will get less coins.";
+        AnalyticsManager.LogUI("optionsZenModeInfo", DesignEventType.Clicked);
+
         PopupManager.ShowPopup(b);
     }
 
@@ -227,6 +263,8 @@ public class Options : MonoBehaviour
         b.textSize = 60;
         b.textAlignment = TMPro.TextAlignmentOptions.Left;
         PopupManager.ShowPopup(b);
+        AnalyticsManager.LogUI("optionsCredits", DesignEventType.Clicked);
+
     }
 
 }

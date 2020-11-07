@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     Rigidbody rb;
 
-    Light light;
+    Light mLight;
 
     private float rotX, rotY, rotZ;
 
@@ -67,9 +67,9 @@ public class Enemy : MonoBehaviour
             theseMats[i] = mr[i].material;
         }
 
-        light = GetComponentInChildren<Light>();
-        if(light)
-            lightMaxInt = light.intensity;
+        mLight = GetComponentInChildren<Light>();
+        if(mLight)
+            lightMaxInt = mLight.intensity;
        
         maxHealth = health;
 

@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,18 +24,23 @@ public class UpgradeUI : MonoBehaviour
     {
 
         // Set all bars to empty
+        EmptyBars();
+        transactionItemView = GetComponent<TransactionItemView>();
+
+
+    }
+
+    private void EmptyBars()
+    {
         foreach (Transform item in fullBar.transform)
         {
             if (item.CompareTag("UpgradeLevelUI"))
             {
                 CanvasGroup group = item.GetComponent<CanvasGroup>();
-                group.DOFade(0,0);
-                
+                group.DOFade(0, 0);
+
             }
         }
-        transactionItemView = GetComponent<TransactionItemView>();
-
-
     }
 
     private void OnUpdateUpgrades() {
@@ -66,13 +72,16 @@ public class UpgradeUI : MonoBehaviour
 
         //Current level
         int count = 0;
-        foreach (Transform item in fullBar.transform)
-        {
-            if (count >= level) break;
-            if (item.CompareTag("UpgradeLevelUI"))
-            {
+        
+        foreach (RectTransform item in fullBar.transform){
+            if (item.CompareTag("UpgradeLevelUI")){
                 CanvasGroup group = item.GetComponent<CanvasGroup>();
-                group.DOFade(1.0f, .6f);
+                if (count < level){
+                    group.DOFade(1.0f, .6f); // Has unlocked this level
+                }
+                else {
+                    group.DOFade(0.0f,0.0f); // Hasn't unlocked this level
+                }
                 count++;
             }
         }
@@ -80,13 +89,10 @@ public class UpgradeUI : MonoBehaviour
         // Next
         nextUpgrade = level + 1;
 
-        if (nextUpgrade > maxLevel)
-        {
+        if (nextUpgrade > maxLevel){
             transactionItemView.purchaseButton.gameObject.SetActive(false);
         }
-        else
-        {
-
+        else{
             transactionItemView.SetTransactionKey(transKey + nextUpgrade.ToString());
         }
 

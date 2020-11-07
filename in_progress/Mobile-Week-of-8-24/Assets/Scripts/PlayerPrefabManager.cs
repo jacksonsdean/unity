@@ -42,6 +42,7 @@ public class PlayerPrefabManager : MonoBehaviour
         PlayerPrefabManager.currentKey = key;
         SwitchPrefab();
         OnBoatChanged?.Invoke();
+        AnalyticsManager.LogDesign("currentBoat_" + key, DesignEventType.Choice);
     }
 
     private static void SwitchPrefab() {

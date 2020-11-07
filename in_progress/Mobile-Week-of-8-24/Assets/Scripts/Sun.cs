@@ -9,6 +9,9 @@ public class Sun : MonoBehaviour
     AnimationCurve rotationSpeedCurve = null;
     [SerializeField]
     AnimationCurve brightnessCurve = null;
+    [SerializeField]
+    Gradient color = null;
+
     public float speedMult = 0.5f;
     float speed = 1.0f;
     private float currentDayPercent = 0;
@@ -40,6 +43,8 @@ public class Sun : MonoBehaviour
 
         speed = rotationSpeedCurve.Evaluate(currentDayPercent);
         mLight.intensity = brightnessCurve.Evaluate(currentDayPercent);
+        mLight.color = color.Evaluate(currentDayPercent);
+
         float deltaTheta = speedMult * speed * Time.deltaTime;
         currentDayPercent += (deltaTheta/360.0f);
         if (currentDayPercent >= 1.0f)
